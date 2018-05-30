@@ -2,7 +2,7 @@
 ## 1. 소개
 개인 블로그 형식의 간단한 SNS 서비스를 제공하는 웹페이지입니다.
 
-개발 내용 : [feature list]()
+개발 내용 : [feature list](https://oss.navercorp.com/2018-nbp-internship-team1/junhee/wiki/Feature-List)
 
 진행 사항 : [todo list]()
 ## 2. 개발환경
