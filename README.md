@@ -4,7 +4,7 @@
 
 개발 내용 : [feature list](https://oss.navercorp.com/2018-nbp-internship-team1/junhee/wiki/Feature-List)
 
-진행 사항 : [todo list]()
+진행 사항 : [todo list](https://oss.navercorp.com/2018-nbp-internship-team1/junhee/projects)
 ## 2. 개발환경
 Front-end : jsp, bootstrap
 
