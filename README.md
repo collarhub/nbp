@@ -1,1 +1,1 @@
-# junhee
+# Simple SNS
