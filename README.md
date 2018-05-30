@@ -1,4 +1,4 @@
-# Simple SNS
+﻿# Simple SNS
 ## 1. 소개
 개인 블로그 형식의 간단한 SNS 서비스를 제공하는 웹페이지입니다.
 
@@ -22,3 +22,4 @@ build&deploy : jenkins
  - 친구 목록
  - 프로필
 ## 4. 기능 구성
+## 5.
