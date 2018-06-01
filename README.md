@@ -5,6 +5,8 @@
 개발 내용 : [feature list](https://oss.navercorp.com/2018-nbp-internship-team1/junhee/wiki/Feature-List)
 
 진행 사항 : [todo list](https://oss.navercorp.com/2018-nbp-internship-team1/junhee/projects/1)
+
+URL : [http://10.106.151.73/simsns](http://10.106.151.73/simsns)
 ## 2. 개발환경
 Front-end : jsp, bootstrap
 
