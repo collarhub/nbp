@@ -10,7 +10,7 @@ public class UserServiceImpl implements UserServiceInter {
 
 	@Override
 	public boolean signupValidate(UserVO user) {
-		if(user.getUserEmail().equals("1")) {
+		if(user.getUserEmail().equals("2")) {
 			return true;
 		} else {
 			return false;
