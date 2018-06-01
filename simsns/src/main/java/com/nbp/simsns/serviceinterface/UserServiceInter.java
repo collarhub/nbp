@@ -1,7 +1,7 @@
 package com.nbp.simsns.serviceinterface;
 
-import com.nbp.simsns.vo.UserVO;
+import org.springframework.validation.Errors;
 
 public interface UserServiceInter {
-	public boolean signupValidate(UserVO user);
+	public void signupValidate(Object object, Errors errors);
 }

@@ -10,6 +10,9 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -51,14 +54,16 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/signupValidate", method = RequestMethod.POST)
-	public String signupValidate(UserVO user) {
-		boolean result;
-		result = userService.signupValidate(user);
+	public String signupValidate(@ModelAttribute UserVO user, BindingResult result, Model model) {
+		userService.signupValidate(user, result);
 		logger.info(user.getUserEmail() + " " + user.getUserName());
-		if(result) {
-			return "loginForm";
-		} else {
+		if(result.hasErrors()) {
+			for(ObjectError error : result.getAllErrors()) {
+				logger.info(error.getDefaultMessage());
+			}
 			return "signupForm";
+		} else {
+			return "loginForm";
 		}
 	}
 	
