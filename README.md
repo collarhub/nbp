@@ -29,5 +29,5 @@ build&deploy : jenkins
  - 사진 업로드
  - 검색 (게시물, 댓글, 사진, 친구)
 ## 5. 디자인 상세
- - [스토리보드](https://ovenapp.io/view/vwWG0kw5u2funtTvXucq2K5VA5gdFfcR/NJJ8F)
+ - [스토리보드](https://ovenapp.io/view/vwWG0kw5u2funtTvXucq2K5VA5gdFfcR/LCfdj)
  - [DB 설계](https://oss.navercorp.com/2018-nbp-internship-team1/junhee/blob/master/db.PNG)
