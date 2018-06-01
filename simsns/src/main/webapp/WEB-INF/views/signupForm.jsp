@@ -39,7 +39,7 @@ contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 			<th><form:errors path="userVO.userAddress"></form:errors></th>
 		</tr>
 		<tr>
-			<th align="left"><input type="button" value="취소"></th>
+			<th align="left"><input type="button" value="취소" onclick="javascript:location.href='/simsns/'"></th>
 			<th align="right"><input type="submit" value="가입하기"></th>
 			<th></th>
 		</tr>
