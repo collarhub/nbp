@@ -23,7 +23,7 @@ contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 	</tr>
 	<tr>
 		<th align="left"><input type="button" value="로그인"></th>
-		<th align="right"><input type="button" value="회원가입" onclick="goSignupForm()"></th>
+		<th align="right"><input type="button" value="회원가입" onclick="javascript:location.href=/simsns/signup"></th>
 	</tr>
 </table>
 </body>
