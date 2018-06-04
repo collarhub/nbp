@@ -7,12 +7,15 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id ="selectUser" parameterType="java.util.HashMap" resultType= "java.util.HashMap">
         select *
         from user
-        where user_phone = #{user_phone}
+        where user_email = #{userEmail}
     </select>
     <insert id ="insertUser" parameterType="com.nbp.simsns.vo.UserVO" >
         insert into user
-        (user_email, user_name, user_phone, user_address)
+        (user_email, user_password, user_name, user_phone, user_address)
         values
-        ( #{userEmail}, #{userName}, #{userPhone}, #{userAddress} )
+        ( #{userEmail}, password(#{userPassword}), #{userName}, #{userPhone}, #{userAddress} )
     </insert>
+    <select id="getHash" parameterType="java.lang.String" resultType="java.lang.String">
+    	select password(#{value})
+    </select>
 </mapper>

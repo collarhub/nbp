@@ -26,4 +26,14 @@ public class HomeController {
 		return "signupForm";
 	}
 	
+	@RequestMapping(value = "/signupValidate", method = RequestMethod.GET)
+	public String signupValidate(Locale locale, Model model) {
+		return "notAccessible";
+	}
+	
+	@RequestMapping(value = "/loginValidate", method = RequestMethod.GET)
+	public String loginValidate(Locale locale, Model model) {
+		return "notAccessible";
+	}
+	
 }
