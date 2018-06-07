@@ -28,7 +28,7 @@ $(document).ready(function() {
 	postList.some(function(post, i){
 		$("#enters").append('<form id="form' + index + '" action="deletePost" method="post">'
 							+ new Date(Number(post.postTimestamp)).toString() + '<br>'
-							+ '작성자 : ' + post.userEmailGuest
+							+ '작성자 : <a href="/simsns/board?id=' + post.userEmailGuest + '">' + post.userEmailGuest + '</a>'
 							+ '<h1>제목 : ' + post.postTitle + '</h1><br>'
 							+ '내용 : ' + post.postContent + '<br>'
 							+ (
@@ -51,7 +51,7 @@ $(document).ready(function() {
 			if(index < postList.length) {
 				$("#enters").append('<form id="form' + index + '" action="deletePost" method="post">'
 					+ new Date(Number(postList[index].postTimestamp)).toString() + '<br>'
-					+ '작성자 : ' + postList[index].userEmailGuest
+					+ '작성자 : <a href="/simsns/board?id=' + postList[index].userEmailGuest + '">' + postList[index].userEmailGuest + '</a>'
 					+ '<h1>제목 : ' + postList[index].postTitle + '</h1><br>'
 					+ '내용 : ' + postList[index].postContent + '<br>'
 					+ (
