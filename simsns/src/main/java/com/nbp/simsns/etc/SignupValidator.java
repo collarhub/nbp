@@ -4,7 +4,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
@@ -31,7 +30,7 @@ public class SignupValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userPasswordConfirm", "required", "필수입력 사항입니다.");
         ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userName", "required", "필수입력 사항입니다.");
         
-        if(!userDAO.selectUser(user.getUserEmail()).isEmpty()) {
+        if(!userDAO.selectUser(user).isEmpty()) {
         	errors.rejectValue("userEmail", "select", "이미 가입된 이메일입니다.");
         }
         

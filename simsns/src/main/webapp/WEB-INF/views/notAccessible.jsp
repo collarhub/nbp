@@ -10,7 +10,7 @@
 <body>
 <script type="text/javascript">
 	alert('잘못된 접근입니다.');
-	location.href('/simsns/');
+	location.href = '/simsns/';
 </script>
 </body>
 </html>

@@ -9,7 +9,7 @@ contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <body>
 <c:if test="${sessionScope.userID != null }">
 	<script type="text/javascript">
-		location.href('/simsns/board');
+		location.href = '/simsns/board';
 	</script>
 </c:if>
 <c:if test="${isSignupSuccess == 'false'}">

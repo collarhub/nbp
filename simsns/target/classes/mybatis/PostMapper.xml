@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace= "postMapper" >
+    
+    <select id ="selectMaxPostNo" parameterType="com.nbp.simsns.vo.PostVO" resultType= "java.lang.String">
+        SELECT MAX(postNo)
+        FROM post
+        WHERE userEmailHost = #{userEmailHost} AND postTimestamp = #{postTimestamp}
+    </select>
+    
+    <insert id ="insertPost" parameterType="com.nbp.simsns.vo.PostVO" >
+        INSERT INTO post
+        (userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest)
+        VALUES
+        ( #{userEmailHost}, #{postNo}, #{postTitle}, #{postContent}, #{postTimestamp}, #{userEmailGuest} )
+    </insert>
+    
+    <select id ="selectAllPost" parameterType="com.nbp.simsns.vo.UserVO" resultType="com.nbp.simsns.vo.PostVO">
+    	SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
+    	FROM post
+    	WHERE userEmailHost = #{userEmail}
+    	ORDER BY postTimestamp DESC, postNo DESC
+    </select>
+    
+    <delete id="deletePost" parameterType="com.nbp.simsns.vo.PostVO">
+    	DELETE
+    	FROM post
+    	WHERE userEmailHost = #{userEmailHost} AND postNo = #{postNo} AND postTimestamp = #{postTimestamp}
+    </delete>
+    
+    <select id = "selectPost" parameterType="com.nbp.simsns.vo.PostVO" resultType="com.nbp.simsns.vo.PostVO">
+    	SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
+    	FROM post
+    	WHERE userEmailHost = #{userEmailHost} AND postNo = #{postNo} AND postTimestamp = #{postTimestamp}
+    </select>
+    
+    <update id="updatePost" parameterType="com.nbp.simsns.vo.PostVO">
+    	UPDATE post
+    	SET postTitle = #{postTitle}, postContent = #{postContent}
+    	WHERE userEmailHost = #{userEmailHost} AND postNo = #{postNo} AND postTimestamp = #{postTimestamp}
+    </update>
+
+</mapper>

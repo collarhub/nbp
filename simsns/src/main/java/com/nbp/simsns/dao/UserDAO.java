@@ -23,10 +23,8 @@ public class UserDAO {
         sqlSession.insert("userMapper.insertUser", user);
     }
     
-    public List<HashMap<String, String>> selectUser(String userEmail) {
-    	HashMap<String, String> input = new HashMap<String, String>();
-    	input.put("userEmail", userEmail);
-    	List<HashMap<String, String>> outputs = sqlSession.selectList("userMapper.selectUser", input);
+    public List<UserVO> selectUser(UserVO user) {
+    	List<UserVO> outputs = sqlSession.selectList("userMapper.selectUser", user);
     	return outputs;
     }
     

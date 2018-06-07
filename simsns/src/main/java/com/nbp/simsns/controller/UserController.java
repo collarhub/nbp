@@ -42,7 +42,7 @@ public class UserController {
 			return "loginForm";
 		} else {
 			session.setAttribute("userID", user.getUserEmail());
-			return "mainBoard";
+			return "redirect:/board?id=" + user.getUserEmail();
 		}
 	}
 	
