@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -21,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
 import com.nbp.simsns.serviceimpl.PostServiceImpl;
+import com.nbp.simsns.serviceimpl.UserServiceImpl;
 import com.nbp.simsns.vo.PostVO;
 import com.nbp.simsns.vo.UserVO;
 
@@ -28,6 +28,8 @@ import com.nbp.simsns.vo.UserVO;
 public class PostController {
 	@Autowired
 	private PostServiceImpl postService;
+	@Autowired
+	private UserServiceImpl userService;
 	private static final Logger logger = LoggerFactory.getLogger(PostController.class);
 
 	@RequestMapping(value = "/board", method = RequestMethod.GET)
@@ -35,7 +37,8 @@ public class PostController {
 		UserVO user = new UserVO();
 		//user.setUserEmail(session.getAttribute("userID").toString());
 		if(session.getAttribute("userID") != null) {
-			if(request.getParameter("id") == null) {
+			if(request.getParameter("id") == null
+					|| userService.selectUser(request.getParameter("id")).isEmpty()) {
 				return "redirect:/board?id=" + session.getAttribute("userID").toString();
 			}
 			user.setUserEmail(request.getParameter("id").toString());

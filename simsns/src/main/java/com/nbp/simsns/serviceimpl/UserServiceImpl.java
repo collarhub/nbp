@@ -1,5 +1,7 @@
 package com.nbp.simsns.serviceimpl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -33,7 +35,11 @@ public class UserServiceImpl implements UserServiceInter {
 	public void loginValidate(Object object, Errors errors) {
 		loginValidator.validate(object, errors);
 	}
-	
-	
-	
+
+	@Override
+	public List<UserVO> selectUser(String userEmail) {
+		UserVO user = new UserVO();
+		user.setUserEmail(userEmail);
+		return userDAO.selectUser(user);
+	}
 }

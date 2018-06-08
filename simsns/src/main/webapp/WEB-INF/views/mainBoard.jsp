@@ -47,7 +47,7 @@ $(document).ready(function() {
 	});
 	index++;
 	$(window).scroll(function() {
-		if ($(window).scrollTop() == $(document).height() - $(window).height()) {
+		if ($(window).scrollTop() + 1 >= $(document).height() - $(window).height()) {
 			if(index < postList.length) {
 				$("#enters").append('<form id="form' + index + '" action="deletePost" method="post">'
 					+ new Date(Number(postList[index].postTimestamp)).toString() + '<br>'
