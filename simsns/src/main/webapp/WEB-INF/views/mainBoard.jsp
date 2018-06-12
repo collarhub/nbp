@@ -83,7 +83,17 @@ $(document).ready(function() {
 										+ '<input type="hidden" value="${id}" name="userEmailHost" id="userEmailHost">'
 										: ''
 							)
-							+ '</form><br>'
+							+ '</form>'
+							+ '<form action="addLike" method="post">'
+							+ '<input type="submit" value="좋아요">'
+							+ '<input type="hidden" value="${id}" name="userEmailHost">'
+							+ '<input type="hidden" value="' + post.postNo + '" name="postNo">'
+							+ '<input type="hidden" value="' + post.postTimestamp + '" name="postTimestamp">'
+							+ '<input type="hidden" value="' + COMMENT_ROOT + '" name="commentNo">'
+							+ '<input type="hidden" value="' + COMMENT_ROOT + '" name="commentTimestamp">'
+							+ '<input type="hidden" value="' + COMMENT_ROOT + '" name="commentDepth">'
+							+ '</form>'
+							+ '<br>'
 							+ '<div style="margin-left:' + 15 * (1 + COMMENT_ROOT) + 'px" id="comment' + post.postTimestamp + post.postNo + COMMENT_ROOT + COMMENT_ROOT + COMMENT_ROOT + '"></div>');
 
 		
@@ -118,7 +128,17 @@ $(document).ready(function() {
 											'<form:errors path="commentVO.commentContent" class="errors"></form:errors>'
 											: ''
 							)
-							+ '</form><br>'
+							+ '</form>'
+							+ '<form action="addLike" method="post">'
+							+ '<input type="submit" value="좋아요">'
+							+ '<input type="hidden" value="${id}" name="userEmailHost">'
+							+ '<input type="hidden" value="' + post.postNo + '" name="postNo">'
+							+ '<input type="hidden" value="' + post.postTimestamp + '" name="postTimestamp">'
+							+ '<input type="hidden" value="' + comment.commentNo + '" name="commentNo">'
+							+ '<input type="hidden" value="' + comment.commentTimestamp + '" name="commentTimestamp">'
+							+ '<input type="hidden" value="' + comment.commentDepth + '" name="commentDepth">'
+							+ '</form>'
+							+ '<br>'
 							+ '</div>'
 							+ '<div id="commentUpdateContainer' + commentIndex + '" style="display:none">'
 							+ '<form id="coCommentUpdateForm' + commentIndex + '" action="updateComment" method="post">'
@@ -199,7 +219,17 @@ $(document).ready(function() {
 												+ '<input type="hidden" value="${id}" name="userEmailHost" id="userEmailHost">'
 												: ''
 									)
-									+ '</form><br>'
+									+ '</form>'
+									+ '<form action="addLike" method="post">'
+									+ '<input type="submit" value="좋아요">'
+									+ '<input type="hidden" value="${id}" name="userEmailHost">'
+									+ '<input type="hidden" value="' + postList[index].postNo + '" name="postNo">'
+									+ '<input type="hidden" value="' + postList[index].postTimestamp + '" name="postTimestamp">'
+									+ '<input type="hidden" value="' + COMMENT_ROOT + '" name="commentNo">'
+									+ '<input type="hidden" value="' + COMMENT_ROOT + '" name="commentTimestamp">'
+									+ '<input type="hidden" value="' + COMMENT_ROOT + '" name="commentDepth">'
+									+ '</form>'
+									+ '<br>'
 									+ '<div style="margin-left:' + 15 * (1 + COMMENT_ROOT) + 'px" id="comment' + postList[index].postTimestamp + postList[index].postNo + COMMENT_ROOT + COMMENT_ROOT + COMMENT_ROOT + '"></div>');
 
 				for(; (commentList[commentIndex] != undefined && commentList[commentIndex].postTimestamp == postList[index].postTimestamp &&
@@ -233,7 +263,17 @@ $(document).ready(function() {
 												'<form:errors path="commentVO.commentContent" class="errors"></form:errors>'
 												: ''
 								)
-								+ '</form><br>'
+								+ '</form>'
+								+ '<form action="addLike" method="post">'
+								+ '<input type="submit" value="좋아요">'
+								+ '<input type="hidden" value="${id}" name="userEmailHost">'
+								+ '<input type="hidden" value="' + postList[index].postNo + '" name="postNo">'
+								+ '<input type="hidden" value="' + postList[index].postTimestamp + '" name="postTimestamp">'
+								+ '<input type="hidden" value="' + comment.commentNo + '" name="commentNo">'
+								+ '<input type="hidden" value="' + comment.commentTimestamp + '" name="commentTimestamp">'
+								+ '<input type="hidden" value="' + comment.commentDepth + '" name="commentDepth">'
+								+ '</form>'
+								+ '<br>'
 								+ '</div>'
 								+ '<div id="commentUpdateContainer' + commentIndex + '" style="display:none">'
 								+ '<form id="coCommentUpdateForm' + commentIndex + '" action="updateComment" method="post">'
@@ -310,7 +350,6 @@ ${sessionScope.userID}
 <c:if test="${sessionScope.userID != id}">
 	<input type="button" value="내 게시판" onclick="javascript:location.href='/simsns/board?id=${sessionScope.userID}'">
 </c:if>
-<%-- <h1>${param.id} 의 게시판입니다.</h1> --%>
 <h1>${id} 의 게시판입니다.</h1>
 <hr>
 <div id="enters">

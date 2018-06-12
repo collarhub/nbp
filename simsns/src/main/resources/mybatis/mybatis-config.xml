@@ -4,9 +4,10 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 "http://mybatis.org/dtd/mybatis-3-config.dtd" >
 
 <configuration>
-    <mappers >
-        <mapper resource ="/mybatis/UserMapper.xml"/>
-        <mapper resource ="/mybatis/PostMapper.xml"/>
-        <mapper resource ="/mybatis/CommentMapper.xml"/>
-    </mappers >
+    <mappers>
+        <mapper resource="/mybatis/UserMapper.xml" />
+        <mapper resource="/mybatis/PostMapper.xml" />
+        <mapper resource="/mybatis/CommentMapper.xml" />
+        <mapper resource="/mybatis/LikeMapper.xml" />
+    </mappers>
 </configuration>

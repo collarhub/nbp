@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace= "likeMapper" >
+	<select id ="selectMaxLikeNo" parameterType="com.nbp.simsns.vo.LikeVO" resultType= "java.lang.String">
+        SELECT MAX(likeNo)
+        FROM simsns.like
+        WHERE userEmailHost = #{userEmailHost} AND postNo = #{postNo}
+        	AND postTimestamp = #{postTimestamp} AND commentNo = #{commentNo}
+        	AND commentTimestamp = #{commentTimestamp} AND likeTimestamp = #{likeTimestamp}
+    </select>
+
+	<insert id ="insertLike" parameterType="com.nbp.simsns.vo.LikeVO" >
+        INSERT INTO simsns.like
+        (userEmailHost, postNo, postTimestamp, commentNo,
+        	commentTimestamp, likeNo, likeTimestamp, userEmailGuest, commentDepth)
+        VALUES
+        ( #{userEmailHost}, #{postNo}, #{postTimestamp}, #{commentNo},
+        	#{commentTimestamp}, #{likeNo}, #{likeTimestamp}, #{userEmailGuest}, #{commentDepth})
+    </insert>
+    
+    <select id ="selectAllLike" parameterType="com.nbp.simsns.vo.UserVO" resultType="com.nbp.simsns.vo.LikeVO">
+    	SELECT userEmailHost, postNo, postTimestamp, commentNo, commentTimestamp,
+    		likeNo, likeTimestamp, userEmailGuest, commentDepth
+    	FROM simsns.like
+    	WHERE userEmailHost = #{userEmail}
+    	ORDER BY postTimestamp DESC, postNo DESC, commentDepth ASC,
+    		commentTimestamp ASC, commentNo ASC, likeTimestamp ASC, likeNo ASC
+    </select>
+</mapper>

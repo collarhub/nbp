@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace= "commentMapper" >
 
 	<select id ="selectMaxCommentNo" parameterType="com.nbp.simsns.vo.CommentVO" resultType= "java.lang.String">
-        SELECT MAX(CommentNo)
+        SELECT MAX(commentNo)
         FROM comment
         WHERE userEmailHost = #{userEmailHost} AND postNo = #{postNo}
         	AND postTimestamp = #{postTimestamp} AND commentTimestamp = #{commentTimestamp}
