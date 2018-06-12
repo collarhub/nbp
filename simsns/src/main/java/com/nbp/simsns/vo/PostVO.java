@@ -1,7 +1,5 @@
 package com.nbp.simsns.vo;
 
-import java.sql.Date;
-
 public class PostVO {
 	private String userEmailHost;
 	private String postNo;

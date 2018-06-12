@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.google.gson.Gson;
+import com.nbp.simsns.serviceimpl.CommentServiceImpl;
 import com.nbp.simsns.serviceimpl.PostServiceImpl;
 import com.nbp.simsns.serviceimpl.UserServiceImpl;
 import com.nbp.simsns.vo.PostVO;
@@ -30,45 +31,72 @@ public class PostController {
 	private PostServiceImpl postService;
 	@Autowired
 	private UserServiceImpl userService;
+	@Autowired
+	private CommentServiceImpl commentService;
 	private static final Logger logger = LoggerFactory.getLogger(PostController.class);
-
+	
 	@RequestMapping(value = "/board", method = RequestMethod.GET)
-	public String login(Locale locale, Model model, HttpSession session, HttpServletRequest request) {
+	public String mainBoardGet(Locale locale, Model model, HttpSession session, HttpServletRequest request) {
 		UserVO user = new UserVO();
-		//user.setUserEmail(session.getAttribute("userID").toString());
-		if(session.getAttribute("userID") != null) {
-			if(request.getParameter("id") == null
-					|| userService.selectUser(request.getParameter("id")).isEmpty()) {
-				return "redirect:/board?id=" + session.getAttribute("userID").toString();
-			}
-			user.setUserEmail(request.getParameter("id").toString());
+		if(session.getAttribute("userID") == null) {
+			return "mainBoard";
+		} else {
+			user.setUserEmail(session.getAttribute("userID").toString());
 			model.addAttribute("postList", new Gson().toJson(postService.getAllPost(user)));
+			model.addAttribute("commentList", new Gson().toJson(commentService.getAllComment(user)));
+			model.addAttribute("id", session.getAttribute("userID"));
+			return "mainBoard";
 		}
-		return "mainBoard";
 	}
 	
-	@RequestMapping(value = "/write", method = RequestMethod.GET)
-	public String write(Locale locale, Model model) {
+	@RequestMapping(value = "/board", method = RequestMethod.POST)
+	public String mainBoard(@ModelAttribute PostVO postVO, Locale locale, Model model, HttpSession session, HttpServletRequest request) {
+		UserVO userVO = new UserVO();
+		userVO.setUserEmail(postVO.getUserEmailHost());
+		if(session.getAttribute("userID") == null) {
+			return "mainBoard";
+		} else {
+			model.addAttribute("postList", new Gson().toJson(postService.getAllPost(userVO)));
+			model.addAttribute("commentList", new Gson().toJson(commentService.getAllComment(userVO)));
+			model.addAttribute("id", userVO.getUserEmail());
+			return "mainBoard";
+		}
+	}
+	
+	@RequestMapping(value = "/write", method = RequestMethod.POST)
+	public String write(@ModelAttribute PostVO postVO, Locale locale, Model model) {
+		model.addAttribute("id", postVO.getUserEmailHost());
 		return "writeForm";
 	}
 	
 	@RequestMapping(value = "/writeCommit", method = RequestMethod.POST)
 	public String writeCommit(@ModelAttribute PostVO postVO, @RequestPart(required=true)List<MultipartFile> fileupload,
-			 BindingResult result, HttpSession session, HttpServletRequest request) {
+			 BindingResult result, HttpSession session, Model model) {
 		postVO.setUserEmailGuest(session.getAttribute("userID").toString());
 		postService.writeCommit(postVO, result);
 		if(!result.hasErrors()) {
-			return "redirect:/board?id=" + postVO.getUserEmailHost();
+			UserVO userVO = new UserVO();
+			userVO.setUserEmail(postVO.getUserEmailHost());
+			model.addAttribute("id", postVO.getUserEmailHost());
+			model.addAttribute("postList", new Gson().toJson(postService.getAllPost(userVO)));
+			model.addAttribute("commentList", new Gson().toJson(commentService.getAllComment(userVO)));
+			return "mainBoard";
 		} else {
+			model.addAttribute("id", postVO.getUserEmailHost());
 			return "writeForm";
 		}
 	}
 	
 	@RequestMapping(value = "/deletePost", method = RequestMethod.POST)
-	public String deletePost(@ModelAttribute PostVO postVO, BindingResult result, HttpSession session) {
+	public String deletePost(@ModelAttribute PostVO postVO, BindingResult result, HttpSession session, Model model) {
 		postVO.setUserEmailGuest(session.getAttribute("userID").toString());
 		postService.deletePost(postVO);
-		return "redirect:/board?id=" + postVO.getUserEmailHost();
+		UserVO userVO = new UserVO();
+		userVO.setUserEmail(postVO.getUserEmailHost());
+		model.addAttribute("id", postVO.getUserEmailHost());
+		model.addAttribute("postList", new Gson().toJson(postService.getAllPost(userVO)));
+		model.addAttribute("commentList", new Gson().toJson(commentService.getAllComment(userVO)));
+		return "mainBoard";
 	}
 	
 	@RequestMapping(value = "/update", method = RequestMethod.POST)
@@ -82,12 +110,18 @@ public class PostController {
 	
 	@RequestMapping(value = "/updateCommit", method = RequestMethod.POST)
 	public String updateCommit(@ModelAttribute PostVO postVO, @RequestPart(required=true)List<MultipartFile> fileupload,
-			 BindingResult result, HttpSession session) {
+			 BindingResult result, HttpSession session, Model model) {
 		postVO.setUserEmailGuest(session.getAttribute("userID").toString());
 		postService.updateCommit(postVO, result);
 		if(!result.hasErrors()) {
-			return "redirect:/board?id=" + postVO.getUserEmailHost();
+			UserVO userVO = new UserVO();
+			userVO.setUserEmail(postVO.getUserEmailHost());
+			model.addAttribute("id", postVO.getUserEmailHost());
+			model.addAttribute("postList", new Gson().toJson(postService.getAllPost(userVO)));
+			model.addAttribute("commentList", new Gson().toJson(commentService.getAllComment(userVO)));
+			return "mainBoard";
 		} else {
+			model.addAttribute("id", postVO.getUserEmailHost());
 			return "updateForm";
 		}
 	}

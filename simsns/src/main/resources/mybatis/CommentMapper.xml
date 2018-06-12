@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace= "commentMapper" >
+
+	<select id ="selectMaxCommentNo" parameterType="com.nbp.simsns.vo.CommentVO" resultType= "java.lang.String">
+        SELECT MAX(CommentNo)
+        FROM comment
+        WHERE userEmailHost = #{userEmailHost} AND postNo = #{postNo}
+        	AND postTimestamp = #{postTimestamp} AND commentTimestamp = #{commentTimestamp}
+    </select>
+    
+    <insert id ="insertComment" parameterType="com.nbp.simsns.vo.CommentVO" >
+        INSERT INTO comment
+        (userEmailHost, postNo, postTimestamp, commentNo,
+        	commentTimestamp, commentNoParent, commentTimestampParent,
+        	userEmailGuest, commentContent, commentDepth)
+        VALUES
+        ( #{userEmailHost}, #{postNo}, #{postTimestamp}, #{commentNo},
+        	#{commentTimestamp}, #{commentNoParent}, #{commentTimestampParent},
+        	#{userEmailGuest}, #{commentContent}, #{commentDepth} )
+    </insert>
+    
+    <select id ="selectAllComment" parameterType="com.nbp.simsns.vo.UserVO" resultType="com.nbp.simsns.vo.CommentVO">
+    	SELECT userEmailHost, postNo, postTimestamp, commentNo, commentTimestamp, commentNoParent,
+    			commentTimestampParent, userEmailGuest, commentContent, commentDepth
+    	FROM comment
+    	WHERE userEmailHost = #{userEmail}
+    	ORDER BY postTimestamp DESC, postNo DESC, commentDepth ASC, commentTimestampParent ASC,
+    			commentNoParent ASC, commentTimestamp ASC, commentNo ASC
+    </select>
+    
+    <delete id="deleteComment" parameterType="com.nbp.simsns.vo.CommentVO">
+    	DELETE
+    	FROM comment
+    	WHERE userEmailHost = #{userEmailHost} AND postNo = #{postNo} AND postTimestamp = #{postTimestamp}
+    			AND commentNo = #{commentNo} AND commentTimestamp = #{commentTimestamp}
+    </delete>
+    
+    <select id="selectChild" parameterType="com.nbp.simsns.vo.CommentVO" resultType="com.nbp.simsns.vo.CommentVO">
+    	SELECT userEmailHost, postNo, postTimestamp, commentNo, commentTimestamp, commentNoParent,
+    			commentTimestampParent, userEmailGuest, commentContent, commentDepth
+    	FROM comment
+    	WHERE userEmailHost = #{userEmailHost} AND postNo = #{postNo} AND postTimestamp = #{postTimestamp}
+    			AND commentNoParent = #{commentNo} AND commentTimestampParent = #{commentTimestamp}
+    </select>
+    
+    <update id="updateComment" parameterType="com.nbp.simsns.vo.CommentVO">
+    	UPDATE comment
+    	SET commentContent = #{commentContent}
+    	WHERE userEmailHost = #{userEmailHost} AND postNo = #{postNo} AND postTimestamp = #{postTimestamp}
+    			AND commentNo = #{commentNo} AND commentTimestamp = #{commentTimestamp}
+    </update>
+
+</mapper>

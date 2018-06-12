@@ -25,10 +25,13 @@
 	
 	<beans:bean id="userService" class="com.nbp.simsns.serviceimpl.UserServiceImpl" />
 	<beans:bean id="postService" class="com.nbp.simsns.serviceimpl.PostServiceImpl" />
+	<beans:bean id="commentService" class="com.nbp.simsns.serviceimpl.CommentServiceImpl" />
 	<beans:bean id="signupValidator" class="com.nbp.simsns.etc.SignupValidator" />
 	<beans:bean id="loginValidator" class="com.nbp.simsns.etc.LoginValidator" />
 	<beans:bean id="writeCommitValidator" class="com.nbp.simsns.etc.WriteCommitValidator" />
+	<beans:bean id="commentWriteValidator" class="com.nbp.simsns.etc.CommentWriteValidator" />
     <beans:bean id="userDAO" class="com.nbp.simsns.dao.UserDAO" />
     <beans:bean id="postDAO" class="com.nbp.simsns.dao.PostDAO" />
+    <beans:bean id="commentDAO" class="com.nbp.simsns.dao.CommentDAO" />
     <beans:bean id="postVO" class="com.nbp.simsns.vo.PostVO" />
 </beans:beans>

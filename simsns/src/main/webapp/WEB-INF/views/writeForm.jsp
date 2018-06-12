@@ -10,6 +10,10 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
+	function writeCancel(formWrite) {
+		formWrite.action = "board";
+		formWrite.submit();
+	}
 	$(document).ready(function() {
 		$('#fileupload').change(function(){
 			alert('upload');
@@ -25,7 +29,7 @@
 		location.href = '/simsns/';
 	</script>
 </c:if>
-<form action="writeCommit" method="post" enctype="multipart/form-data">
+<form action="writeCommit" method="post" enctype="multipart/form-data" id="formWrite">
 	<table>
 		<tr>
 			<th>제목</th>
@@ -45,25 +49,13 @@
 		<tr>
 			<th></th>
 			<th align="right">
-				<script>
-					if('${param.id}' == '') {
-						document.write('<input type="button" value="취소" onclick="javascript:location.href=\'/simsns/board?id=${postVO.userEmailHost}\'">');
-					} else {
-						document.write('<input type="button" value="취소" onclick="javascript:location.href=\'/simsns/board?id=${param.id}\'">');
-					}
-				</script>
+				<input type="button" value="취소" onclick="writeCancel(formWrite)">
 				<input type="submit" value="완료">
 			</th>
 			<th></th>
 		</tr>
 	</table>
-	<script>
-		if('${param.id}' == '') {
-			document.write('<input type="hidden" value="${postVO.userEmailHost}" name="userEmailHost" id="userEmailHost">');
-		} else {
-			document.write('<input type="hidden" value="${param.id}" name="userEmailHost" id="userEmailHost">');
-		}
-	</script>
+	<input type="hidden" value="${id}" name="userEmailHost" id="userEmailHost">
 </form>
 </body>
 </html>

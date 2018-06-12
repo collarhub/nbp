@@ -10,6 +10,10 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
+	function updateCancel(formUpdate) {
+		formUpdate.action = "board"
+		formUpdate.submit();
+	}
 	$(document).ready(function() {
 		$('#fileupload').change(function(){
 			alert('upload');
@@ -25,7 +29,7 @@
 		location.href = '/simsns/';
 	</script>
 </c:if>
-<form action="updateCommit" method="post" enctype="multipart/form-data">
+<form action="updateCommit" method="post" enctype="multipart/form-data" id="formUpdate">
 	<table>
 		<tr>
 			<th>제목</th>
@@ -45,7 +49,7 @@
 		<tr>
 			<th></th>
 			<th align="right">
-				<input type="button" value="취소" onclick="javascript:location.href='/simsns/board?id=${postVO.userEmailHost}'">
+				<input type="button"value="취소" onclick="updateCancel(formUpdate)">
 				<input type="submit" value="수정">
 			</th>
 			<th></th>

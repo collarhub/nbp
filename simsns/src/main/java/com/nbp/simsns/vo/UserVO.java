@@ -10,7 +10,7 @@ public class UserVO {
 	
 	public UserVO() {}
 	
-	public UserVO(String userEmail, String userPassword, String userName, String userPhone, String userAddress) {
+	public UserVO(String userEmail, String userPassword, String userPasswordConfirm, String userName, String userPhone, String userAddress) {
 		super();
 		this.userEmail = userEmail;
 		this.userPassword = userPassword;

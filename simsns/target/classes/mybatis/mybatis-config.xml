@@ -7,5 +7,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
     <mappers >
         <mapper resource ="/mybatis/UserMapper.xml"/>
         <mapper resource ="/mybatis/PostMapper.xml"/>
+        <mapper resource ="/mybatis/CommentMapper.xml"/>
     </mappers >
 </configuration>
