@@ -29,4 +29,12 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	ORDER BY postTimestamp DESC, postNo DESC, commentDepth ASC,
     		commentTimestamp ASC, commentNo ASC, likeTimestamp ASC, likeNo ASC
     </select>
+    
+    <select id="selectLike" parameterType="com.nbp.simsns.vo.LikeVO" resultType="com.nbp.simsns.vo.LikeVO">
+    	SELECT userEmailHost, postTimestamp, postNo, commentTimestamp, commentNo, commentDepth, likeTimestamp, likeNo, userEmailGuest
+    	FROM simsns.like
+    	WHERE userEmailHost = #{userEmailHost} AND postTimestamp = #{postTimestamp} AND postNo = #{postNo}
+    		AND commentTimestamp = #{commentTimestamp} AND commentNo = #{commentNo} AND commentDepth = #{commentDepth}
+    		AND userEmailGuest = #{userEmailGuest}
+    </select>
 </mapper>

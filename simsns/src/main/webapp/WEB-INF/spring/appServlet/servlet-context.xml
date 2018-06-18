@@ -27,13 +27,18 @@
 	<beans:bean id="postService" class="com.nbp.simsns.serviceimpl.PostServiceImpl" />
 	<beans:bean id="commentService" class="com.nbp.simsns.serviceimpl.CommentServiceImpl" />
 	<beans:bean id="likeService" class="com.nbp.simsns.serviceimpl.LikeServiceImpl" />
+	<beans:bean id="pictureService" class="com.nbp.simsns.serviceimpl.PictureServiceImpl" />
 	<beans:bean id="signupValidator" class="com.nbp.simsns.etc.SignupValidator" />
 	<beans:bean id="loginValidator" class="com.nbp.simsns.etc.LoginValidator" />
 	<beans:bean id="writeCommitValidator" class="com.nbp.simsns.etc.WriteCommitValidator" />
 	<beans:bean id="commentWriteValidator" class="com.nbp.simsns.etc.CommentWriteValidator" />
+	<beans:bean id="addLikeValidator" class="com.nbp.simsns.etc.AddLikeValidator" />
+	<beans:bean id="writePictureCommitValidator" class="com.nbp.simsns.etc.WritePictureCommitValidator" />
     <beans:bean id="userDAO" class="com.nbp.simsns.dao.UserDAO" />
     <beans:bean id="postDAO" class="com.nbp.simsns.dao.PostDAO" />
     <beans:bean id="commentDAO" class="com.nbp.simsns.dao.CommentDAO" />
     <beans:bean id="likeDAO" class="com.nbp.simsns.dao.LikeDAO" />
+    <beans:bean id="pictureDAO" class="com.nbp.simsns.dao.PictureDAO" />
+    <beans:bean id="pictureUploader" class="com.nbp.simsns.etc.PictureUploader" />
     <beans:bean id="postVO" class="com.nbp.simsns.vo.PostVO" />
 </beans:beans>

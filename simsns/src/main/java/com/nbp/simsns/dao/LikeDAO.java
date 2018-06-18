@@ -30,4 +30,9 @@ public class LikeDAO {
 		return sqlSession.selectList("likeMapper.selectAllLike", user);
 	}
 
+	public List<LikeVO> selectLike(LikeVO like) {
+		List<LikeVO> outputs = sqlSession.selectList("likeMapper.selectLike", like);
+		return outputs;
+	}
+
 }

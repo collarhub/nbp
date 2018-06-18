@@ -15,11 +15,24 @@
 		formWrite.submit();
 	}
 	$(document).ready(function() {
-		$('#fileupload').change(function(){
-			alert('upload');
-			$('#uploadfile').attr('src', $('#fileupload').val());
+		function readURL(input) {
+			if (input.files && input.files[0]) {
+				var reader = new FileReader();
+				reader.onload = function(e) {
+					$('#uploadFile').attr('src', e.target.result);
+				}
+				reader.readAsDataURL(input.files[0]);
+			}
+		}
+		$('#fileUpload').change(function(){
+			readURL(this);
 		});
 	});
+	function deleteImage() {
+		$('#uploadFile').attr('src', '');
+		$('#fileUpload').attr('type', '');
+		$('#fileUpload').attr('type', 'file')
+	}
 </script>
 </head>
 <body>
@@ -42,8 +55,8 @@
 			<th><form:errors path="postVO.postContent"></form:errors></th>
 		</tr>
 		<tr>
-			<th><input type="file" id="fileupload" name="fileupload"></th>
-			<th style="border:1px solid"><img id="uploadfile" width="80" height="80" src=""></th>
+			<th><input type="file" id="fileUpload" name="fileUpload"></th>
+			<th style="border:1px solid"><img id="uploadFile" width="80" height="80" src=""><input type="button" value="삭제" onclick="deleteImage()"></th>
 			<th></th>
 		</tr>
 		<tr>

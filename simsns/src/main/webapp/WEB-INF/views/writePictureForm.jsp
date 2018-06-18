@@ -10,9 +10,9 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-	function updateCancel(formUpdate) {
-		formUpdate.action = "board"
-		formUpdate.submit();
+	function writeCancel(formWritePicture) {
+		formWritePicture.action = "${writePictureCancel}";
+		formWritePicture.submit();
 	}
 	$(document).ready(function() {
 		function readURL(input) {
@@ -32,7 +32,6 @@
 		$('#uploadFile').attr('src', '');
 		$('#fileUpload').attr('type', '');
 		$('#fileUpload').attr('type', 'file')
-		$('#deleted').val('true');
 	}
 </script>
 </head>
@@ -43,35 +42,29 @@
 		location.href = '/simsns/';
 	</script>
 </c:if>
-<form action="updateCommit" method="post" enctype="multipart/form-data" id="formUpdate">
+<form action="writePictureCommit" method="post" enctype="multipart/form-data" id="formWritePicture">
 	<table>
 		<tr>
 			<th>제목</th>
-			<th><input type="text" id="postTitle" name="postTitle" value="${postVO.postTitle}"></th>
-			<th><form:errors path="postVO.postTitle"></form:errors></th>
-		</tr>
-		<tr>
-			<th>내용</th>
-			<th><textarea style="overflow:hidden" id="postContent" name="postContent">${postVO.postContent}</textarea></th>
-			<th><form:errors path="postVO.postContent"></form:errors></th>
+			<th><input type="text" id="pictureTitle" name="pictureTitle" value="${pictureVO.pictureTitle}"></th>
+			<th><form:errors path="pictureVO.pictureTitle"></form:errors></th>
 		</tr>
 		<tr>
 			<th><input type="file" id="fileUpload" name="fileUpload"></th>
-			<th style="border:1px solid"><img id="uploadFile" width="80" height="80" src="${picture}"><input type="button" value="삭제" onclick="deleteImage()"></th>
-			<th><input type="hidden" value="false" name="deleted" id="deleted"></th>
+			<th style="border:1px solid"><img id="uploadFile" width="80" height="80" src=""><input type="button" value="삭제" onclick="deleteImage()"></th>
+			<th><form:errors path="pictureVO.picturePath"></form:errors></th>
 		</tr>
 		<tr>
 			<th></th>
 			<th align="right">
-				<input type="button"value="취소" onclick="updateCancel(formUpdate)">
-				<input type="submit" value="수정">
+				<input type="button" value="취소" onclick="writeCancel(formWritePicture)">
+				<input type="submit" value="완료">
 			</th>
 			<th></th>
 		</tr>
 	</table>
-	<input type="hidden" value="${postVO.postNo}" name="postNo">
-	<input type="hidden" value="${postVO.postTimestamp}" name="postTimestamp">
-	<input type="hidden" value="${postVO.userEmailHost}" name="userEmailHost">
+	<input type="hidden" value="${id}" name="userEmailHost" id="userEmailHost">
+	<input type="hidden" value="${writePictureCancel}" name="writePictureCancel">
 </form>
 </body>
 </html>
