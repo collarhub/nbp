@@ -87,7 +87,14 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
+hello
+${sessionScope.userID}
+<input type="button" value="로그아웃" onclick="javascript:location.href='/simsns/logout'"><br/>
 ${id}의 사진 게시판<br>
+<form action="board" method="post">
+	<input type="submit" value="게시물 게시판">
+	<input type="hidden" value="${id}" name="userEmailHost">
+</form>
 	<table>
 		<tr>
 			<th id=postPictureTable>

@@ -621,7 +621,10 @@ ${sessionScope.userID}
 <input type="hidden" value="${id}" name="userEmailHost">
 </form>
 <c:if test="${sessionScope.userID != id}">
-	<input type="button" value="내 게시판" onclick="javascript:location.href='/simsns/board?id=${sessionScope.userID}'">
+	<form action="board" method="post">
+		<input type="submit" value="내 게시판">
+		<input type="hidden" value="${id}" name="userEmailHost">
+	</form>
 </c:if>
 <form action="picture" method="post">
 	<input type="submit" value="사진 게시판">

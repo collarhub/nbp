@@ -147,7 +147,23 @@ $(document).ready(function() {
 <form action="picture" method="post" id="noPicture">
 	<input type="hidden" value="${id}" name="userEmailHost">
 </form>
+hello
+${sessionScope.userID}
+<input type="button" value="로그아웃" onclick="javascript:location.href='/simsns/logout'"><br/>
 ${id}의  사진첩<br>
+<form action="board" method="post">
+	<input type="submit" value="게시물 게시판">
+	<input type="hidden" value="${id}" name="userEmailHost">
+</form>
+<form action="picture" method="post">
+	<input type="submit" value="사진 게시판">
+	<input type="hidden" value="${id}" name="userEmailHost">
+</form>
+<form action="writePicture" method="post">
+	<input type="submit" value="사진 추가">
+	<input type="hidden" value="${id}" name="userEmailHost">
+	<input type="hidden" value="picturePicture" name="writePictureCancel">
+</form>
 <div id="pictureTable"></div>
 </body>
 </html>
