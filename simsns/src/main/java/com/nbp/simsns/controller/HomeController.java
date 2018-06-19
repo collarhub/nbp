@@ -19,9 +19,7 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String login(Locale locale, Model model, HttpServletRequest request) {
-		String rootPath = request.getSession().getServletContext().getRealPath("/");
-		model.addAttribute("rootPath", rootPath);
+	public String login(Locale locale, Model model) {
 		return "loginForm";
 	}
 	
