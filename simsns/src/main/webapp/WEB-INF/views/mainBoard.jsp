@@ -615,7 +615,16 @@ $(document).ready(function() {
 </c:if>
 hello
 ${sessionScope.userID}
-<input type="button" value="로그아웃" onclick="javascript:location.href='/simsns/logout'"><br/>
+<input type="button" value="로그아웃" onclick="javascript:location.href='/simsns/logout'">
+<select>
+    <option value="선택">선택</option>
+    <option value="제목">제목</option>
+    <option value="내용">내용</option>
+    <option value="작성자">작성자</option>
+    <option value="제목+내용">제목+내용</option>
+</select>
+<input type="text"><input type="button" value="검색">
+<br/>
 <form action="write" method="post">
 <input type="submit" value="글쓰기">
 <input type="hidden" value="${id}" name="userEmailHost">

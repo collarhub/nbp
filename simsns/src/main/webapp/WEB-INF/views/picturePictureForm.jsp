@@ -149,7 +149,9 @@ $(document).ready(function() {
 </form>
 hello
 ${sessionScope.userID}
-<input type="button" value="로그아웃" onclick="javascript:location.href='/simsns/logout'"><br/>
+<input type="button" value="로그아웃" onclick="javascript:location.href='/simsns/logout'">
+<input type="text"><input type="button" value="검색">
+<br/>
 ${id}의  사진첩<br>
 <form action="board" method="post">
 	<input type="submit" value="게시물 게시판">
