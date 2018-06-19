@@ -2,6 +2,8 @@ package com.nbp.simsns.controller;
 
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,7 +19,9 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String login(Locale locale, Model model) {
+	public String login(Locale locale, Model model, HttpServletRequest request) {
+		String rootPath = request.getSession().getServletContext().getRealPath("/");
+		model.addAttribute("rootPath", rootPath);
 		return "loginForm";
 	}
 	
