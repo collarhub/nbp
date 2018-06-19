@@ -56,4 +56,27 @@ public class PictureServiceImpl implements PictureServiceInter {
 			pictureDAO.insertPicture(picture, multipartFile, ROOT_PATH);
 		}
 	}
+
+	@Override
+	public void deletePicture(PictureVO picture, String ROOT_PATH) {
+		pictureDAO.deletePicture(picture, ROOT_PATH);
+	}
+
+	@Override
+	public PictureVO selectPicture(PictureVO picture) {
+		return pictureDAO.selectPicture(picture);
+	}
+
+	@Override
+	public void updatePictureCommit(Object object, MultipartFile multipartFile, Errors errors, String ROOT_PATH, String deleted) {
+		PictureVO picture = (PictureVO)object;
+		if(!multipartFile.isEmpty() || deleted.equals("false")) {
+			((PictureVO)object).setPicturePath("notEmpty");
+		}
+		writePictureCommitValidator.validate(object, errors);
+		picture.setPicturePath(pictureDAO.selectPicture(picture).getPicturePath());
+		if(!errors.hasErrors()) {
+			pictureDAO.updatePicturePicture(picture, multipartFile, ROOT_PATH);
+		}
+	}
 }

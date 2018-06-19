@@ -61,4 +61,17 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	WHERE userEmailHost = #{userEmail} AND postNo IS NULL AND postTimestamp IS NULL
     	ORDER BY pictureTimestamp DESC, pictureNo DESC
     </select>
+    
+    <select id="selectPicturePicture" parameterType="com.nbp.simsns.vo.PictureVO" resultType="com.nbp.simsns.vo.PictureVO">
+    	SELECT userEmailHost, pictureNo, pictureTimestamp, pictureTitle,
+        	picturePath, postNo, postTimestamp, userEmailGuest
+    	FROM picture
+    	WHERE userEmailHost = #{userEmailHost} AND pictureNo = #{pictureNo} AND pictureTimestamp = #{pictureTimestamp}
+    </select>
+    
+    <update id="updatePicturePicture" parameterType="com.nbp.simsns.vo.PictureVO">
+    	UPDATE picture
+    	SET pictureTitle = #{pictureTitle}, picturePath = #{picturePath}
+    	WHERE userEmailHost = #{userEmailHost} AND pictureNo = #{pictureNo} AND pictureTimestamp = #{pictureTimestamp}
+    </update>
 </mapper>

@@ -15,4 +15,7 @@ public interface PictureServiceInter {
 	public PictureVO getPicture(PostVO post);
 	public void writePictureCommit(Object object, MultipartFile multipartFile, Errors errors, final String ROOT_PATH);
 	public List<PictureVO> getAllPicturePicture(UserVO user);
+	public void deletePicture(PictureVO picture, final String ROOT_PATH);
+	public PictureVO selectPicture(PictureVO picture);
+	public void updatePictureCommit(Object object, MultipartFile multipartFile, Errors errors, final String ROOT_PATH, String deleted);
 }

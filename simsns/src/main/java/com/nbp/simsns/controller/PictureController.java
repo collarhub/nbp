@@ -22,6 +22,7 @@ import com.nbp.simsns.serviceimpl.LikeServiceImpl;
 import com.nbp.simsns.serviceimpl.PictureServiceImpl;
 import com.nbp.simsns.serviceimpl.PostServiceImpl;
 import com.nbp.simsns.vo.PictureVO;
+import com.nbp.simsns.vo.PostVO;
 import com.nbp.simsns.vo.UserVO;
 
 @Controller
@@ -102,5 +103,49 @@ public class PictureController {
 		model.addAttribute("id", pictureVO.getUserEmailHost());
 		model.addAttribute("pictureList", new Gson().toJson(pictureService.getAllPicturePicture(user)));
 		return "picturePictureForm";
+	}
+	
+	@RequestMapping(value = "/deletePicture", method = RequestMethod.POST)
+	public String deletePicture(@ModelAttribute PictureVO pictureVO,
+			HttpSession session, Model model, HttpServletRequest request) {
+		final String ROOT_PATH = request.getSession().getServletContext().getRealPath("/");
+		pictureVO.setUserEmailGuest(session.getAttribute("userID").toString());
+		pictureService.deletePicture(pictureVO, ROOT_PATH);
+		UserVO userVO = new UserVO();
+		userVO.setUserEmail(pictureVO.getUserEmailHost());
+		model.addAttribute("id", pictureVO.getUserEmailHost());
+		model.addAttribute("pictureList", new Gson().toJson(pictureService.getAllPicturePicture(userVO)));
+		return "picturePictureForm";
+	}
+	
+	@RequestMapping(value = "/updatePicture", method = RequestMethod.POST)
+	public String updatePicture(@ModelAttribute PictureVO pictureVO, BindingResult result, HttpSession session, Model model) {
+		pictureVO.setUserEmailGuest(session.getAttribute("userID").toString());
+		PictureVO tmpPicture = pictureService.selectPicture(pictureVO);
+		pictureVO.setPictureTitle(tmpPicture.getPictureTitle());
+		pictureVO.setPicturePath(tmpPicture.getPicturePath());
+		model.addAttribute("picture", "resources/picture/" + pictureVO.getPicturePath());
+		return "updatePictureForm";
+	}
+	
+	@RequestMapping(value = "/updatePictureCommit", method = RequestMethod.POST)
+	public String updatePictureCommit(@ModelAttribute PictureVO pictureVO, @RequestPart(required=true)List<MultipartFile> fileUpload,
+			 BindingResult result, HttpSession session, Model model, HttpServletRequest request) {
+		String deleted = request.getParameter("deleted");
+		final String ROOT_PATH = request.getSession().getServletContext().getRealPath("/");
+		pictureVO.setUserEmailGuest(session.getAttribute("userID").toString());
+		pictureService.updatePictureCommit(pictureVO, fileUpload.get(0), result, ROOT_PATH, deleted);
+		if(!result.hasErrors()) {
+			UserVO userVO = new UserVO();
+			userVO.setUserEmail(pictureVO.getUserEmailHost());
+			model.addAttribute("id", pictureVO.getUserEmailHost());
+			model.addAttribute("pictureList", new Gson().toJson(pictureService.getAllPicturePicture(userVO)));
+			return "picturePictureForm";
+		} else {
+			PictureVO picture = pictureService.selectPicture(pictureVO);
+			pictureVO.setPictureTitle(picture.getPictureTitle());
+			model.addAttribute("picture", "resources/picture/" + picture.getPicturePath());
+			return "updatePictureForm";
+		}
 	}
 }

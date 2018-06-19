@@ -10,16 +10,38 @@
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
 var pictureList = ${pictureList};
+function deletePicture(picturePictureForm) {
+	if(confirm("정말 삭제하시겠습니까?") == true) {
+		picturePictureForm.submit();
+	} else {
+		return;
+	}
+}
+function updatePicture(picturePictureForm) {
+	picturePictureForm.action = "updatePicture";
+	picturePictureForm.submit();
+}
 $(document).ready(function() {
+	if(pictureList.length == 0) {
+		$('#noPicture').submit();
+	}
 	var pictureIndex = 0;
 	pictureList.some(function(picture, i){
 		$('#pictureTable').append('<table style="display:inline">'
 				+ '<tr>'
 				+ '<th>'
-				+ '<form action="goToPost" method="post" style="display:inline" id="postPictureForm' + pictureIndex + '">'
+				+ '<form action="deletePicture" method="post" style="display:inline" id="picturePictureForm' + pictureIndex + '">'
 				+ '<img id="postPicture' + pictureIndex + '" width="150" height="150"'
 				+ 'src="resources/picture/' + picture.picturePath + '">'
-				+ '<input type="hidden" value="${id}" name="userEmailHost">'
+				+ (
+						("${sessionScope.userID}" == picture.userEmailGuest) ?
+							'<input type="button" value="삭제" onclick="deletePicture(picturePictureForm' + pictureIndex + ')">'
+							+ '<input type="button" value="수정" onclick="updatePicture(picturePictureForm' + pictureIndex + ')">'
+							+ '<input type="hidden" value="' + picture.pictureNo + '" name="pictureNo">'
+							+ '<input type="hidden" value="' + picture.pictureTimestamp + '" name="pictureTimestamp">'
+							+ '<input type="hidden" value="${id}" name="userEmailHost">'
+							: ''
+				)
 				+ '</form>'
 				+ '</th>'
 				+ '</tr>'
@@ -48,10 +70,18 @@ $(document).ready(function() {
 				$("#pictureTable").append('<table style="display:inline">'
 						+ '<tr>'
 						+ '<th>'
-						+ '<form action="goToPost" method="post" style="display:inline" id="postPictureForm' + pictureIndex + '">'
+						+ '<form action="deletePicture" method="post" style="display:inline" id="picturePictureForm' + pictureIndex + '">'
 						+ '<img id="postPicture' + pictureIndex + '" width="150" height="150"'
 						+ 'src="resources/picture/' + picture.picturePath + '">'
-						+ '<input type="hidden" value="${id}" name="userEmailHost">'
+						+ (
+								("${sessionScope.userID}" == picture.userEmailGuest) ?
+									'<input type="button" value="삭제" onclick="deletePicture(picturePictureForm' + pictureIndex + ')">'
+									+ '<input type="button" value="수정" onclick="updatePicture(picturePictureForm' + pictureIndex + ')">'
+									+ '<input type="hidden" value="' + picture.pictureNo + '" name="pictureNo">'
+									+ '<input type="hidden" value="' + picture.pictureTimestamp + '" name="pictureTimestamp">'
+									+ '<input type="hidden" value="${id}" name="userEmailHost">'
+									: ''
+						)
 						+ '</form>'
 						+ '</th>'
 						+ '</tr>'
@@ -80,10 +110,18 @@ $(document).ready(function() {
 				$("#pictureTable").append('<table style="display:inline">'
 						+ '<tr>'
 						+ '<th>'
-						+ '<form action="goToPost" method="post" style="display:inline" id="postPictureForm' + pictureIndex + '">'
+						+ '<form action="deletePicture" method="post" style="display:inline" id="picturePictureForm' + pictureIndex + '">'
 						+ '<img id="postPicture' + pictureIndex + '" width="150" height="150"'
 						+ 'src="resources/picture/' + picture.picturePath + '">'
-						+ '<input type="hidden" value="${id}" name="userEmailHost">'
+						+ (
+								("${sessionScope.userID}" == picture.userEmailGuest) ?
+									'<input type="button" value="삭제" onclick="deletePicture(picturePictureForm' + pictureIndex + ')">'
+									+ '<input type="button" value="수정" onclick="updatePicture(picturePictureForm' + pictureIndex + ')">'
+									+ '<input type="hidden" value="' + picture.pictureNo + '" name="pictureNo">'
+									+ '<input type="hidden" value="' + picture.pictureTimestamp + '" name="pictureTimestamp">'
+									+ '<input type="hidden" value="${id}" name="userEmailHost">'
+									: ''
+						)
 						+ '</form>'
 						+ '</th>'
 						+ '</tr>'
@@ -106,6 +144,9 @@ $(document).ready(function() {
 </script>
 </head>
 <body>
+<form action="picture" method="post" id="noPicture">
+	<input type="hidden" value="${id}" name="userEmailHost">
+</form>
 ${id}의  사진첩<br>
 <div id="pictureTable"></div>
 </body>

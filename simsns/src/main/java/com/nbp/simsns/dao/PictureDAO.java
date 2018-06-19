@@ -67,4 +67,17 @@ public class PictureDAO {
 		return sqlSession.selectList("pictureMapper.selectAllPicturePicture", user);
 	}
 	
+	public PictureVO selectPicture(PictureVO picture) {
+		return sqlSession.selectOne("pictureMapper.selectPicturePicture", picture);
+	}
+	
+	public void updatePicturePicture(PictureVO picture, MultipartFile multipartFile, String ROOT_PATH) {
+		pictureUploader.deleteFile(ROOT_PATH + UPLOAD_PATH, picture.getPicturePath());
+		picture.setPicturePath(new Md5Generator().getMd5(picture.getUserEmailHost())
+				+ picture.getPictureTimestamp() + picture.getPictureNo()
+				+ new PictureExtensionValidator().getExtension(multipartFile));
+		sqlSession.update("pictureMapper.updatePicturePicture", picture);
+		pictureUploader.writeFile(multipartFile, ROOT_PATH + UPLOAD_PATH, picture.getPicturePath());
+	}
+	
 }
