@@ -84,6 +84,12 @@ function updateCommentCancel(commentContainer, commentUpdateContainer) {
 	commentUpdateContainer.getElementsByTagName('textarea')[0].textContent
 	= commentContainer.getElementsByClassName('commentContent')[0].textContent;
 }
+function imgOnLoad() {
+	loadedImgNum++;
+}
+function imgOnError() {
+	loadedImgNum++;
+}
 function addPost() {
 	$("#enters").append('<div id="' + postList[index].postTimestamp + postList[index].postNo + '"></div>'
 			+ new Date(Number(postList[index].postTimestamp)).toString() + '<br>'
@@ -95,9 +101,10 @@ function addPost() {
 			+ '<h1>제목 : ' + postList[index].postTitle + '</h1><br>'
 			+ (
 					(pictureList[pictureIndex] != undefined
-						&&pictureList[pictureIndex].postTimestamp == postList[index].postTimestamp
-						&&pictureList[pictureIndex].postNo == postList[index].postNo) ?
-							'<img src="resources/picture/' + pictureList[pictureIndex++].picturePath + '"><br>'
+						&& pictureList[pictureIndex].postTimestamp == postList[index].postTimestamp
+						&& pictureList[pictureIndex].postNo == postList[index].postNo) ?
+							'<img src="resources/picture/' + pictureList[pictureIndex++].picturePath + '"'
+							+ 'onload="imgOnLoad()" onerror="imgOnError()"><br>'
 							: ''
 			)
 			+ '내용 : ' + postList[index].postContent + '<br>'
@@ -131,7 +138,7 @@ function addPost() {
 			+ '<div id="like' + postList[index].postTimestamp + postList[index].postNo + COMMENT_ROOT + COMMENT_ROOT + COMMENT_ROOT + '"></div>'
 			+ '<br>'
 			+ '<div style="margin-left:' + 15 * (1 + COMMENT_ROOT) + 'px" id="comment' + postList[index].postTimestamp + postList[index].postNo + COMMENT_ROOT + COMMENT_ROOT + COMMENT_ROOT + '"></div>');
-
+	
 	for(; (commentList[commentIndex] != undefined && commentList[commentIndex].postTimestamp == postList[index].postTimestamp &&
 		commentList[commentIndex].postNo == postList[index].postNo); commentIndex++) {
 		comment = commentList[commentIndex];
@@ -351,8 +358,16 @@ function search(order) {
 	        contentType: "application/json",
 	        error : function(){
 	            alert('통신실패!!');
+	            $('#searchResult').css('display', 'none');
 	        },
 	        success : function(data){
+	        	if(data.result == null) {
+	        		alert('검색 결과가 없습니다.');
+	        		$('#storedSearchKeyword').val('');
+	        		$('#searchResult span').html('');
+	        		$('#searchResult').css('display', 'none');
+	        		return;
+	        	}
 	        	$('#searchResult span').html((searchIndex + 1) + '/' + data.total);
 	        	searchTotal = data.total;
 	        	$('#storedSearchKind').val(searchKind);
@@ -376,19 +391,20 @@ function search(order) {
         			$('body, html').animate({scrollTop : offset.top}, 300);
         		} else {
 		        	$('#enters').find('img').load(function() {
-		        		loadedImgNum++;
+		        		//loadedImgNum++;
 		        		if(loadedImgNum == $('#enters').find('img').length) {
 		        			var offset = $('#' + data.result.postTimestamp + data.result.postNo).offset();
 		        			$('body, html').animate({scrollTop : offset.top}, 300);
 		        		}
 		        	}).error(function() {
-		        		loadedImgNum++;
+		        		//loadedImgNum++;
 		        		if(loadedImgNum == $('#enters').find('img').length) {
 		        			var offset = $('#' + data.result.postTimestamp + data.result.postNo).offset();
 		        			$('body, html').animate({scrollTop : offset.top}, 300);
 		        		}
 		        	});
         		}
+	        	$('#searchResult').css('display', 'block');
 	        }
 	    });
 	} else if(searchKind == 'comment') {
@@ -405,8 +421,16 @@ function search(order) {
 	        contentType: "application/json",
 	        error : function(){
 	            alert('통신실패!!');
+	            $('#searchResult').css('display', 'none');
 	        },
 	        success : function(data){
+	        	if(data.result == null) {
+	        		alert('검색 결과가 없습니다.');
+	        		$('#storedSearchKeyword').val('');
+	        		$('#searchResult span').html('');
+	        		$('#searchResult').css('display', 'none');
+	        		return;
+	        	}
 	        	$('#searchResult span').html((searchIndex + 1) + '/' + data.total);
 	        	searchTotal = data.total;
 	        	$('#storedSearchKind').val(searchKind);
@@ -431,19 +455,20 @@ function search(order) {
         			$('body, html').animate({scrollTop : offset.top}, 300);
         		} else {
 		        	$('#enters').find('img').load(function() {
-		        		loadedImgNum++;
+		        		//loadedImgNum++;
 		        		if(loadedImgNum == $('#enters').find('img').length) {
 		        			var offset = $('#' + data.result.postTimestamp + data.result.postNo + data.result.commentTimestamp + data.result.commentNo).offset();
 		        			$('body, html').animate({scrollTop : offset.top}, 300);
 		        		}
 		        	}).error(function() {
-		        		loadedImgNum++;
+		        		//loadedImgNum++;
 		        		if(loadedImgNum == $('#enters').find('img').length) {
 		        			var offset = $('#' + data.result.postTimestamp + data.result.postNo + data.result.commentTimestamp + data.result.commentNo).offset();
 		        			$('body, html').animate({scrollTop : offset.top}, 300);
 		        		}
 		        	});
         		}
+	        	$('#searchResult').css('display', 'block');
 	        }
 	    });
 	}
@@ -486,7 +511,7 @@ ${sessionScope.userID}
 	<option value="writer">작성자</option>
 </select>
 <input type="text" id="searchKeyword"><input type="button" value="검색" onclick="search('first')">
-<div id="searchResult">
+<div id="searchResult" style="display:none;">
 	<input type="button" value="이전" onclick="search('previous')">
 	<span></span>
 	<input type="button" value="다음" onclick="search('next')">

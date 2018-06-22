@@ -59,7 +59,7 @@ public class PostController {
 	}
 	
 	@RequestMapping(value = "/board", method = RequestMethod.POST)
-	public String mainBoard(@ModelAttribute PostVO postVO, Locale locale, Model model, HttpSession session, HttpServletRequest request) {
+	public String mainBoard(@ModelAttribute PostVO postVO, @ModelAttribute PictureVO pictureVO, Locale locale, Model model, HttpSession session, HttpServletRequest request) {
 		UserVO userVO = new UserVO();
 		userVO.setUserEmail(postVO.getUserEmailHost());
 		if(session.getAttribute("userID") == null) {

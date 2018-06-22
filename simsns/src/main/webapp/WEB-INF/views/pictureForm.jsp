@@ -19,7 +19,7 @@ function pictureSubmit(form) {
 $(document).ready(function() {
 	var picturePictureStart = 0;
 	for(i = 0; i < 3; i++) {
-		$('#postPictureTable').append('<form action="goToPost" method="post" style="display:inline" id="postPictureForm' + i + '">'
+		$('#postPictureTable').append('<form action="board" method="post" style="display:inline" id="postPictureForm' + i + '">'
 									+ '<img id="postPicture' + i + '" width="150" height="150" src="" style="cursor:pointer"'
 									+ 'alt="이미지가 없습니다. 이미지를 등록하세요." class="picture" onclick="">'
 									+ '</form>');
