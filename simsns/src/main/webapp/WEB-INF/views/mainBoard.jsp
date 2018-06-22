@@ -12,11 +12,6 @@
 <title>Insert title here</title>
 <script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 <script type="text/javascript">
-window.onload=function(){
-    setTimeout(function(){
-        scrollTo(0,-1);
-    },0);
-}
 const COMMENT_ROOT = 0;
 var updatingCommentContainer = null;
 var updatingCommentUpdateContainer = null;
@@ -34,6 +29,17 @@ var pictureList = ${pictureList};
 var goToPostTimestamp = "${pictureVO.postTimestamp}";
 var goToPostNo = "${pictureVO.postNo}";
 var loadedImgNum = 0;
+window.onload=function(){
+	if(goToPostTimestamp != '' && goToPostNo != ''){
+		offset = $('#' + goToPostTimestamp + goToPostNo).offset();
+		$('body, html').animate({scrollTop : offset.top}, 300);
+	}
+	else {
+	    setTimeout(function(){
+	        scrollTo(0,-1);
+	    },0);
+	}
+}
 function deletePost(post) {
 	if(confirm("정말 삭제하시겠습니까?") == true) {
 		post.submit();
@@ -265,7 +271,7 @@ $(document).ready(function() {
 		if($("body").height() > $(window).height() && goToPostTimestamp == '' && goToPostNo == '') {
 			return (index == index);
 		} else if(post.postTimestamp == goToPostTimestamp && post.postNo == goToPostNo){
-			location.href = '#' + goToPostTimestamp + goToPostNo;
+			/* location.href = '#' + goToPostTimestamp + goToPostNo; */
 			return (index == index);
 		}
 		index++;
