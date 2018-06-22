@@ -10,5 +10,6 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         <mapper resource="/mybatis/CommentMapper.xml" />
         <mapper resource="/mybatis/LikeMapper.xml" />
         <mapper resource="/mybatis/PictureMapper.xml" />
+        <mapper resource="/mybatis/SearchMapper.xml" />
     </mappers>
 </configuration>

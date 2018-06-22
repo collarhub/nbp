@@ -3,6 +3,7 @@ package com.nbp.simsns.serviceimpl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -13,6 +14,7 @@ import com.nbp.simsns.vo.PictureVO;
 import com.nbp.simsns.vo.PostVO;
 import com.nbp.simsns.vo.UserVO;
 
+@Service("pictureService")
 public class PictureServiceImpl implements PictureServiceInter {
 	@Autowired
 	private PictureDAO pictureDAO;

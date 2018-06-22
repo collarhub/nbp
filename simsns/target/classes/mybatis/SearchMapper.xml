@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace= "searchMapper" >
+    
+    <select id ="selectPostTitle" parameterType="com.nbp.simsns.vo.SearchVO" resultType= "com.nbp.simsns.vo.PostVO">
+        SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
+        FROM post
+        WHERE userEmailHost = #{userEmailHost} AND postTitle LIKE CONCAT('%', #{searchKeyword}, '%')
+    </select>
+    
+    <select id ="selectPostContent" parameterType="com.nbp.simsns.vo.SearchVO" resultType= "com.nbp.simsns.vo.PostVO">
+        SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
+        FROM post
+        WHERE userEmailHost = #{userEmailHost} AND postContent like '%#{searchKeyword}%'
+    </select>
+    
+    <select id ="selectPostWriter" parameterType="com.nbp.simsns.vo.SearchVO" resultType= "com.nbp.simsns.vo.PostVO">
+        SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
+        FROM post
+        WHERE userEmailHost = #{userEmailHost} AND userEmailGuest like '%#{searchKeyword}%'
+    </select>
+    
+    <select id ="selectPostTitleContent" parameterType="com.nbp.simsns.vo.SearchVO" resultType= "com.nbp.simsns.vo.PostVO">
+        SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
+        FROM post
+        WHERE userEmailHost = #{userEmailHost} AND (postTitle like '%#{searchKeyword}%' OR postContent like '%#{searchKeyword}%')
+    </select>
+    
+    <select id ="selectPostTitleOne" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "com.nbp.simsns.vo.PostVO">
+        SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
+        FROM post
+        WHERE userEmailHost = #{userEmailHost} AND postTitle LIKE CONCAT('%', #{searchKeyword}, '%')
+        ORDER BY postTimestamp DESC, postNo DESC
+        LIMIT #{searchIndex}, 1
+    </select>
+    
+    <select id ="selectPostContentOne" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "com.nbp.simsns.vo.PostVO">
+        SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
+        FROM post
+        WHERE userEmailHost = #{userEmailHost} AND postContent LIKE CONCAT('%', #{searchKeyword}, '%')
+        ORDER BY postTimestamp DESC, postNo DESC
+        LIMIT #{searchIndex}, 1
+    </select>
+    
+    <select id ="selectPostWriterOne" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "com.nbp.simsns.vo.PostVO">
+        SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
+        FROM post
+        WHERE userEmailHost = #{userEmailHost} AND userEmailGuest LIKE CONCAT('%', #{searchKeyword}, '%')
+        ORDER BY postTimestamp DESC, postNo DESC
+        LIMIT #{searchIndex}, 1
+    </select>
+    
+    <select id ="selectPostTitleContentOne" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "com.nbp.simsns.vo.PostVO">
+        SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
+        FROM post
+        WHERE userEmailHost = #{userEmailHost}
+        	AND (postTitle LIKE CONCAT('%', #{searchKeyword}, '%')
+        	OR postContent LIKE CONCAT('%', #{searchKeyword}, '%'))
+        	ORDER BY postTimestamp DESC, postNo DESC
+        LIMIT #{searchIndex}, 1
+    </select>
+    
+    <select id ="countTotalTitle" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "java.lang.Integer">
+        SELECT count(*)
+        FROM post
+        WHERE userEmailHost = #{userEmailHost} AND postTitle LIKE CONCAT('%', #{searchKeyword}, '%')
+    </select>
+    
+    <select id ="countTotalContent" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "java.lang.Integer">
+        SELECT count(*)
+        FROM post
+        WHERE userEmailHost = #{userEmailHost} AND postContent LIKE CONCAT('%', #{searchKeyword}, '%')
+    </select>
+    
+    <select id ="countTotalWriter" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "java.lang.Integer">
+        SELECT count(*)
+        FROM post
+        WHERE userEmailHost = #{userEmailHost} AND userEmailGuest LIKE CONCAT('%', #{searchKeyword}, '%')
+    </select>
+    
+    <select id ="countTotalTitleContent" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "java.lang.Integer">
+        SELECT count(*)
+        FROM post
+        WHERE userEmailHost = #{userEmailHost}
+        	AND (postTitle LIKE CONCAT('%', #{searchKeyword}, '%')
+        	OR postContent LIKE CONCAT('%', #{searchKeyword}, '%'))
+    </select>
+    
+    <select id ="selectCommentContentOne" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "com.nbp.simsns.vo.CommentVO">
+        SELECT userEmailHost, postNo, postTimestamp, commentNo, commentTimestamp, commentNoParent,
+    			commentTimestampParent, userEmailGuest, commentContent, commentDepth
+        FROM comment
+        WHERE userEmailHost = #{userEmailHost} AND commentContent LIKE CONCAT('%', #{searchKeyword}, '%')
+        ORDER BY postTimestamp DESC, postNo DESC, commentDepth ASC, commentTimestampParent ASC,
+    			commentNoParent ASC, commentTimestamp ASC, commentNo ASC
+        LIMIT #{searchIndex}, 1
+    </select>
+    
+    <select id ="selectCommentWriterOne" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "com.nbp.simsns.vo.CommentVO">
+        SELECT userEmailHost, postNo, postTimestamp, commentNo, commentTimestamp, commentNoParent,
+    			commentTimestampParent, userEmailGuest, commentContent, commentDepth
+        FROM comment
+        WHERE userEmailHost = #{userEmailHost} AND userEmailGuest LIKE CONCAT('%', #{searchKeyword}, '%')
+        ORDER BY postTimestamp DESC, postNo DESC, commentDepth ASC, commentTimestampParent ASC,
+    			commentNoParent ASC, commentTimestamp ASC, commentNo ASC
+        LIMIT #{searchIndex}, 1
+    </select>
+    
+    <select id ="countCommentTotalContent" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "java.lang.Integer">
+        SELECT count(*)
+        FROM comment
+        WHERE userEmailHost = #{userEmailHost} AND commentContent LIKE CONCAT('%', #{searchKeyword}, '%')
+    </select>
+    
+    <select id ="countCommentTotalWriter" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "java.lang.Integer">
+        SELECT count(*)
+        FROM comment
+        WHERE userEmailHost = #{userEmailHost} AND userEmailGuest LIKE CONCAT('%', #{searchKeyword}, '%')
+    </select>
+
+</mapper>
