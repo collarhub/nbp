@@ -15,4 +15,5 @@ public interface PostServiceInter {
 	public void deletePost(PostVO post, final String ROOT_PATH);
 	public PostVO selectPost(PostVO post);
 	public void updateCommit(Object object, MultipartFile multipartFile, Errors errors, final String ROOT_PATH, String deleted);
+	public void updatePathValidate(PostVO post, String user, Errors errors);
 }

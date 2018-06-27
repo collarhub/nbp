@@ -14,7 +14,7 @@ public class CommentWriteValidator implements Validator {
 
 	@Override
 	public void validate(Object object, Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "commentContent", "required", "필수입력 사항입니다.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "commentContent", "required", "내용을 입력하세요.");
 	}
 	
 }

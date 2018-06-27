@@ -7,12 +7,14 @@ public class PostVO {
 	private String postContent;
 	private String postTimestamp;
 	private String userEmailGuest;
+	private String userNameGuest;
 	
 	public PostVO() {
 		super();
 	}
 
-	public PostVO(String userEmailHost, String postNo, String postTitle, String postContent, String postTimestamp, String userEmailGuest) {
+	public PostVO(String userEmailHost, String postNo, String postTitle, String postContent,
+			String postTimestamp, String userEmailGuest, String userNameGuest) {
 		super();
 		this.userEmailHost = userEmailHost;
 		this.postNo = postNo;
@@ -20,6 +22,7 @@ public class PostVO {
 		this.postContent = postContent;
 		this.postTimestamp = postTimestamp;
 		this.userEmailGuest = userEmailGuest;
+		this.userNameGuest = userNameGuest;
 	}
 
 	public String getUserEmailHost() {
@@ -69,5 +72,12 @@ public class PostVO {
 	public void setUserEmailGuest(String userEmailGuest) {
 		this.userEmailGuest = userEmailGuest;
 	}
-	
+
+	public String getUserNameGuest() {
+		return userNameGuest;
+	}
+
+	public void setUserNameGuest(String userNameGuest) {
+		this.userNameGuest = userNameGuest;
+	}
 }

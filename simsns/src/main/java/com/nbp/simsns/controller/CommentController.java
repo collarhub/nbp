@@ -1,8 +1,5 @@
 package com.nbp.simsns.controller;
 
-import java.util.Locale;
-
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -14,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.google.gson.Gson;
 import com.nbp.simsns.serviceimpl.CommentServiceImpl;
@@ -37,67 +35,51 @@ public class CommentController {
 	private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
 
 	@RequestMapping(value = "/writeComment", method = RequestMethod.POST)
-	public String writeComment(Locale locale, Model model, @ModelAttribute CommentVO commentVO,
-									BindingResult result, HttpSession session, HttpServletRequest request) {
-		commentVO.setUserEmailGuest(session.getAttribute("userID").toString());
-		commentService.writeComment(commentVO, result);
+	public String writeComment(Model model, @ModelAttribute CommentVO comment,
+									BindingResult result, HttpSession session, RedirectAttributes redirectAttributes) {
+		comment.setUserEmailHost(session.getAttribute("hostID").toString());
+		comment.setUserEmailGuest(session.getAttribute("userID").toString());
+		comment.setUserNameGuest(session.getAttribute("userName").toString());
+		commentService.writeComment(comment, result);
 		if(!result.hasErrors()) {
-			UserVO userVO = new UserVO();
-			userVO.setUserEmail(commentVO.getUserEmailHost());
-			model.addAttribute("id", commentVO.getUserEmailHost());
-			model.addAttribute("postList", new Gson().toJson(postService.getAllPost(userVO)));
-			model.addAttribute("commentList", new Gson().toJson(commentService.getAllComment(userVO)));
-			model.addAttribute("likeList", new Gson().toJson(likeService.getAllLike(userVO)));
-			model.addAttribute("pictureList", new Gson().toJson(pictureService.getAllPicture(userVO)));
-			return "mainBoard";
+			redirectAttributes.addFlashAttribute("goToPostTimestamp", comment.getPostTimestamp());
+			redirectAttributes.addFlashAttribute("goToPostNo", comment.getPostNo());
+			return "redirect:/board";
 		} else {
-			UserVO userVO = new UserVO();
-			userVO.setUserEmail(commentVO.getUserEmailHost());
-			model.addAttribute("id", commentVO.getUserEmailHost());
-			model.addAttribute("postList", new Gson().toJson(postService.getAllPost(userVO)));
-			model.addAttribute("commentList", new Gson().toJson(commentService.getAllComment(userVO)));
-			model.addAttribute("likeList", new Gson().toJson(likeService.getAllLike(userVO)));
-			model.addAttribute("pictureList", new Gson().toJson(pictureService.getAllPicture(userVO)));
-			return "mainBoard";
+			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.commentVO", result);
+			redirectAttributes.addFlashAttribute("comment", comment);
+			redirectAttributes.addFlashAttribute("goToPostTimestamp", comment.getPostTimestamp());
+			redirectAttributes.addFlashAttribute("goToPostNo", comment.getPostNo());
+			return "redirect:/board";
 		}
 	}
 	
 	@RequestMapping(value = "/deleteComment", method = RequestMethod.POST)
-	public String deleteComment(@ModelAttribute CommentVO commentVO, HttpSession session, Model model) {
-		commentVO.setUserEmailGuest(session.getAttribute("userID").toString());
-		commentService.deleteComment(commentVO);
-		UserVO userVO = new UserVO();
-		userVO.setUserEmail(commentVO.getUserEmailHost());
-		model.addAttribute("id", commentVO.getUserEmailHost());
-		model.addAttribute("postList", new Gson().toJson(postService.getAllPost(userVO)));
-		model.addAttribute("commentList", new Gson().toJson(commentService.getAllComment(userVO)));
-		model.addAttribute("likeList", new Gson().toJson(likeService.getAllLike(userVO)));
-		model.addAttribute("pictureList", new Gson().toJson(pictureService.getAllPicture(userVO)));
-		return "mainBoard";
+	public String deleteComment(@ModelAttribute CommentVO comment, HttpSession session, Model model) {
+		comment.setUserEmailHost(session.getAttribute("hostID").toString());
+		comment.setUserEmailGuest(session.getAttribute("userID").toString());
+		comment.setUserNameGuest(session.getAttribute("userName").toString());
+		commentService.deleteComment(comment);
+		return "redirect:/board";
 	}
 	
 	@RequestMapping(value = "/updateComment", method = RequestMethod.POST)
-	public String updateComment(@ModelAttribute CommentVO commentVO, HttpSession session, Model model, BindingResult result) {
-		commentVO.setUserEmailGuest(session.getAttribute("userID").toString());
-		commentService.updateComment(commentVO, result);
+	public String updateComment(@ModelAttribute CommentVO comment, HttpSession session, BindingResult result, RedirectAttributes redirectAttributes) {
+		comment.setUserEmailHost(session.getAttribute("hostID").toString());
+		comment.setUserEmailGuest(session.getAttribute("userID").toString());
+		comment.setUserNameGuest(session.getAttribute("userName").toString());
+		commentService.updateComment(comment, result);
 		if(!result.hasErrors()) {
-			UserVO userVO = new UserVO();
-			userVO.setUserEmail(commentVO.getUserEmailHost());
-			model.addAttribute("id", commentVO.getUserEmailHost());
-			model.addAttribute("postList", new Gson().toJson(postService.getAllPost(userVO)));
-			model.addAttribute("commentList", new Gson().toJson(commentService.getAllComment(userVO)));
-			model.addAttribute("likeList", new Gson().toJson(likeService.getAllLike(userVO)));
-			model.addAttribute("pictureList", new Gson().toJson(pictureService.getAllPicture(userVO)));
-			return "mainBoard";
+			redirectAttributes.addFlashAttribute("goToPostTimestamp", comment.getPostTimestamp());
+			redirectAttributes.addFlashAttribute("goToPostNo", comment.getPostNo());
+			return "redirect:/board";
 		} else {
-			UserVO userVO = new UserVO();
-			userVO.setUserEmail(commentVO.getUserEmailHost());
-			model.addAttribute("id", commentVO.getUserEmailHost());
-			model.addAttribute("postList", new Gson().toJson(postService.getAllPost(userVO)));
-			model.addAttribute("commentList", new Gson().toJson(commentService.getAllComment(userVO)));
-			model.addAttribute("likeList", new Gson().toJson(likeService.getAllLike(userVO)));
-			model.addAttribute("pictureList", new Gson().toJson(pictureService.getAllPicture(userVO)));
-			return "mainBoard";
+			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.commentVO", result);
+			redirectAttributes.addFlashAttribute("comment", comment);
+			redirectAttributes.addFlashAttribute("goToPostTimestamp", comment.getPostTimestamp());
+			redirectAttributes.addFlashAttribute("goToPostNo", comment.getPostNo());
+			redirectAttributes.addFlashAttribute("commentUpdateError", "true");
+			return "redirect:/board";
 		}
 	}
 }

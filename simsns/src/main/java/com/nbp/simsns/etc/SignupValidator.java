@@ -34,24 +34,25 @@ public class SignupValidator implements Validator {
         	errors.rejectValue("userEmail", "select", "이미 가입된 이메일입니다.");
         }
         
-        Pattern passwordPatter = Pattern.compile("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+");
-        Matcher passowrdMatcher = passwordPatter.matcher(user.getUserEmail());
-        if(!passowrdMatcher.find()) {
+        Pattern pattern = Pattern.compile("[\\w\\~\\-\\.]+@[\\w\\~\\-]+(\\.[\\w\\~\\-]+)+");
+        Matcher matcher = pattern.matcher(user.getUserEmail());
+        if(userDAO.selectUser(user).isEmpty() && !user.getUserEmail().equals("") && !matcher.find()) {
         	errors.rejectValue("userEmail", "select", "잘못된 이메일 형식입니다.");
         }
         
-        passwordPatter = Pattern.compile("([a-zA-Z].*[0-9].*[!,@,#,$,%,^,&,*,?,_,~])"
+        pattern = Pattern.compile("([a-zA-Z].*[0-9].*[!,@,#,$,%,^,&,*,?,_,~])"
         		+ "|([a-zA-Z].*[!,@,#,$,%,^,&,*,?,_,~].*[0-9])"
         		+ "|([0-9].*[a-zA-Z].*[!,@,#,$,%,^,&,*,?,_,~])"
         		+ "|([0-9].*[!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z])"
         		+ "|([!,@,#,$,%,^,&,*,?,_,~].*[a-zA-Z].*[0-9])"
         		+ "|([!,@,#,$,%,^,&,*,?,_,~].*[0-9].*[a-zA-Z])");
-        passowrdMatcher = passwordPatter.matcher(user.getUserPassword());
-        if(!passowrdMatcher.find() || user.getUserPassword().length() < 8 || user.getUserPassword().length() > 20) {
+        matcher = pattern.matcher(user.getUserPassword());
+        if(!user.getUserPassword().equals("") && (!matcher.find() || user.getUserPassword().length() < 8
+        		|| user.getUserPassword().length() > 20)) {
         	errors.rejectValue("userPassword", "select", "비밀번호는 영문 대소문자, 숫자, 특수문자를 혼합하여 8자리 이상 20자리 이하로 입력해주세요.");
         }
         
-        if(!user.getUserPassword().equals(user.getUserPasswordConfirm())) {
+        if(!user.getUserPasswordConfirm().equals("") && !user.getUserPassword().equals(user.getUserPasswordConfirm())) {
         	errors.rejectValue("userPasswordConfirm", "select", "비밀번호가 일치하지 않습니다.");
         }
 	}

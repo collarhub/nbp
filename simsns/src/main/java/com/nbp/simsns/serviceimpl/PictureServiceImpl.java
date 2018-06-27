@@ -1,5 +1,6 @@
 package com.nbp.simsns.serviceimpl;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,10 @@ import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.nbp.simsns.dao.PictureDAO;
+import com.nbp.simsns.etc.Md5Generator;
+import com.nbp.simsns.etc.PictureExtensionValidator;
+import com.nbp.simsns.etc.PictureUpdatePathValidator;
+import com.nbp.simsns.etc.PictureUploader;
 import com.nbp.simsns.etc.WritePictureCommitValidator;
 import com.nbp.simsns.serviceinterface.PictureServiceInter;
 import com.nbp.simsns.vo.PictureVO;
@@ -16,10 +21,15 @@ import com.nbp.simsns.vo.UserVO;
 
 @Service("pictureService")
 public class PictureServiceImpl implements PictureServiceInter {
+	static final String UPLOAD_PATH = "resources/picture/";
 	@Autowired
 	private PictureDAO pictureDAO;
 	@Autowired
 	private WritePictureCommitValidator writePictureCommitValidator;
+	@Autowired
+	private PictureUpdatePathValidator pictureUpdatePathValidator;
+	@Autowired
+	private PictureUploader pictureUploader;
 
 	@Override
 	public List<PictureVO> getAllPicture(UserVO user) {
@@ -55,7 +65,18 @@ public class PictureServiceImpl implements PictureServiceInter {
 		writePictureCommitValidator.validate(object, errors);
 		((PictureVO)object).setPicturePath(null);
 		if(!errors.hasErrors()) {
-			pictureDAO.insertPicture(picture, multipartFile, ROOT_PATH);
+			picture.setPictureTimestamp(Long.toString(new Timestamp(System.currentTimeMillis()).getTime()));
+			String maxPictureNo = pictureDAO.selectMaxPictureNo(picture);
+			if(maxPictureNo == null) {
+				picture.setPictureNo("1");
+			} else {
+				picture.setPictureNo(Integer.toString(Integer.parseInt(maxPictureNo) + 1));
+			}
+			picture.setPicturePath(new Md5Generator().getMd5(picture.getUserEmailHost())
+									+ picture.getPictureTimestamp() + picture.getPictureNo()
+									+ new PictureExtensionValidator().getExtension(multipartFile));
+	        pictureUploader.writeFile(multipartFile, ROOT_PATH + UPLOAD_PATH, picture.getPicturePath());
+			pictureDAO.insertPicture(picture);
 		}
 	}
 
@@ -78,7 +99,29 @@ public class PictureServiceImpl implements PictureServiceInter {
 		writePictureCommitValidator.validate(object, errors);
 		picture.setPicturePath(pictureDAO.selectPicture(picture).getPicturePath());
 		if(!errors.hasErrors()) {
-			pictureDAO.updatePicturePicture(picture, multipartFile, ROOT_PATH);
+			if(!multipartFile.isEmpty()) {
+				pictureUploader.deleteFile(ROOT_PATH + UPLOAD_PATH, picture.getPicturePath());
+				picture.setPicturePath(new Md5Generator().getMd5(picture.getUserEmailHost())
+						+ picture.getPictureTimestamp() + picture.getPictureNo()
+						+ new PictureExtensionValidator().getExtension(multipartFile));
+				pictureUploader.writeFile(multipartFile, ROOT_PATH + UPLOAD_PATH, picture.getPicturePath());
+			}
+			pictureDAO.updatePicturePicture(picture);
 		}
+	}
+
+	@Override
+	public List<PictureVO> getPostPicturePreview(PictureVO picture) {
+		return pictureDAO.selectPostPicturePreview(picture);
+	}
+	
+	@Override
+	public List<PictureVO> getPicturePicturePreview(PictureVO picture) {
+		return pictureDAO.selectPicturePicturePreview(picture);
+	}
+
+	@Override
+	public void updatePathValidate(PictureVO picture, String user, Errors errors) {
+		pictureUpdatePathValidator.validate(picture, user, errors);
 	}
 }

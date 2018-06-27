@@ -2,60 +2,91 @@
     pageEncoding="UTF-8"
     session="true" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript">
-var pictureList = ${pictureList};
-function deletePicture(picturePictureForm) {
-	if(confirm("정말 삭제하시겠습니까?") == true) {
-		picturePictureForm.submit();
-	} else {
-		return;
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>SIMSNS 사진첩</title>
+	<!-- Bootstrap core CSS-->
+	<link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Custom fonts for this template-->
+	<link href="resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<!-- Page level plugin CSS-->
+	<link href="resources/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+	<!-- Custom styles for this template-->
+	<link href="resources/css/sb-admin.min.css" rel="stylesheet">
+	<link href="resources/simsns/css/simsns.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript">
+		var pictureList = ${pictureList};
+		var pictureIndex = 0;
+		function deletePicture(picturePictureForm) {
+			if(confirm("정말 삭제하시겠습니까?") == true) {
+				picturePictureForm.submit();
+			} else {
+				return;
+			}
+		}
+		function updatePicture(picturePictureForm) {
+			picturePictureForm.action = "updatePicture";
+			picturePictureForm.submit();
+		}
+function addPicture() {
+	$('#pictureTable').append('<table style="display:inline" class="mr-5">'
+			+ '<tr><th>' + pictureList[pictureIndex].pictureTitle + '</th></tr>'
+			+ '<tr>'
+			+ '<th>'
+			+ '<img id="postPicture' + pictureIndex + '" width="150" height="150"'
+			+ 'src="resources/picture/' + pictureList[pictureIndex].picturePath + '">'
+			+ (
+					("${sessionScope.userID}" == pictureList[pictureIndex].userEmailGuest) ?
+						'<form action="deletePicture" method="post" style="display:inline" id="picturePictureForm' + pictureIndex + '">'
+						+ '<button class="close post-close" type="button" value="삭제" onclick="deletePicture(picturePictureForm' + pictureIndex + ')">'
+						+ '<i class="fa fa-fw fa-close"></i>'
+						+ '</button>'
+						+ '<input type="hidden" value="' + pictureList[pictureIndex].pictureNo + '" name="pictureNo">'
+						+ '<input type="hidden" value="' + pictureList[pictureIndex].pictureTimestamp + '" name="pictureTimestamp">'
+						+ '</form>'
+						+ '<a class="mr-1 close post-close" href="updatePicture?pictureTimestamp='
+						+ pictureList[pictureIndex].pictureTimestamp + '&pictureNo=' + pictureList[pictureIndex].pictureNo + '">'
+						+ '<i class="fa fa-fw fa-pencil"></i>'
+						+ '</a>'
+						: ''
+			)
+			+ '</th>'
+			+ '</tr>'
+			+ '<tr>'
+			+ '<th>'
+			+ '<div class="small text-muted">'
+			+ new Date(Number(pictureList[pictureIndex].pictureTimestamp)).toLocaleTimeString("ko-kr", {
+			    weekday: "long", year: "numeric", month: "short",
+			    day: "numeric", hour: "2-digit", minute: "2-digit"
+			})
+			+ '</div>'
+			+ '<form action="boardMove" method="post" name="friend' + pictureIndex + '">'
+			+ '<input type="hidden" value="' + pictureList[pictureIndex].userEmailGuest + '" name="userEmail">'
+			+ '<input type="hidden" value="' + pictureList[pictureIndex].userNameGuest + '" name="userName">'
+			+ '<input type="hidden" value="' + '">'
+			+ '</form>'
+			+ '<h6 class="card-title mb-1 small"><a class="font-color-simsns-dark" href="javascript:;" onclick="document.friend' + pictureIndex + '.submit()">'
+			+ '<i class="fa fa-fw fa-user-circle"></i>' + pictureList[pictureIndex].userNameGuest + '</a></h6>'
+			+ '</th>'
+			+ '</tr>'
+			+ '</table>');
+	if(pictureIndex % 2 == 1) {
+		$('#pictureTable').append('<br>');
 	}
-}
-function updatePicture(picturePictureForm) {
-	picturePictureForm.action = "updatePicture";
-	picturePictureForm.submit();
 }
 $(document).ready(function() {
 	if(pictureList.length == 0) {
-		$('#noPicture').submit();
+		location.href = 'picture';
 	}
-	var pictureIndex = 0;
 	pictureList.some(function(picture, i){
-		$('#pictureTable').append('<table style="display:inline">'
-				+ '<tr>'
-				+ '<th>'
-				+ '<form action="deletePicture" method="post" style="display:inline" id="picturePictureForm' + pictureIndex + '">'
-				+ '<img id="postPicture' + pictureIndex + '" width="150" height="150"'
-				+ 'src="resources/picture/' + picture.picturePath + '">'
-				+ (
-						("${sessionScope.userID}" == picture.userEmailGuest) ?
-							'<input type="button" value="삭제" onclick="deletePicture(picturePictureForm' + pictureIndex + ')">'
-							+ '<input type="button" value="수정" onclick="updatePicture(picturePictureForm' + pictureIndex + ')">'
-							+ '<input type="hidden" value="' + picture.pictureNo + '" name="pictureNo">'
-							+ '<input type="hidden" value="' + picture.pictureTimestamp + '" name="pictureTimestamp">'
-							+ '<input type="hidden" value="${id}" name="userEmailHost">'
-							: ''
-				)
-				+ '</form>'
-				+ '</th>'
-				+ '</tr>'
-				+ '<tr>'
-				+ '<th>'
-				+ new Date(Number(picture.pictureTimestamp)).toString() + '<br>'
-				+ '작성자 : ' + picture.userEmailGuest + '<br>'
-				+ '제목 : ' + picture.pictureTitle
-				+ '</th>'
-				+ '</tr>'
-				+ '</table>');
-		if(pictureIndex % 2 == 1) {
-			$('#pictureTable').append('<br>');
-		}
+		addPicture();
 		if($("body").height() > $(window).height() && (pictureList.length - 1 == pictureIndex || pictureIndex % 2 == 1)) {
 			return (pictureIndex == pictureIndex);
 		}
@@ -67,35 +98,7 @@ $(document).ready(function() {
 		while($("body").height() <= $(window).height() || (pictureIndex % 2 == 1)){
 			if(pictureIndex < pictureList.length) {
 				picture = pictureList[pictureIndex];
-				$("#pictureTable").append('<table style="display:inline">'
-						+ '<tr>'
-						+ '<th>'
-						+ '<form action="deletePicture" method="post" style="display:inline" id="picturePictureForm' + pictureIndex + '">'
-						+ '<img id="postPicture' + pictureIndex + '" width="150" height="150"'
-						+ 'src="resources/picture/' + picture.picturePath + '">'
-						+ (
-								("${sessionScope.userID}" == picture.userEmailGuest) ?
-									'<input type="button" value="삭제" onclick="deletePicture(picturePictureForm' + pictureIndex + ')">'
-									+ '<input type="button" value="수정" onclick="updatePicture(picturePictureForm' + pictureIndex + ')">'
-									+ '<input type="hidden" value="' + picture.pictureNo + '" name="pictureNo">'
-									+ '<input type="hidden" value="' + picture.pictureTimestamp + '" name="pictureTimestamp">'
-									+ '<input type="hidden" value="${id}" name="userEmailHost">'
-									: ''
-						)
-						+ '</form>'
-						+ '</th>'
-						+ '</tr>'
-						+ '<tr>'
-						+ '<th>'
-						+ new Date(Number(picture.pictureTimestamp)).toString() + '<br>'
-						+ '작성자 : ' + picture.userEmailGuest + '<br>'
-						+ '제목 : ' + picture.pictureTitle
-						+ '</th>'
-						+ '</tr>'
-						+ '</table>');
-				if(pictureIndex % 2 == 1) {
-					$('#pictureTable').append('<br>');
-				}
+				addPicture();
 				pictureIndex++;
 			} else {
 				break;
@@ -107,35 +110,7 @@ $(document).ready(function() {
 		if ($(window).scrollTop() + 1 >= $(document).height() - $(window).height() || (pictureIndex % 2 == 1)) {
 			if(pictureIndex < pictureList.length) {
 				picture = pictureList[pictureIndex];
-				$("#pictureTable").append('<table style="display:inline">'
-						+ '<tr>'
-						+ '<th>'
-						+ '<form action="deletePicture" method="post" style="display:inline" id="picturePictureForm' + pictureIndex + '">'
-						+ '<img id="postPicture' + pictureIndex + '" width="150" height="150"'
-						+ 'src="resources/picture/' + picture.picturePath + '">'
-						+ (
-								("${sessionScope.userID}" == picture.userEmailGuest) ?
-									'<input type="button" value="삭제" onclick="deletePicture(picturePictureForm' + pictureIndex + ')">'
-									+ '<input type="button" value="수정" onclick="updatePicture(picturePictureForm' + pictureIndex + ')">'
-									+ '<input type="hidden" value="' + picture.pictureNo + '" name="pictureNo">'
-									+ '<input type="hidden" value="' + picture.pictureTimestamp + '" name="pictureTimestamp">'
-									+ '<input type="hidden" value="${id}" name="userEmailHost">'
-									: ''
-						)
-						+ '</form>'
-						+ '</th>'
-						+ '</tr>'
-						+ '<tr>'
-						+ '<th>'
-						+ new Date(Number(picture.pictureTimestamp)).toString() + '<br>'
-						+ '작성자 : ' + picture.userEmailGuest + '<br>'
-						+ '제목 : ' + picture.pictureTitle
-						+ '</th>'
-						+ '</tr>'
-						+ '</table>');
-				if(pictureIndex % 2 == 1) {
-					$('#pictureTable').append('<br>');
-				}
+				addPicture();
 				pictureIndex++;
 			}
 		}
@@ -143,29 +118,98 @@ $(document).ready(function() {
 });
 </script>
 </head>
-<body>
-<form action="picture" method="post" id="noPicture">
-	<input type="hidden" value="${id}" name="userEmailHost">
-</form>
-hello
-${sessionScope.userID}
-<input type="button" value="로그아웃" onclick="javascript:location.href='/simsns/logout'">
-<input type="text"><input type="button" value="검색">
-<br/>
-${id}의  사진첩<br>
-<form action="board" method="post">
-	<input type="submit" value="게시물 게시판">
-	<input type="hidden" value="${id}" name="userEmailHost">
-</form>
-<form action="picture" method="post">
-	<input type="submit" value="사진 게시판">
-	<input type="hidden" value="${id}" name="userEmailHost">
-</form>
-<form action="writePicture" method="post">
-	<input type="submit" value="사진 추가">
-	<input type="hidden" value="${id}" name="userEmailHost">
-	<input type="hidden" value="picturePicture" name="writePictureCancel">
-</form>
-<div id="pictureTable"></div>
+<body class="fixed-nav sticky-footer bg-gray" id="page-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-simsns fixed-top out" id="mainNav">
+		<a class="navbar-brand" href="/simsns/">SIMSNS</a>
+		<div class="board-title-text">${sessionScope.hostName} 의 사진첩</div>
+		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav navbar-sidenav side-navbar" id="exampleAccordion">
+				<li class="nav-item nav-item-simsns" data-toggle="tooltip" data-placement="right" title="mainBoard">
+					<a class="nav-link" href="board">
+						<i class="fa fa-fw fa-newspaper-o"></i>
+						<span class="nav-link-text">게시판</span>
+					</a>
+				</li>
+				<li class="nav-item nav-item-simsns" data-toggle="tooltip" data-placement="right" title="picture">
+					<a class="nav-link" href="picture">
+						<i class="fa fa-fw fa-picture-o"></i>
+						<span class="nav-link-text">사진</span>
+					</a>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<div class="vertical-container">
+						<form action="boardMove" method="post" name=myBoardFrom>
+							<input type="hidden" value="${sessionScope.userID}" name="userEmail">
+							<input type="hidden" value="${sessionScope.userName}" name="userName">
+						</form>
+						<a class="nav-link small-text vertical-content" href="javascript:;" onclick="javascript:document.myBoardFrom.submit();">
+							${sessionScope.userName}님
+						</a>
+						<span class="small-text vertical-content">
+							환영합니다
+						</span>
+					</div>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="modal" data-target="#logoutModal">
+						<i class="fa fa-fw fa-sign-out"></i>로그아웃</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<div class="content-wrapper content-wrapper-simsns">
+		<a class="btn btn-simsns-write" href="writePicture?back=picturePicture">사진 추가</a>
+		<div class="post-wrapper-simsns">
+			<div class="mb-0 mt-4">
+				<i class="fa fa-picture-o"></i> 사진첩
+			</div>
+			<hr class="mt-2">
+			<div id="pictureTable"></div>
+		</div>
+
+		<!-- Scroll to Top Button-->
+		<a class="scroll-to-top rounded" href="#page-top">
+			<i class="fa fa-angle-up"></i>
+		</a>
+		
+		<!-- Logout Modal-->
+		<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">로그아웃</h5>
+						<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">x</span>
+						</button>
+					</div>
+					<div class="modal-body">로그아웃 하시겠습니까?</div>
+					<div class="modal-footer">
+						<button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+						<a class="btn btn-primary bg-simsns" href="logout">로그아웃</a>
+					</div>
+				</div>
+			</div>
+		</div>
+    
+		<!-- Bootstrap core JavaScript-->
+		<!-- <script src="resources/vendor/jquery/jquery.min.js"></script> -->
+		<script src="resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- Core plugin JavaScript-->
+		<script src="resources/vendor/jquery-easing/jquery.easing.min.js"></script>
+		<!-- Page level plugin JavaScript-->
+		<script src="resources/vendor/chart.js/Chart.min.js"></script>
+		<script src="resources/vendor/datatables/jquery.dataTables.js"></script>
+		<script src="resources/vendor/datatables/dataTables.bootstrap4.js"></script>
+		<!-- Custom scripts for all pages-->
+		<script src="resources/js/sb-admin.min.js"></script>
+		<!-- Custom scripts for this page-->
+		<script src="resources/js/sb-admin-datatables.min.js"></script>
+		<!-- <script src="resources/js/sb-admin-charts.min.js"></script> -->
+	</div>
 </body>
 </html>

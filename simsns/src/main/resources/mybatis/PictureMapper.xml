@@ -5,31 +5,31 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace= "pictureMapper" >
 	<select id="selectMaxPictureNo" parameterType="com.nbp.simsns.vo.PictureVO" resultType= "java.lang.String">
-        SELECT MAX(pictureNo)
+        SELECT MAX(CAST(pictureNo AS UNSIGNED))
         FROM picture
         WHERE userEmailHost = #{userEmailHost} AND pictureTimestamp = #{pictureTimestamp}
     </select>
 
 	<insert id="insertPicture" parameterType="com.nbp.simsns.vo.PictureVO" >
         INSERT INTO picture
-        (userEmailHost, pictureNo, pictureTimestamp, pictureTitle,
-        	picturePath, postNo, postTimestamp, userEmailGuest)
+        ( userEmailHost, pictureNo, pictureTimestamp, pictureTitle,
+        	picturePath, postNo, postTimestamp, userEmailGuest, userNameGuest )
         VALUES
         ( #{userEmailHost}, #{pictureNo}, #{pictureTimestamp}, #{pictureTitle},
-        	#{picturePath}, #{postNo}, #{postTimestamp}, #{userEmailGuest})
+        	#{picturePath}, #{postNo}, #{postTimestamp}, #{userEmailGuest}, #{userNameGuest} )
     </insert>
     
     <select id="selectAllPicture" parameterType="com.nbp.simsns.vo.UserVO" resultType="com.nbp.simsns.vo.PictureVO">
     	SELECT userEmailHost, pictureNo, pictureTimestamp, pictureTitle,
-        	picturePath, postNo, postTimestamp, userEmailGuest
+        	picturePath, postNo, postTimestamp, userEmailGuest, userNameGuest
     	FROM picture
     	WHERE userEmailHost = #{userEmail}
-    	ORDER BY postTimestamp DESC, postNo DESC
+    	ORDER BY CAST(postTimestamp AS UNSIGNED) DESC, CAST(postNo AS UNSIGNED) DESC
     </select>
     
     <select id="selectPicture" parameterType="com.nbp.simsns.vo.PictureVO" resultType="com.nbp.simsns.vo.PictureVO">
     	SELECT userEmailHost, pictureNo, pictureTimestamp, pictureTitle,
-        	picturePath, postNo, postTimestamp, userEmailGuest
+        	picturePath, postNo, postTimestamp, userEmailGuest, userNameGuest
     	FROM picture
     	WHERE userEmailHost = #{userEmailHost} AND postNo = #{postNo} AND postTimestamp = #{postTimestamp}
     </select>
@@ -48,23 +48,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectAllPostPicture" parameterType="com.nbp.simsns.vo.UserVO" resultType="com.nbp.simsns.vo.PictureVO">
     	SELECT userEmailHost, pictureNo, pictureTimestamp, pictureTitle,
-        	picturePath, postNo, postTimestamp, userEmailGuest
+        	picturePath, postNo, postTimestamp, userEmailGuest, userNameGuest
     	FROM picture
     	WHERE userEmailHost = #{userEmail} AND postNo IS NOT NULL AND postTimestamp IS NOT NULL
-    	ORDER BY postTimestamp DESC, postNo DESC
+    	ORDER BY CAST(postTimestamp AS UNSIGNED) DESC, CAST(postNo AS UNSIGNED) DESC
     </select>
     
     <select id="selectAllPicturePicture" parameterType="com.nbp.simsns.vo.UserVO" resultType="com.nbp.simsns.vo.PictureVO">
     	SELECT userEmailHost, pictureNo, pictureTimestamp, pictureTitle,
-        	picturePath, postNo, postTimestamp, userEmailGuest
+        	picturePath, postNo, postTimestamp, userEmailGuest, userNameGuest
     	FROM picture
     	WHERE userEmailHost = #{userEmail} AND postNo IS NULL AND postTimestamp IS NULL
-    	ORDER BY pictureTimestamp DESC, pictureNo DESC
+    	ORDER BY CAST(pictureTimestamp AS UNSIGNED) DESC, CAST(pictureNo AS UNSIGNED) DESC
     </select>
     
     <select id="selectPicturePicture" parameterType="com.nbp.simsns.vo.PictureVO" resultType="com.nbp.simsns.vo.PictureVO">
     	SELECT userEmailHost, pictureNo, pictureTimestamp, pictureTitle,
-        	picturePath, postNo, postTimestamp, userEmailGuest
+        	picturePath, postNo, postTimestamp, userEmailGuest, userNameGuest
     	FROM picture
     	WHERE userEmailHost = #{userEmailHost} AND pictureNo = #{pictureNo} AND pictureTimestamp = #{pictureTimestamp}
     </select>
@@ -74,4 +74,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	SET pictureTitle = #{pictureTitle}, picturePath = #{picturePath}
     	WHERE userEmailHost = #{userEmailHost} AND pictureNo = #{pictureNo} AND pictureTimestamp = #{pictureTimestamp}
     </update>
+    
+    <select id="selectPostPicturePreview" parameterType="com.nbp.simsns.vo.PictureVO" resultType="com.nbp.simsns.vo.PictureVO">
+    	SELECT userEmailHost, pictureNo, pictureTimestamp, pictureTitle, picturePath, postNo, postTimestamp, userEmailGuest, userNameGuest
+    	FROM picture
+    	WHERE userEmailHost = #{userEmailHost} AND postTimestamp IS NOT NULL AND postNo IS NOT NULL
+    	ORDER BY CAST(postTimestamp AS UNSIGNED) DESC, CAST(postNo AS UNSIGNED) DESC
+    	LIMIT 3
+    </select>
+    
+    <select id="selectPicturePicturePreview" parameterType="com.nbp.simsns.vo.PictureVO" resultType="com.nbp.simsns.vo.PictureVO">
+    	SELECT userEmailHost, pictureNo, pictureTimestamp, pictureTitle, picturePath, postNo, postTimestamp, userEmailGuest, userNameGuest
+    	FROM picture
+    	WHERE userEmailHost = #{userEmailHost} AND postTimestamp IS NULL AND postNo IS NULL
+    	ORDER BY CAST(pictureTimestamp AS UNSIGNED) DESC, CAST(pictureNo AS UNSIGNED) DESC
+    	LIMIT 3
+    </select>
 </mapper>

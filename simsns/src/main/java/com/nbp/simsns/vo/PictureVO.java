@@ -9,13 +9,14 @@ public class PictureVO {
 	private String postNo;
 	private String postTimestamp;
 	private String userEmailGuest;
+	private String userNameGuest;
 	
 	public PictureVO() {
 		super();
 	}
 	
 	public PictureVO(String userEmailHost, String pictureNo, String pictureTimestamp, String pictureTitle,
-			String picturePath, String postNo, String postTimestamp, String userEmailGuest) {
+			String picturePath, String postNo, String postTimestamp, String userEmailGuest, String userNameGuest) {
 		super();
 		this.userEmailHost = userEmailHost;
 		this.pictureNo = pictureNo;
@@ -25,6 +26,7 @@ public class PictureVO {
 		this.postNo = postNo;
 		this.postTimestamp = postTimestamp;
 		this.userEmailGuest = userEmailGuest;
+		this.userNameGuest = userNameGuest;
 	}
 
 	public String getUserEmailHost() {
@@ -89,5 +91,13 @@ public class PictureVO {
 
 	public void setUserEmailGuest(String userEmailGuest) {
 		this.userEmailGuest = userEmailGuest;
+	}
+
+	public String getUserNameGuest() {
+		return userNameGuest;
+	}
+
+	public void setUserNameGuest(String userNameGuest) {
+		this.userNameGuest = userNameGuest;
 	}
 }

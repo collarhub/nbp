@@ -4,6 +4,8 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
+import com.nbp.simsns.vo.PostVO;
+
 public class WriteCommitValidator implements Validator {
 
 	@Override
@@ -14,8 +16,8 @@ public class WriteCommitValidator implements Validator {
 
 	@Override
 	public void validate(Object object, Errors errors) {
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "postTitle", "required", "필수입력 사항입니다.");
-		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "postContent", "required", "필수입력 사항입니다.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "postTitle", "required", "제목을 입력하세요.");
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "postContent", "required", "내용을 입력하세요.");
 	}
 
 }

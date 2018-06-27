@@ -27,8 +27,8 @@ public class LoginValidator implements Validator {
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userEmail", "required", "아이디를 입력하세요.");
 		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "userPassword", "required", "비밀번호를 입력하세요.");
 		List<UserVO> outputs = userDAO.selectUser(user);
-		if(outputs.isEmpty() || user.getUserPassword().equals("")
-				|| !outputs.get(0).getUserPassword().equals(userDAO.getHash(user.getUserPassword()))) {
+		if((!user.getUserPassword().equals("") && !user.getUserEmail().equals("")) && (outputs.isEmpty()
+				|| !outputs.get(0).getUserPassword().equals(userDAO.getHash(user.getUserPassword())))) {
 			errors.rejectValue("userPasswordConfirm", "select", "아이디 또는 비밀번호를 확인해주세요.");
 		}
 	}

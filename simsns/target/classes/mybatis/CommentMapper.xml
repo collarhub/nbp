@@ -6,7 +6,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace= "commentMapper" >
 
 	<select id ="selectMaxCommentNo" parameterType="com.nbp.simsns.vo.CommentVO" resultType= "java.lang.String">
-        SELECT MAX(commentNo)
+        SELECT MAX(CAST(commentNo AS UNSIGNED))
         FROM comment
         WHERE userEmailHost = #{userEmailHost} AND postNo = #{postNo}
         	AND postTimestamp = #{postTimestamp} AND commentTimestamp = #{commentTimestamp}
@@ -16,20 +16,20 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         INSERT INTO comment
         (userEmailHost, postNo, postTimestamp, commentNo,
         	commentTimestamp, commentNoParent, commentTimestampParent,
-        	userEmailGuest, commentContent, commentDepth)
+        	userEmailGuest, commentContent, commentDepth, userNameGuest)
         VALUES
         ( #{userEmailHost}, #{postNo}, #{postTimestamp}, #{commentNo},
         	#{commentTimestamp}, #{commentNoParent}, #{commentTimestampParent},
-        	#{userEmailGuest}, #{commentContent}, #{commentDepth} )
+        	#{userEmailGuest}, #{commentContent}, #{commentDepth}, #{userNameGuest} )
     </insert>
     
     <select id ="selectAllComment" parameterType="com.nbp.simsns.vo.UserVO" resultType="com.nbp.simsns.vo.CommentVO">
     	SELECT userEmailHost, postNo, postTimestamp, commentNo, commentTimestamp, commentNoParent,
-    			commentTimestampParent, userEmailGuest, commentContent, commentDepth
+    			commentTimestampParent, userEmailGuest, commentContent, commentDepth, userNameGuest
     	FROM comment
     	WHERE userEmailHost = #{userEmail}
-    	ORDER BY postTimestamp DESC, postNo DESC, commentDepth ASC, commentTimestampParent ASC,
-    			commentNoParent ASC, commentTimestamp ASC, commentNo ASC
+    	ORDER BY CAST(postTimestamp AS UNSIGNED) DESC, CAST(postNo AS UNSIGNED) DESC, CAST(commentDepth AS UNSIGNED) ASC, CAST(commentTimestampParent AS UNSIGNED) ASC,
+    			CAST(commentNoParent AS UNSIGNED) ASC, CAST(commentTimestamp AS UNSIGNED) ASC, CAST(commentNo AS UNSIGNED) ASC
     </select>
     
     <delete id="deleteComment" parameterType="com.nbp.simsns.vo.CommentVO">
@@ -41,7 +41,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     
     <select id="selectChild" parameterType="com.nbp.simsns.vo.CommentVO" resultType="com.nbp.simsns.vo.CommentVO">
     	SELECT userEmailHost, postNo, postTimestamp, commentNo, commentTimestamp, commentNoParent,
-    			commentTimestampParent, userEmailGuest, commentContent, commentDepth
+    			commentTimestampParent, userEmailGuest, commentContent, commentDepth, userNameGuest
     	FROM comment
     	WHERE userEmailHost = #{userEmailHost} AND postNo = #{postNo} AND postTimestamp = #{postTimestamp}
     			AND commentNoParent = #{commentNo} AND commentTimestampParent = #{commentTimestamp}

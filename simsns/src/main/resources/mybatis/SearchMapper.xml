@@ -5,35 +5,11 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace= "searchMapper" >
     
-    <select id ="selectPostTitle" parameterType="com.nbp.simsns.vo.SearchVO" resultType= "com.nbp.simsns.vo.PostVO">
-        SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
-        FROM post
-        WHERE userEmailHost = #{userEmailHost} AND postTitle LIKE CONCAT('%', #{searchKeyword}, '%')
-    </select>
-    
-    <select id ="selectPostContent" parameterType="com.nbp.simsns.vo.SearchVO" resultType= "com.nbp.simsns.vo.PostVO">
-        SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
-        FROM post
-        WHERE userEmailHost = #{userEmailHost} AND postContent like '%#{searchKeyword}%'
-    </select>
-    
-    <select id ="selectPostWriter" parameterType="com.nbp.simsns.vo.SearchVO" resultType= "com.nbp.simsns.vo.PostVO">
-        SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
-        FROM post
-        WHERE userEmailHost = #{userEmailHost} AND userEmailGuest like '%#{searchKeyword}%'
-    </select>
-    
-    <select id ="selectPostTitleContent" parameterType="com.nbp.simsns.vo.SearchVO" resultType= "com.nbp.simsns.vo.PostVO">
-        SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
-        FROM post
-        WHERE userEmailHost = #{userEmailHost} AND (postTitle like '%#{searchKeyword}%' OR postContent like '%#{searchKeyword}%')
-    </select>
-    
     <select id ="selectPostTitleOne" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "com.nbp.simsns.vo.PostVO">
         SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
         FROM post
         WHERE userEmailHost = #{userEmailHost} AND postTitle LIKE CONCAT('%', #{searchKeyword}, '%')
-        ORDER BY postTimestamp DESC, postNo DESC
+        ORDER BY CAST(postTimestamp AS UNSIGNED) DESC, CAST(postNo AS UNSIGNED) DESC
         LIMIT #{searchIndex}, 1
     </select>
     
@@ -41,7 +17,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
         FROM post
         WHERE userEmailHost = #{userEmailHost} AND postContent LIKE CONCAT('%', #{searchKeyword}, '%')
-        ORDER BY postTimestamp DESC, postNo DESC
+        ORDER BY CAST(postTimestamp AS UNSIGNED) DESC, CAST(postNo AS UNSIGNED) DESC
         LIMIT #{searchIndex}, 1
     </select>
     
@@ -49,7 +25,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
         FROM post
         WHERE userEmailHost = #{userEmailHost} AND userEmailGuest LIKE CONCAT('%', #{searchKeyword}, '%')
-        ORDER BY postTimestamp DESC, postNo DESC
+        ORDER BY CAST(postTimestamp AS UNSIGNED) DESC, CAST(postNo AS UNSIGNED) DESC
         LIMIT #{searchIndex}, 1
     </select>
     
@@ -59,7 +35,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         WHERE userEmailHost = #{userEmailHost}
         	AND (postTitle LIKE CONCAT('%', #{searchKeyword}, '%')
         	OR postContent LIKE CONCAT('%', #{searchKeyword}, '%'))
-        	ORDER BY postTimestamp DESC, postNo DESC
+        	ORDER BY CAST(postTimestamp AS UNSIGNED) DESC, CAST(postNo AS UNSIGNED) DESC
         LIMIT #{searchIndex}, 1
     </select>
     
@@ -94,8 +70,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     			commentTimestampParent, userEmailGuest, commentContent, commentDepth
         FROM comment
         WHERE userEmailHost = #{userEmailHost} AND commentContent LIKE CONCAT('%', #{searchKeyword}, '%')
-        ORDER BY postTimestamp DESC, postNo DESC, commentDepth ASC, commentTimestampParent ASC,
-    			commentNoParent ASC, commentTimestamp ASC, commentNo ASC
+        ORDER BY CAST(postTimestamp AS UNSIGNED) DESC, CAST(postNo AS UNSIGNED) DESC, CAST(commentDepth AS UNSIGNED) ASC, CAST(commentTimestampParent AS UNSIGNED) ASC,
+    			CAST(commentNoParent AS UNSIGNED) ASC, CAST(commentTimestamp AS UNSIGNED) ASC, CAST(commentNo AS UNSIGNED) ASC
         LIMIT #{searchIndex}, 1
     </select>
     
@@ -104,8 +80,8 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     			commentTimestampParent, userEmailGuest, commentContent, commentDepth
         FROM comment
         WHERE userEmailHost = #{userEmailHost} AND userEmailGuest LIKE CONCAT('%', #{searchKeyword}, '%')
-        ORDER BY postTimestamp DESC, postNo DESC, commentDepth ASC, commentTimestampParent ASC,
-    			commentNoParent ASC, commentTimestamp ASC, commentNo ASC
+        ORDER BY CAST(postTimestamp AS UNSIGNED) DESC, CAST(postNo AS UNSIGNED) DESC, CAST(commentDepth AS UNSIGNED) ASC, CAST(commentTimestampParent AS UNSIGNED) ASC,
+    			CAST(commentNoParent AS UNSIGNED) ASC, CAST(commentTimestamp AS UNSIGNED) ASC, CAST(commentNo AS UNSIGNED) ASC
         LIMIT #{searchIndex}, 1
     </select>
     

@@ -18,4 +18,7 @@ public interface PictureServiceInter {
 	public void deletePicture(PictureVO picture, final String ROOT_PATH);
 	public PictureVO selectPicture(PictureVO picture);
 	public void updatePictureCommit(Object object, MultipartFile multipartFile, Errors errors, final String ROOT_PATH, String deleted);
+	public List<PictureVO> getPostPicturePreview(PictureVO picture);
+	public List<PictureVO> getPicturePicturePreview(PictureVO picture);
+	public void updatePathValidate(PictureVO picture, String user, Errors errors);
 }

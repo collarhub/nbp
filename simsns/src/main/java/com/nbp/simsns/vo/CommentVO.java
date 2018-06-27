@@ -11,6 +11,7 @@ public class CommentVO {
 	private String userEmailGuest;
 	private String commentContent;
 	private String commentDepth;
+	private String userNameGuest;
 	
 	public CommentVO() {
 		super();
@@ -18,7 +19,7 @@ public class CommentVO {
 	
 	public CommentVO(String userEmailHost, String postNo, String postTimestamp, String commentNo,
 						String commentTimestamp, String commentNoParent, String commentTimestampParent,
-						String userEmailGuest, String commentContent, String commentDepth) {
+						String userEmailGuest, String commentContent, String commentDepth, String userNameGuest) {
 		super();
 		this.userEmailHost = userEmailHost;
 		this.postNo = postNo;
@@ -30,6 +31,7 @@ public class CommentVO {
 		this.userEmailGuest = userEmailGuest;
 		this.commentContent = commentContent;
 		this.commentDepth = commentDepth;
+		this.userNameGuest = userNameGuest;
 	}
 
 	public String getUserEmailHost() {
@@ -110,5 +112,13 @@ public class CommentVO {
 
 	public void setCommentDepth(String commentDepth) {
 		this.commentDepth = commentDepth;
+	}
+
+	public String getUserNameGuest() {
+		return userNameGuest;
+	}
+
+	public void setUserNameGuest(String userNameGuest) {
+		this.userNameGuest = userNameGuest;
 	}
 }

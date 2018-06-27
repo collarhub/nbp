@@ -36,6 +36,8 @@
 	<beans:bean id="addLikeValidator" class="com.nbp.simsns.etc.AddLikeValidator" />
 	<beans:bean id="writePictureCommitValidator" class="com.nbp.simsns.etc.WritePictureCommitValidator" />
 	<beans:bean id="searchValidator" class="com.nbp.simsns.etc.SearchValidator" />
+	<beans:bean id="postUpdatePathValidator" class="com.nbp.simsns.etc.PostUpdatePathValidator" />
+	<beans:bean id="pictureUpdatePathValidator" class="com.nbp.simsns.etc.PictureUpdatePathValidator" />
     <beans:bean id="userDAO" class="com.nbp.simsns.dao.UserDAO" />
     <beans:bean id="postDAO" class="com.nbp.simsns.dao.PostDAO" />
     <beans:bean id="commentDAO" class="com.nbp.simsns.dao.CommentDAO" />

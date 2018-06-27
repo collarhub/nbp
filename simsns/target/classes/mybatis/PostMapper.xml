@@ -6,23 +6,23 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 <mapper namespace= "postMapper" >
     
     <select id ="selectMaxPostNo" parameterType="com.nbp.simsns.vo.PostVO" resultType= "java.lang.String">
-        SELECT MAX(postNo)
+        SELECT MAX(CAST(postNo AS UNSIGNED))
         FROM post
         WHERE userEmailHost = #{userEmailHost} AND postTimestamp = #{postTimestamp}
     </select>
     
     <insert id ="insertPost" parameterType="com.nbp.simsns.vo.PostVO" >
         INSERT INTO post
-        (userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest)
+        ( userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest, userNameGuest )
         VALUES
-        ( #{userEmailHost}, #{postNo}, #{postTitle}, #{postContent}, #{postTimestamp}, #{userEmailGuest} )
+        ( #{userEmailHost}, #{postNo}, #{postTitle}, #{postContent}, #{postTimestamp}, #{userEmailGuest}, #{userNameGuest} )
     </insert>
     
     <select id ="selectAllPost" parameterType="com.nbp.simsns.vo.UserVO" resultType="com.nbp.simsns.vo.PostVO">
-    	SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
+    	SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest, userNameGuest
     	FROM post
     	WHERE userEmailHost = #{userEmail}
-    	ORDER BY postTimestamp DESC, postNo DESC
+    	ORDER BY CAST(postTimestamp AS UNSIGNED) DESC, CAST(postNo AS UNSIGNED) DESC
     </select>
     
     <delete id="deletePost" parameterType="com.nbp.simsns.vo.PostVO">
@@ -32,7 +32,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     </delete>
     
     <select id = "selectPost" parameterType="com.nbp.simsns.vo.PostVO" resultType="com.nbp.simsns.vo.PostVO">
-    	SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
+    	SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest, userNameGuest
     	FROM post
     	WHERE userEmailHost = #{userEmailHost} AND postNo = #{postNo} AND postTimestamp = #{postTimestamp}
     </select>

@@ -10,13 +10,14 @@ public class LikeVO {
 	private String likeTimestamp;
 	private String userEmailGuest;
 	private String commentDepth;
+	private String userNameGuest;
 	
 	public LikeVO() {
 		super();
 	}
 	
 	public LikeVO(String userEmailHost, String postNo, String postTimestamp, String commentNo, String commentTimestamp,
-			String likeNo, String likeTimestamp, String userEmailGuest, String commentDepth) {
+			String likeNo, String likeTimestamp, String userEmailGuest, String commentDepth, String userNameGuest) {
 		super();
 		this.userEmailHost = userEmailHost;
 		this.postNo = postNo;
@@ -27,6 +28,7 @@ public class LikeVO {
 		this.likeTimestamp = likeTimestamp;
 		this.userEmailGuest = userEmailGuest;
 		this.commentDepth = commentDepth;
+		this.userNameGuest = userNameGuest;
 	}
 
 	public String getUserEmailHost() {
@@ -99,5 +101,13 @@ public class LikeVO {
 
 	public void setCommentDepth(String commentDepth) {
 		this.commentDepth = commentDepth;
+	}
+
+	public String getUserNameGuest() {
+		return userNameGuest;
+	}
+
+	public void setUserNameGuest(String userNameGuest) {
+		this.userNameGuest = userNameGuest;
 	}
 }

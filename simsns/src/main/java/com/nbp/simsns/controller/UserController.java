@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.nbp.simsns.serviceimpl.UserServiceImpl;
 import com.nbp.simsns.vo.UserVO;
@@ -23,25 +24,34 @@ public class UserController {
 	private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 	
 	@RequestMapping(value = "/signupValidate", method = RequestMethod.POST)
-	public String signupValidate(@ModelAttribute UserVO user, BindingResult result, Model model) {
+	public String signupValidate(@ModelAttribute UserVO user, BindingResult result, Model model, RedirectAttributes redirectAttributes) {
 		userService.signupValidate(user, result);
-		
 		if(result.hasErrors()) {
 			model.addAttribute("isSignupSuccess", "false");
-			return "signupForm";
+			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userVO", result);
+		    redirectAttributes.addFlashAttribute("userVO", user);
+			return "redirect:/signup";
 		} else {
-			model.addAttribute("isSignupSuccess", "true");
-			return "loginForm";
+			redirectAttributes.addFlashAttribute("isSignupSuccess", "true");
+			return "redirect:/";
 		}
 	}
 	
 	@RequestMapping(value = "/loginValidate", method = RequestMethod.POST)
-	public String loginValidate(@ModelAttribute UserVO user, BindingResult result, Model model, HttpSession session) {
+	public String loginValidate(@ModelAttribute UserVO user, final BindingResult result,
+			Model model, HttpSession session, RedirectAttributes redirectAttributes) {
 		userService.loginValidate(user, result);
 		if(result.hasErrors()) {
-			return "loginForm";
+			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.userVO", result);
+		    redirectAttributes.addFlashAttribute("userVO", user);
+			return "redirect:/";
 		} else {
-			session.setAttribute("userID", user.getUserEmail());
+			String id = user.getUserEmail();
+			String name = userService.selectUser(user.getUserEmail()).get(0).getUserName();
+			session.setAttribute("userID", id);
+			session.setAttribute("userName", name);
+			session.setAttribute("hostID", id);
+			session.setAttribute("hostName", name);
 			return "redirect:/board";
 		}
 	}

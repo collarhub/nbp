@@ -2,112 +2,224 @@
     pageEncoding="UTF-8"
     session="true" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript">
-var pictureList = ${pictureList};
-function goToPost(form) {
-	form.submit();
-}
-function pictureSubmit(form) {
-	form.submit();
-}
-$(document).ready(function() {
-	var picturePictureStart = 0;
-	for(i = 0; i < 3; i++) {
-		$('#postPictureTable').append('<form action="board" method="post" style="display:inline" id="postPictureForm' + i + '">'
-									+ '<img id="postPicture' + i + '" width="150" height="150" src="" style="cursor:pointer"'
-									+ 'alt="이미지가 없습니다. 이미지를 등록하세요." class="picture" onclick="">'
-									+ '</form>');
-		if(pictureList[i] != undefined && pictureList[i].postTimestamp != undefined && pictureList[i].postNo != undefined) {
-			$('#postPicture' + i).attr('src', 'resources/picture/' + pictureList[i].picturePath);
-			$('#postPictureForm' + i).append('<input type="hidden" value="${id}" name="userEmailHost">'
-											+ '<input type="hidden" value="' + pictureList[i].postTimestamp + '" name="postTimestamp">'
-											+ '<input type="hidden" value="' + pictureList[i].postNo + '" name="postNo">');
-			$('#postPicture' + i).attr('onclick', 'goToPost(postPictureForm' + i + ')');
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>SIMSNS 글쓰기</title>
+	<!-- Bootstrap core CSS-->
+	<link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Custom fonts for this template-->
+	<link href="resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<!-- Page level plugin CSS-->
+	<link href="resources/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+	<!-- Custom styles for this template-->
+	<link href="resources/css/sb-admin.min.css" rel="stylesheet">
+	<link href="resources/simsns/css/simsns.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript">
+		/* var pictureList = ${pictureList}; */
+		function goToPost(form) {
+			form.submit();
 		}
-		if(i % 2 == 1) {
-			$('#postPictureTable').append('<br>');
+		function pictureSubmit(form) {
+			form.submit();
 		}
-	}
-	$('#postPictureTable').append('<form action="postPicture" method="post" style="display:inline" id="postPictureForm3">'
-			+ '<img id="postPicture3" width="150" height="150" style="cursor:pointer"'
-			+ 'src="resources/img/pictureMore.png" style="opacity:0.4;" class="picture" onclick="">'
-			+ '</form>');
-	if(pictureList[0] != undefined && pictureList[0].postTimestamp != undefined && pictureList[0].postNo != undefined) {
-		$('#postPictureForm3').append('<input type="hidden" value="${id}" name="userEmailHost">');
-		$('#postPicture3').attr('onclick', 'goToPost(postPictureForm3)');
-	}
-	for(i = 0; i < pictureList.length; i++) {
-		if(pictureList[i].postTimestamp == undefined && pictureList[i].postNo == undefined) {
-			picturePictureStart = i;
-			break;
-		}
-		if(i == pictureList.length - 1) {
-			picturePictureStart = pictureList.length;
-		}
-	}
-	for(i = 0; i < 3; i++) {
-		$('#picturePictureTable').append('<form action="writePicture" method="post" style="display:inline" id="picturePictureForm' + i + '">'
-										+ '<img id="picturePicture' + i + '" width="150" height="150" src="" style="cursor:pointer"'
-										+ 'alt="이미지가 없습니다. 이미지를 등록하세요." class="picture" onclick="">'
-										+ '</form>');
-		if(pictureList[i + picturePictureStart] != undefined) {
-			$('#picturePicture' + i).attr('src', 'resources/picture/' + pictureList[i + picturePictureStart].picturePath);
-		} else {
-			$('#picturePictureForm' + i).append('<input type="hidden" value="${id}" name="userEmailHost">');
-			$('#picturePictureForm' + i).append('<input type="hidden" value="picture" name="writePictureCancel">');
-			$('#picturePicture' + i).attr('onclick', 'pictureSubmit(picturePictureForm' + i + ')');
-		}
-		if(i % 2 == 1) {
-			$('#picturePictureTable').append('<br>');
-		}
-	}
-	$('#picturePictureTable').append('<form action="picturePicture" method="post" style="display:inline" id="picturePictureForm3">'
-			+ '<img id="picturePicture3" width="150" height="150" style="cursor:pointer"'
-			+ 'src="resources/img/pictureMore.png" style="opacity:0.4;" class="picture" onclick="">'
-			+ '</form>');
-	if(pictureList[0 + picturePictureStart] != undefined) {
-		$('#picturePictureForm3').append('<input type="hidden" value="${id}" name="userEmailHost">');
-		$('#picturePicture3').attr('onclick', 'pictureSubmit(picturePictureForm3)');
-	}
-	$('.picture').css('opacity', '0.4');
-	$('.picture').hover(function(){
-		$(this).css('opacity', '1.0');
-	},
-  	function(){
-    	$(this).css('opacity', '0.4');
-  	});
-
-});
-</script>
+		$(document).ready(function() {
+			$.ajax({
+				cache : false,
+		        type : "GET",
+		        url : "postPicturePreview",
+		        dataType : "json",
+		        contentType: "application/json",
+		        error : function(jqXHR,request, error) {
+		            alert('통신실패!!');
+		            console.log(jqXHR);
+					console.log(request);
+					console.log(JSON.stringify(error));
+		        },
+		        success : function(data) {
+		        	for(i = 0; i < 3; i++) {
+			        	$('#postPictureTable').append('<form action="goToPost" method="post" style="display:inline" id="postPictureForm' + i + '">'
+													+ '<img id="postPicture' + i + '" width="150" height="150" src="" style="cursor:pointer" '
+													+ 'class="picture" onclick="">'
+													+ '</form>');
+			        	if(data[i] != undefined && data[i].postTimestamp != undefined && data[i].postNo != undefined) {
+							$('#postPicture' + i).attr('src', 'resources/picture/' + data[i].picturePath);
+							$('#postPictureForm' + i).append('<input type="hidden" value="' + data[i].postTimestamp + '" name="postTimestamp">'
+															+ '<input type="hidden" value="' + data[i].postNo + '" name="postNo">');
+							$('#postPicture' + i).attr('onclick', 'goToPost(postPictureForm' + i + ')');
+						} else {
+							$('#postPicture' + i).attr('src', 'resources/img/noImage.gif');
+						}
+			        	if(i % 2 == 1) {
+							$('#postPictureTable').append('<br>');
+						}
+		        	}
+		        	$('#postPictureTable').append('<img id="postPicture3" width="150" height="150" style="cursor:pointer"'
+							+ 'src="resources/img/pictureMore.png" style="opacity:0.4;" class="picture" onclick="">');
+					if(data[0] != undefined && data[0].postTimestamp != undefined && data[0].postNo != undefined) {
+						$('#postPicture3').attr('onclick', 'location.href="postPicture"');
+					}
+		        }
+		    });
+			
+			$.ajax({
+				cache : false,
+		        type : "GET",
+		        url : "picturePicturePreview",
+		        dataType : "json",
+		        contentType: "application/json",
+		        error : function(jqXHR,request, error) {
+		            alert('통신실패!!');
+		            console.log(jqXHR);
+					console.log(request);
+					console.log(JSON.stringify(error));
+		        },
+		        success : function(data) {
+		        	for(i = 0; i < 3; i++) {
+						$('#picturePictureTable').append('<form action="writePicture" method="post" style="display:inline" id="picturePictureForm' + i + '">'
+														+ '<img id="picturePicture' + i + '" width="150" height="150" src="" style="cursor:pointer"'
+														+ ' class="picture" onclick="">'
+														+ '</form>');
+						if(data[i] != undefined) {
+							$('#picturePicture' + i).attr('src', 'resources/picture/' + data[i].picturePath);
+						} else {
+							$('#picturePicture' + i).attr('src', 'resources/img/addImage.png');
+							$('#picturePictureForm' + i).append('<input type="hidden" value="${id}" name="userEmailHost">');
+							$('#picturePictureForm' + i).append('<input type="hidden" value="picture" name="writePictureCancel">');
+							$('#picturePicture' + i).attr('onclick', 'location.href="writePicture?back=picture"');
+						}
+						if(i % 2 == 1) {
+							$('#picturePictureTable').append('<br>');
+						}
+					}
+					$('#picturePictureTable').append('<img id="picturePicture3" width="150" height="150" style="cursor:pointer"'
+							+ 'src="resources/img/pictureMore.png" style="opacity:0.4;" class="picture" onclick="">');
+					if(data[0] != undefined) {
+						$('#picturePicture3').attr('onclick', 'location.href="picturePicture"');
+					}
+		        }
+		    });
+			
+			$('.picture').css('opacity', '0.4!important');
+			$('.picture').hover(function(){
+				$(this).css('opacity', '1.0!important');
+			},
+		  	function(){
+		    	$(this).css('opacity', '0.4!important');
+		  	});
+		
+		});
+	</script>
 </head>
-<body>
-hello
-${sessionScope.userID}
-<input type="button" value="로그아웃" onclick="javascript:location.href='/simsns/logout'"><br/>
-${id}의 사진 게시판<br>
-<form action="board" method="post">
-	<input type="submit" value="게시물 게시판">
-	<input type="hidden" value="${id}" name="userEmailHost">
-</form>
-	<table>
-		<tr>
-			<th id=postPictureTable>
-			</th>
-			<th style="min-width:100px"></th>
-			<th id="picturePictureTable">
-			</th>
-		</tr>
-		<tr>
-			<th>게시물 사진</th>
-			<th></th>
-			<th>사진첩</th>
-		</tr>
-	</table>
+<body class="fixed-nav sticky-footer bg-gray" id="page-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-simsns fixed-top out" id="mainNav">
+		<a class="navbar-brand" href="/simsns/">SIMSNS</a>
+		<div class="board-title-text">${sessionScope.hostName} 의 사진 게시판</div>
+		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav navbar-sidenav side-navbar" id="exampleAccordion">
+				<li class="nav-item nav-item-simsns" data-toggle="tooltip" data-placement="right" title="mainBoard">
+					<a class="nav-link" href="board">
+						<i class="fa fa-fw fa-newspaper-o"></i>
+						<span class="nav-link-text">게시판</span>
+					</a>
+				</li>
+				<li class="nav-item nav-item-simsns" data-toggle="tooltip" data-placement="right" title="picture">
+					<a class="nav-link" href="picture">
+						<i class="fa fa-fw fa-picture-o"></i>
+						<span class="nav-link-text">사진</span>
+					</a>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<div class="vertical-container">
+						<form action="boardMove" method="post" name=myBoardFrom>
+							<input type="hidden" value="${sessionScope.userID}" name="userEmail">
+							<input type="hidden" value="${sessionScope.userName}" name="userName">
+						</form>
+						<a class="nav-link small-text vertical-content" href="javascript:;" onclick="javascript:document.myBoardFrom.submit();">
+							${sessionScope.userName}님
+						</a>
+						<span class="small-text vertical-content">
+							환영합니다
+						</span>
+					</div>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="modal" data-target="#logoutModal">
+						<i class="fa fa-fw fa-sign-out"></i>로그아웃</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<div class="content-wrapper content-wrapper-simsns">
+		<div class="post-wrapper-simsns">
+			<div class="mb-0 mt-4">
+				<i class="fa fa-fw fa-picture-o"></i> 사진 게시판
+			</div>
+			<hr class="mt-2">
+			<table>
+				<tr>
+					<th id=postPictureTable>
+					</th>
+					<th style="min-width:100px"></th>
+					<th id="picturePictureTable">
+					</th>
+				</tr>
+				<tr>
+					<th>게시물 사진</th>
+					<th></th>
+					<th>사진첩</th>
+				</tr>
+			</table>
+		</div>
+		<!-- Scroll to Top Button-->
+		<a class="scroll-to-top rounded" href="#page-top">
+			<i class="fa fa-angle-up"></i>
+		</a>
+		
+		<!-- Logout Modal-->
+		<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">로그아웃</h5>
+						<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">x</span>
+						</button>
+					</div>
+					<div class="modal-body">로그아웃 하시겠습니까?</div>
+					<div class="modal-footer">
+						<button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+						<a class="btn btn-primary bg-simsns" href="logout">로그아웃</a>
+					</div>
+				</div>
+			</div>
+		</div>
+    
+		<!-- Bootstrap core JavaScript-->
+		<!-- <script src="resources/vendor/jquery/jquery.min.js"></script> -->
+		<script src="resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- Core plugin JavaScript-->
+		<script src="resources/vendor/jquery-easing/jquery.easing.min.js"></script>
+		<!-- Page level plugin JavaScript-->
+		<script src="resources/vendor/chart.js/Chart.min.js"></script>
+		<script src="resources/vendor/datatables/jquery.dataTables.js"></script>
+		<script src="resources/vendor/datatables/dataTables.bootstrap4.js"></script>
+		<!-- Custom scripts for all pages-->
+		<script src="resources/js/sb-admin.min.js"></script>
+		<!-- Custom scripts for this page-->
+		<script src="resources/js/sb-admin-datatables.min.js"></script>
+		<!-- <script src="resources/js/sb-admin-charts.min.js"></script> -->
+	</div>
 </body>
 </html>

@@ -22,19 +22,12 @@ public class PictureDAO {
 	@Autowired
 	private PictureUploader pictureUploader;
 
-	public void insertPicture(PictureVO picture, MultipartFile multipartFile, final String ROOT_PATH) {
-		picture.setPictureTimestamp(Long.toString(new Timestamp(System.currentTimeMillis()).getTime()));
-		String maxPictureNo = sqlSession.selectOne("pictureMapper.selectMaxPictureNo", picture);
-		if(maxPictureNo == null) {
-			picture.setPictureNo("1");
-		} else {
-			picture.setPictureNo(Integer.toString(Integer.parseInt(maxPictureNo) + 1));
-		}
-		picture.setPicturePath(new Md5Generator().getMd5(picture.getUserEmailHost())
-								+ picture.getPictureTimestamp() + picture.getPictureNo()
-								+ new PictureExtensionValidator().getExtension(multipartFile));
+	public String selectMaxPictureNo(PictureVO picture) {
+		return sqlSession.selectOne("pictureMapper.selectMaxPictureNo", picture);
+	}
+	
+	public void insertPicture(PictureVO picture) {
         sqlSession.insert("pictureMapper.insertPicture", picture);
-        pictureUploader.writeFile(multipartFile, ROOT_PATH + UPLOAD_PATH, picture.getPicturePath());
 	}
 
 	public List<PictureVO> getAllPicture(UserVO user) {
@@ -71,13 +64,15 @@ public class PictureDAO {
 		return sqlSession.selectOne("pictureMapper.selectPicturePicture", picture);
 	}
 	
-	public void updatePicturePicture(PictureVO picture, MultipartFile multipartFile, String ROOT_PATH) {
-		pictureUploader.deleteFile(ROOT_PATH + UPLOAD_PATH, picture.getPicturePath());
-		picture.setPicturePath(new Md5Generator().getMd5(picture.getUserEmailHost())
-				+ picture.getPictureTimestamp() + picture.getPictureNo()
-				+ new PictureExtensionValidator().getExtension(multipartFile));
+	public void updatePicturePicture(PictureVO picture) {
 		sqlSession.update("pictureMapper.updatePicturePicture", picture);
-		pictureUploader.writeFile(multipartFile, ROOT_PATH + UPLOAD_PATH, picture.getPicturePath());
 	}
 	
+	public List<PictureVO> selectPostPicturePreview(PictureVO picture) {
+		return sqlSession.selectList("pictureMapper.selectPostPicturePreview", picture);
+	}
+	
+	public List<PictureVO> selectPicturePicturePreview(PictureVO picture) {
+		return sqlSession.selectList("pictureMapper.selectPicturePicturePreview", picture);
+	}
 }

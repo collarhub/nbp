@@ -1,0 +1,236 @@
+@import url('https://fonts.googleapis.com/css?family=Questrial');
+@import url('https://fonts.googleapis.com/css?family=Nanum+Gothic+Coding:400,700&subset=korean');
+body {
+	font-family: 'Questrial', 'Nanum Gothic Coding', sans-serif;
+	font-weight: 100;
+}
+.in {
+	margin: 0 auto;
+}
+.text-big {
+	font-size: 35px;
+	padding: 0px;
+}
+.bg-simsns {
+	background-color: #1ec545!important;
+	border-color: #1ec545!important;
+}
+.font-color-simsns {
+	color: #00ab33!important;
+}
+.font-color-simsns-dark {
+	color: #239e36!important;
+}
+.bg-gray {
+	background-color: #f2f4f7!important;
+}
+.bg-gray-dark {
+	background-color: #e9ebee!important;
+	border-color: #ffffff!important;
+}
+.btn-simsns {
+	background-color: #28a93a!important;
+	border-color: #239e36!important;
+}
+.btn-simsns-write {
+	background-color: #ffffff!important;
+	border-color: #1ec545!important;
+	color: #1ec545!important;
+	position: fixed;
+	z-index: 1030;
+	right: 15px;
+	zoom: 1;
+	filter: alpha(opacity=80);
+	opacity: 0.8;
+}
+.btn-simsns-write:hover {
+	background-color: #1ec545!important;
+	border-color: #1ec545!important;
+	color: #ffffff!important;
+	position: fixed;
+	z-index: 1030;
+    right: 15px;
+}
+.navbar-text-simsns {
+	color: #000000!important;
+}
+.board-title-text {
+	font-size: 25px;
+	color: #ffffff!important;
+	/* text-shadow: 5px 5px 5px grey; */
+}
+.small-text {
+	font-size: 13px;
+	color: #ffffff!important;
+}
+.vertical-container {
+	display: table;
+	height: 100%;
+}
+.vertical-content {
+	display: table-row;
+	vertical-align: middle;
+}
+.scroll-to-top:hover {
+    background: #747a80!important;
+}
+.form-control-small {
+	height: calc(1.125rem)!important;
+	width: calc(5rem)!important;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	font-size: 0.7rem;
+}
+.init-hide {
+	display: none;
+}
+.space-top-2 {
+	margin-top: 2px;
+}
+.space-right-2 {
+	margin-right: 2px;
+}
+.post-wrapper-simsns {
+	padding: 50px;
+}
+.post-title-big {
+	font-size: 2rem!important;
+}
+.post-content {
+	font-size: 1rem!important;
+}
+/* Tooltip container */
+.tooltip-simsns {
+    position: relative;
+    display: inline-block;
+}
+
+/* Tooltip text */
+.tooltip-simsns .tooltiptext {
+    visibility: hidden;
+    width: 120px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    padding: 5px 0;
+    border-radius: 6px;
+
+    /* Position the tooltip text */
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -60px;
+
+    /* Fade in tooltip */
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Tooltip arrow */
+.tooltip-simsns .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.tooltip-simsns:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+}
+.post-close {
+	font-size: .8rem!important;
+	opacity: 0.3!important;
+}
+.post-close:hover {
+	opacity: 0.75!important;
+}
+.comment-writer {
+	display: none;
+}
+.comment-textarea {
+	width: 100%;
+	resize: none;
+	overflow-y: scroll!important;
+}
+.comment-textarea:focus {
+    outline-offset: 0;
+    outline-style: none;
+}
+.comment-content {
+	margin-bottom: 0!important;
+	font-size: 1rem!important;
+}
+.align-right {
+	float: right;
+}
+.comment-btn {
+	font-size: .8rem!important;
+	opacity: 0.3!important;
+	float: none!important;
+}
+.comment-btn:hover {
+	opacity: 0.75!important;
+}
+.comment-subtree {
+	margin-left: -30px;
+	color: #b9b9b9!important;
+}
+.write-btn {
+	color: #808080!important;
+}
+.post-write-content {
+	resize: none;
+	overflow-y: scroll!important;
+}
+.upload-btn {
+	background: rgba(0, 0, 0, 0);
+	border-color: lightgray!important;
+	border-style: dashed;
+	width: 100px;
+	height: 100px;
+	color: lightgray;
+	cursor: pointer;
+}
+.upload-btn:hover {
+	color: gray;
+	border-color: gray!important;
+}
+.img-outter {
+	position: relative;
+	margin: 0 auto;
+	height: 100px;
+	width: 100px;
+	overflow: hidden;
+}
+.img-inner-btn {
+	position: absolute;
+	top: 10px;
+	right: 10px;
+	display: none;
+}
+.btn-center {
+	margin: 0 auto;
+	width: 15%!important;
+}
+@media (min-width: 992px) {
+	.side-navbar {
+		background-color: #f2f4f7!important;
+		padding-top: 50px!important;
+	}
+	#mainNav .navbar-brand {
+		width: 80px!important;
+	}
+	#mainNav .navbar-collapse .navbar-sidenav>.nav-item-simsns {
+		width: 200px!important;
+	}
+	.content-wrapper-simsns {
+	    margin-left: 200px;
+	}
+}

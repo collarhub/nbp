@@ -2,7 +2,7 @@ package com.nbp.simsns.controller;
 
 import java.util.Locale;
 
-import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,12 +19,14 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String login(Locale locale, Model model) {
+	public String login(Locale locale, Model model, HttpServletResponse response) {
+		response.setHeader("Cache-Control","no-store");
 		return "loginForm";
 	}
 	
 	@RequestMapping(value = "/signup", method = RequestMethod.GET)
-	public String signup(Locale locale, Model model) {
+	public String signup(Locale locale, Model model, HttpServletResponse response) {
+		response.setHeader("Cache-Control","no-store");
 		return "signupForm";
 	}
 	

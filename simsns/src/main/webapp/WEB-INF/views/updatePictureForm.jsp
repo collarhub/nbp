@@ -3,71 +3,260 @@
     session="true"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript">
-	function updateCancel(formUpdatePicture) {
-		formUpdatePicture.action = "picturePicture";
-		formUpdatePicture.submit();
-	}
-	$(document).ready(function() {
-		function readURL(input) {
-			if (input.files && input.files[0]) {
-				var reader = new FileReader();
-				reader.onload = function(e) {
-					$('#uploadFile').attr('src', e.target.result);
-				}
-				reader.readAsDataURL(input.files[0]);
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+	<title>SIMSNS 사진 수정</title>
+	<!-- Bootstrap core CSS-->
+	<link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<!-- Custom fonts for this template-->
+	<link href="resources/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+	<!-- Page level plugin CSS-->
+	<link href="resources/vendor/datatables/dataTables.bootstrap4.css" rel="stylesheet">
+	<!-- Custom styles for this template-->
+	<link href="resources/css/sb-admin.min.css" rel="stylesheet">
+	<link href="resources/simsns/css/simsns.css" rel="stylesheet">
+	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript">
+		function imageFit() {
+			frame = $('#imageFrame');
+			img = $('#uploadFile');
+			frameAspect = frame.height() / frame.width();
+			imgAspect = img.height() / img.width();
+		
+			if (imgAspect <= frameAspect) {
+			    // 이미지가 div보다 납작한 경우 세로를 div에 맞추고 가로는 잘라낸다
+			    imgWidthActual = frame.outerHeight() / imgAspect;
+			    imgWidthToBe = frame.outerHeight() / frameAspect;
+			    marginLeft = -Math.round((imgWidthActual - imgWidthToBe) / 2);
+			    img.css('width', 'auto').css('height', '100%').css('margin-left', marginLeft + 'px');
+			} else {
+			    // 이미지가 div보다 길쭉한 경우 가로를 div에 맞추고 세로를 잘라낸다
+			    img.css('width', '100%').css('height', 'auto').css('margin-left', '0');
 			}
 		}
-		$('#fileUpload').change(function(){
-			readURL(this);
+		function updateCancel(formUpdatePicture) {
+			formUpdatePicture.action = "picturePicture";
+			formUpdatePicture.submit();
+		}
+		$(document).ready(function() {
+			function readURL(input) {
+				if (input.files && input.files[0]) {
+					var reader = new FileReader();
+					reader.onload = function(e) {
+						$('#uploadFile').attr('src', e.target.result);
+					}
+					reader.readAsDataURL(input.files[0]);
+					$('#uploadButton').css('display', 'none');
+					$('#imageDeleteButton').css('display', 'block');
+				}
+			}
+			$('#fileUpload').change(function(){
+				readURL(this);
+			});
+			$.ajax({
+				cache : false,
+		        type : "GET",
+		        url : "getPicture?pictureTimestamp=${param.pictureTimestamp}&pictureNo=${param.pictureNo}",
+		        dataType : "json",
+		        contentType: "application/json",
+		        error : function(jqXHR,request, error) {
+		            alert('통신실패!!');
+		            console.log(jqXHR);
+					console.log(request);
+					console.log(JSON.stringify(error));
+		        },
+		        success : function(data) {
+		        	$('#pictureTitle').val(data.pictureTitle);
+		        	$('#uploadFile').attr('src', 'resources/picture/' + data.picturePath);
+		        	$('#uploadButton').css('display', 'none');
+					$('#imageDeleteButton').css('display', 'block');
+		        }
+		    });
 		});
-	});
-	function deleteImage() {
-		$('#uploadFile').attr('src', '');
-		$('#fileUpload').attr('type', '');
-		$('#fileUpload').attr('type', 'file');
-		$('#deleted').val('true');
-	}
-</script>
-</head>
-<body>
-<c:if test="${sessionScope.userID == null}">
-	<script type="text/javascript">
-		alert('로그인 후 이용해주세요.');
-		location.href = '/simsns/';
+		function deleteImage() {
+			$('#uploadFile').attr('src', '');
+			$('#fileUpload').attr('type', '');
+			$('#fileUpload').attr('type', 'file');
+			$('#deleted').val('true');
+			$('#uploadButton').css('display', 'block');
+			$('#imageDeleteButton').css('display', 'none');
+		}
 	</script>
-</c:if>
-<form action="updatePictureCommit" method="post" enctype="multipart/form-data" id="formUpdatePicture">
-	<table>
-		<tr>
-			<th>제목</th>
-			<th><input type="text" id="pictureTitle" name="pictureTitle" value="${pictureVO.pictureTitle}"></th>
-			<th><form:errors path="pictureVO.pictureTitle"></form:errors></th>
-		</tr>
-		<tr>
-			<th><input type="file" id="fileUpload" name="fileUpload"></th>
-			<th style="border:1px solid"><img id="uploadFile" width="80" height="80" src="${picture}"><input type="button" value="삭제" onclick="deleteImage()"></th>
-			<th><form:errors path="pictureVO.picturePath"></form:errors>
-			<input type="hidden" value="false" name="deleted" id="deleted"></th>
-		</tr>
-		<tr>
-			<th></th>
-			<th align="right">
-				<input type="button" value="취소" onclick="updateCancel(formUpdatePicture)">
-				<input type="submit" value="완료">
-			</th>
-			<th></th>
-		</tr>
-	</table>
-	<input type="hidden" value="${pictureVO.userEmailHost}" name="userEmailHost" id="userEmailHost">
-	<input type="hidden" value="${pictureVO.pictureNo}" name="pictureNo">
-	<input type="hidden" value="${pictureVO.pictureTimestamp}" name="pictureTimestamp">
-</form>
+</head>
+<body class="fixed-nav sticky-footer bg-gray" id="page-top">
+	<nav class="navbar navbar-expand-lg navbar-dark bg-simsns fixed-top out" id="mainNav">
+		<a class="navbar-brand" href="/simsns/">SIMSNS</a>
+		<div class="board-title-text">${sessionScope.hostName} 의 글쓰기</div>
+		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarResponsive">
+			<ul class="navbar-nav navbar-sidenav side-navbar" id="exampleAccordion">
+				<li class="nav-item nav-item-simsns" data-toggle="tooltip" data-placement="right" title="mainBoard">
+					<a class="nav-link" href="board">
+						<i class="fa fa-fw fa-newspaper-o"></i>
+						<span class="nav-link-text">게시판</span>
+					</a>
+				</li>
+				<li class="nav-item nav-item-simsns" data-toggle="tooltip" data-placement="right" title="picture">
+					<a class="nav-link" href="picture">
+						<i class="fa fa-fw fa-picture-o"></i>
+						<span class="nav-link-text">사진</span>
+					</a>
+				</li>
+			</ul>
+			<ul class="navbar-nav ml-auto">
+				<li class="nav-item">
+					<div class="vertical-container">
+						<form action="boardMove" method="post" name=myBoardFrom>
+							<input type="hidden" value="${sessionScope.userID}" name="userEmail">
+							<input type="hidden" value="${sessionScope.userName}" name="userName">
+						</form>
+						<a class="nav-link small-text vertical-content" href="javascript:;" onclick="javascript:document.myBoardFrom.submit();">
+							${sessionScope.userName}님
+						</a>
+						<span class="small-text vertical-content">
+							환영합니다
+						</span>
+					</div>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" data-toggle="modal" data-target="#logoutModal">
+						<i class="fa fa-fw fa-sign-out"></i>로그아웃</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<div class="content-wrapper content-wrapper-simsns">
+		<c:if test="${sessionScope.userID == null}">
+			<script type="text/javascript">
+				alert('로그인 후 이용해주세요.');
+				location.href = '/simsns/';
+			</script>
+		</c:if>
+		
+		<div class="post-wrapper-simsns">
+			<div class="mb-0 mt-4">
+				<i class="fa fa-pencil"></i> 사진 수정
+			</div>
+			<hr class="mt-2">
+			<form action="updatePictureCommit" method="post" enctype="multipart/form-data" id="formWrite">
+				<div class="card card-register mx-auto mt-5">
+					<div class="card-header">
+						<div class="form-group">
+							<div class="row">
+								<label class="col-2" for="pictureTitle">제목</label>
+								<input class="col-10 form-control" id="pictureTitle" name="pictureTitle" type="text" placeholder="제목을 입력하세요" value="">
+							</div>
+							<div class="row">
+								<form:errors path="pictureVO.pictureTitle" class="ml-2 text-danger"></form:errors>
+							</div>
+						</div>
+					</div>
+					
+					<div class="card-footer" style="background:white">
+						<div class="form-group">
+							<div class="row">
+								<label class="col-2">사진 첨부</label>
+								<div class="col-10 form-control">
+									<div class="img-outter" id="imageFrame">
+										<button type="button" class="img-inner-btn close post-close" id="imageDeleteButton" onclick="deleteImage()">
+											<i class="fa fa-fw fa-close"></i>
+										</button>
+										<button class="upload-btn" type="button" id="uploadButton" onclick="javascript:$('#fileUpload').click()">
+											<i class="fa fa-fw fa-plus"></i>
+										</button>
+										<img id="uploadFile" src="" onload="imageFit()">
+									</div>
+								</div>
+							</div>
+							<div class="row init-hide">
+								<input type="file" id="fileUpload" name="fileUpload">
+								<input type="hidden" value="false" name="deleted" id="deleted">
+								<input type="hidden" value="${param.pictureTimestamp}" name="pictureTimestamp">
+								<input type="hidden" value="${param.pictureNo}" name="pictureNo">
+							</div>
+						</div>
+					</div>
+				</div>
+				<input type="submit" class="mt-3 btn-center btn btn-primary btn-block bg-simsns" value="수정">
+				<div class="text-center">
+					<a class="btn-center d-block small mt-3" href="board">취소</a>
+				</div>
+			</form>
+		</div>
+		
+		<%-- <form action="updatePictureCommit" method="post" enctype="multipart/form-data" id="formUpdatePicture">
+			<table>
+				<tr>
+					<th>제목</th>
+					<th><input type="text" id="pictureTitle" name="pictureTitle" value=""></th>
+					<th><form:errors path="pictureVO.pictureTitle"></form:errors></th>
+				</tr>
+				<tr>
+					<th><input type="file" id="fileUpload" name="fileUpload"></th>
+					<th style="border:1px solid"><img id="uploadFile" width="80" height="80" src=""><input type="button" value="삭제" onclick="deleteImage()"></th>
+					<th><form:errors path="pictureVO.picturePath"></form:errors>
+					<input type="hidden" value="false" name="deleted" id="deleted"></th>
+				</tr>
+				<tr>
+					<th></th>
+					<th align="right">
+						<input type="button" value="취소" onclick="updateCancel(formUpdatePicture)">
+						<input type="submit" value="완료">
+					</th>
+					<th></th>
+				</tr>
+			</table>
+			<input type="hidden" value="${pictureVO.userEmailHost}" name="userEmailHost" id="userEmailHost">
+			<input type="hidden" value="${pictureVO.pictureNo}" name="pictureNo">
+			<input type="hidden" value="${pictureVO.pictureTimestamp}" name="pictureTimestamp">
+		</form> --%>
+
+		<!-- Scroll to Top Button-->
+		<a class="scroll-to-top rounded" href="#page-top">
+			<i class="fa fa-angle-up"></i>
+		</a>
+		
+		<!-- Logout Modal-->
+		<div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title" id="exampleModalLabel">로그아웃</h5>
+						<button class="close" type="button" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">x</span>
+						</button>
+					</div>
+					<div class="modal-body">로그아웃 하시겠습니까?</div>
+					<div class="modal-footer">
+						<button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+						<a class="btn btn-primary bg-simsns" href="logout">로그아웃</a>
+					</div>
+				</div>
+			</div>
+		</div>
+    
+		<!-- Bootstrap core JavaScript-->
+		<!-- <script src="resources/vendor/jquery/jquery.min.js"></script> -->
+		<script src="resources/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+		<!-- Core plugin JavaScript-->
+		<script src="resources/vendor/jquery-easing/jquery.easing.min.js"></script>
+		<!-- Page level plugin JavaScript-->
+		<script src="resources/vendor/chart.js/Chart.min.js"></script>
+		<script src="resources/vendor/datatables/jquery.dataTables.js"></script>
+		<script src="resources/vendor/datatables/dataTables.bootstrap4.js"></script>
+		<!-- Custom scripts for all pages-->
+		<script src="resources/js/sb-admin.min.js"></script>
+		<!-- Custom scripts for this page-->
+		<script src="resources/js/sb-admin-datatables.min.js"></script>
+		<!-- <script src="resources/js/sb-admin-charts.min.js"></script> -->
+	</div>
 </body>
 </html>

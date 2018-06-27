@@ -5,7 +5,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 <mapper namespace= "likeMapper" >
 	<select id ="selectMaxLikeNo" parameterType="com.nbp.simsns.vo.LikeVO" resultType= "java.lang.String">
-        SELECT MAX(likeNo)
+        SELECT MAX(CAST(likeNo AS UNSIGNED))
         FROM simsns.like
         WHERE userEmailHost = #{userEmailHost} AND postNo = #{postNo}
         	AND postTimestamp = #{postTimestamp} AND commentNo = #{commentNo}
@@ -14,24 +14,25 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 
 	<insert id ="insertLike" parameterType="com.nbp.simsns.vo.LikeVO" >
         INSERT INTO simsns.like
-        (userEmailHost, postNo, postTimestamp, commentNo,
-        	commentTimestamp, likeNo, likeTimestamp, userEmailGuest, commentDepth)
+        ( userEmailHost, postNo, postTimestamp, commentNo,
+        	commentTimestamp, likeNo, likeTimestamp, userEmailGuest, commentDepth, userNameGuest )
         VALUES
         ( #{userEmailHost}, #{postNo}, #{postTimestamp}, #{commentNo},
-        	#{commentTimestamp}, #{likeNo}, #{likeTimestamp}, #{userEmailGuest}, #{commentDepth})
+        	#{commentTimestamp}, #{likeNo}, #{likeTimestamp}, #{userEmailGuest}, #{commentDepth}, #{userNameGuest} )
     </insert>
     
     <select id ="selectAllLike" parameterType="com.nbp.simsns.vo.UserVO" resultType="com.nbp.simsns.vo.LikeVO">
     	SELECT userEmailHost, postNo, postTimestamp, commentNo, commentTimestamp,
-    		likeNo, likeTimestamp, userEmailGuest, commentDepth
+    		likeNo, likeTimestamp, userEmailGuest, commentDepth, userNameGuest
     	FROM simsns.like
     	WHERE userEmailHost = #{userEmail}
-    	ORDER BY postTimestamp DESC, postNo DESC, commentDepth ASC,
-    		commentTimestamp ASC, commentNo ASC, likeTimestamp ASC, likeNo ASC
+    	ORDER BY CAST(postTimestamp AS UNSIGNED) DESC, CAST(postNo AS UNSIGNED) DESC, CAST(commentDepth AS UNSIGNED) ASC,
+    		CAST(commentTimestamp AS UNSIGNED) ASC, CAST(commentNo AS UNSIGNED) ASC, CAST(likeTimestamp AS UNSIGNED) ASC, CAST(likeNo AS UNSIGNED) ASC
     </select>
     
     <select id="selectLike" parameterType="com.nbp.simsns.vo.LikeVO" resultType="com.nbp.simsns.vo.LikeVO">
-    	SELECT userEmailHost, postTimestamp, postNo, commentTimestamp, commentNo, commentDepth, likeTimestamp, likeNo, userEmailGuest
+    	SELECT userEmailHost, postTimestamp, postNo, commentTimestamp, commentNo, commentDepth,
+    		likeTimestamp, likeNo, userEmailGuest, userNameGuest
     	FROM simsns.like
     	WHERE userEmailHost = #{userEmailHost} AND postTimestamp = #{postTimestamp} AND postNo = #{postNo}
     		AND commentTimestamp = #{commentTimestamp} AND commentNo = #{commentNo} AND commentDepth = #{commentDepth}
