@@ -4,6 +4,8 @@
 
 자신의 일상을 글과 사진으로 기록하고 친구들과 소통을 할 수 있습니다.
 
+<img src="https://media.oss.navercorp.com/user/9790/files/ef92d682-7ac9-11e8-9538-083daf9919fb" width="50%"><img src="https://media.oss.navercorp.com/user/9790/files/3194414c-7aca-11e8-8010-8c58e8eee67d" width="50%">
+
 개발 내용 : [feature list](https://oss.navercorp.com/2018-nbp-internship-team1/junhee/wiki/Feature-List)
 
 진행 사항 : [todo list](https://oss.navercorp.com/2018-nbp-internship-team1/junhee/projects/1)
