@@ -31,7 +31,8 @@
 					+ '<th>'
 					+ '<form action="goToPost" method="post" style="display:inline" id="postPictureForm' + pictureIndex + '">'
 					+ '<img id="postPicture' + pictureIndex + '" width="150" height="150"'
-					+ 'src="resources/picture/' + pictureList[pictureIndex].picturePath + '" style="cursor:pointer"'
+					/* + 'src="resources/picture/' + pictureList[pictureIndex].picturePath + '" style="cursor:pointer"' */
+					+ 'src="/home1/irteam/resources/picture/' + pictureList[pictureIndex].picturePath + '" style="cursor:pointer"'
 					+ 'onclick="goToPost(postPictureForm' + pictureIndex + ')">'
 					+ '<input type="hidden" value="${id}" name="userEmailHost">'
 					+ '<input type="hidden" value="' + pictureList[pictureIndex].postTimestamp + '" name="postTimestamp">'

@@ -41,7 +41,8 @@
 					+ '<tr>'
 					+ '<th>'
 					+ '<img id="postPicture' + pictureIndex + '" width="150" height="150"'
-					+ 'src="resources/picture/' + pictureList[pictureIndex].picturePath + '">'
+					/* + 'src="resources/picture/' + pictureList[pictureIndex].picturePath + '">' */
+					+ 'src="/home1/irteam/resources/picture/' + pictureList[pictureIndex].picturePath + '">'
 					+ (
 							("${sessionScope.userID}" == pictureList[pictureIndex].userEmailGuest) ?
 								'<form action="deletePicture" method="post" style="display:inline" id="picturePictureForm' + pictureIndex + '">'

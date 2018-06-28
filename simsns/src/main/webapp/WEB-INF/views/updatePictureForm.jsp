@@ -73,7 +73,8 @@
 		        },
 		        success : function(data) {
 		        	$('#pictureTitle').val(data.pictureTitle);
-		        	$('#uploadFile').attr('src', 'resources/picture/' + data.picturePath);
+		        	/* $('#uploadFile').attr('src', 'resources/picture/' + data.picturePath); */
+		        	$('#uploadFile').attr('src', '/home1/irteam/resources/picture/' + data.picturePath);
 		        	$('#uploadButton').css('display', 'none');
 					$('#imageDeleteButton').css('display', 'block');
 		        }

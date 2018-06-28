@@ -48,7 +48,8 @@
 													+ 'class="picture" onclick="">'
 													+ '</form>');
 			        	if(data[i] != undefined && data[i].postTimestamp != undefined && data[i].postNo != undefined) {
-							$('#postPicture' + i).attr('src', 'resources/picture/' + data[i].picturePath);
+							/* $('#postPicture' + i).attr('src', 'resources/picture/' + data[i].picturePath); */
+							$('#postPicture' + i).attr('src', '/home1/irteam/resources/picture/' + data[i].picturePath);
 							$('#postPictureForm' + i).append('<input type="hidden" value="' + data[i].postTimestamp + '" name="postTimestamp">'
 															+ '<input type="hidden" value="' + data[i].postNo + '" name="postNo">');
 							$('#postPicture' + i).attr('onclick', 'goToPost(postPictureForm' + i + ')');
@@ -86,7 +87,8 @@
 														+ ' class="picture" onclick="">'
 														+ '</form>');
 						if(data[i] != undefined) {
-							$('#picturePicture' + i).attr('src', 'resources/picture/' + data[i].picturePath);
+							/* $('#picturePicture' + i).attr('src', 'resources/picture/' + data[i].picturePath); */
+							$('#picturePicture' + i).attr('src', '/home1/irteam/resources/picture/' + data[i].picturePath);
 						} else {
 							$('#picturePicture' + i).attr('src', 'resources/img/addImage.png');
 							$('#picturePictureForm' + i).append('<input type="hidden" value="${id}" name="userEmailHost">');
