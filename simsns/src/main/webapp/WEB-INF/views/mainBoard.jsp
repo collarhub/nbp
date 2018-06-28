@@ -189,7 +189,7 @@
 											&& pictureList[pictureIndex].postTimestamp == postList[index].postTimestamp
 											&& pictureList[pictureIndex].postNo == postList[index].postNo) ?
 												/* '<img class="card-img-top img-fluid w-100" src="resources/picture/' + pictureList[pictureIndex++].picturePath + '"' */
-												'<img class="card-img-top img-fluid w-100" src="/home1/irteam/resources/picture/' + pictureList[pictureIndex++].picturePath + '"'
+												'<img class="card-img-top img-fluid w-100" src="/resources/picture/' + pictureList[pictureIndex++].picturePath + '"'
 												+ 'onload="imgOnLoad()" onerror="imgOnError()"><br>'
 												: ''
 								)

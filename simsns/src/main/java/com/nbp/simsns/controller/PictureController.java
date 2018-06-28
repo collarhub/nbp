@@ -86,7 +86,7 @@ public class PictureController {
 			@RequestPart(required=true)List<MultipartFile> fileUpload, HttpServletRequest request, @RequestParam("back") String back,
 			RedirectAttributes redirectAttributes) {
 		/*final String ROOT_PATH = request.getSession().getServletContext().getRealPath("/");*/
-		final String ROOT_PATH = "/home1/irteam/";
+		final String ROOT_PATH = "/home1/irteam/apps/tomcat/webapps/";
 		picture.setUserEmailGuest(session.getAttribute("userID").toString());
 		picture.setUserNameGuest(session.getAttribute("userName").toString());
 		picture.setUserEmailHost(session.getAttribute("hostID").toString());
@@ -111,7 +111,7 @@ public class PictureController {
 	public String deletePicture(@ModelAttribute PictureVO picture,
 			HttpSession session, HttpServletRequest request) {
 		/*final String ROOT_PATH = request.getSession().getServletContext().getRealPath("/");*/
-		final String ROOT_PATH = "/home1/irteam/";
+		final String ROOT_PATH = "/home1/irteam/apps/tomcat/webapps/";
 		picture.setUserEmailGuest(session.getAttribute("userID").toString());
 		picture.setUserNameGuest(session.getAttribute("userName").toString());
 		picture.setUserEmailHost(session.getAttribute("hostID").toString());
@@ -142,7 +142,7 @@ public class PictureController {
 			 BindingResult result, HttpSession session, HttpServletRequest request, @RequestParam("deleted") String deleted,
 			 RedirectAttributes redirectAttributes) {
 		/*final String ROOT_PATH = request.getSession().getServletContext().getRealPath("/");*/
-		final String ROOT_PATH = "/home1/irteam/";
+		final String ROOT_PATH = "/home1/irteam/apps/tomcat/webapps/";
 		picture.setUserEmailGuest(session.getAttribute("userID").toString());
 		picture.setUserNameGuest(session.getAttribute("userName").toString());
 		picture.setUserEmailHost(session.getAttribute("hostID").toString());

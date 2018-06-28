@@ -76,7 +76,7 @@ public class PostController {
 	public String writeCommit(@ModelAttribute PostVO post, BindingResult result, @RequestPart(required=true)List<MultipartFile> fileUpload,
 			HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes) {
 		/*final String ROOT_PATH = request.getSession().getServletContext().getRealPath("/");*/
-		final String ROOT_PATH = "/home1/irteam/";
+		final String ROOT_PATH = "/home1/irteam/apps/tomcat/webapps/";
 		post.setUserEmailHost(session.getAttribute("hostID").toString());
 		post.setUserEmailGuest(session.getAttribute("userID").toString());
 		post.setUserNameGuest(session.getAttribute("userName").toString());
@@ -96,7 +96,7 @@ public class PostController {
 	public String deletePost(@ModelAttribute PostVO post, BindingResult result,
 			HttpSession session, HttpServletRequest request) {
 		/*final String ROOT_PATH = request.getSession().getServletContext().getRealPath("/");*/
-		final String ROOT_PATH = "/home1/irteam/";
+		final String ROOT_PATH = "/home1/irteam/apps/tomcat/webapps/";
 		post.setUserEmailHost(session.getAttribute("hostID").toString());
 		postService.deletePost(post, ROOT_PATH);
 		return "redirect:/board";
@@ -131,7 +131,7 @@ public class PostController {
 			 HttpSession session, HttpServletRequest request, @RequestParam("deleted") String deleted,
 			 RedirectAttributes redirectAttributes) {
 		/*final String ROOT_PATH = request.getSession().getServletContext().getRealPath("/");*/
-		final String ROOT_PATH = "/home1/irteam/";
+		final String ROOT_PATH = "/home1/irteam/apps/tomcat/webapps/";
 		post.setUserEmailHost(session.getAttribute("hostID").toString());
 		post.setUserEmailGuest(session.getAttribute("userID").toString());
 		post.setUserNameGuest(session.getAttribute("userName").toString());
