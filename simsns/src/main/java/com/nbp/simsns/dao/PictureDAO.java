@@ -1,26 +1,18 @@
 package com.nbp.simsns.dao;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.web.multipart.MultipartFile;
 
-import com.nbp.simsns.etc.Md5Generator;
-import com.nbp.simsns.etc.PictureExtensionValidator;
-import com.nbp.simsns.etc.PictureUploader;
 import com.nbp.simsns.vo.PictureVO;
 import com.nbp.simsns.vo.UserVO;
 
 @Repository
 public class PictureDAO {
-	static final String UPLOAD_PATH = "resources/picture/";
 	@Autowired
 	private SqlSession sqlSession;
-	@Autowired
-	private PictureUploader pictureUploader;
 
 	public String selectMaxPictureNo(PictureVO picture) {
 		return sqlSession.selectOne("pictureMapper.selectMaxPictureNo", picture);
@@ -37,19 +29,13 @@ public class PictureDAO {
 	public PictureVO getPicture(PictureVO picture) {
 		return sqlSession.selectOne("pictureMapper.selectPicture", picture);
 	}
-
-	public void updatePicture(PictureVO picture, MultipartFile multipartFile, String ROOT_PATH) {
-		pictureUploader.deleteFile(ROOT_PATH + UPLOAD_PATH, picture.getPicturePath());
-		picture.setPicturePath(new Md5Generator().getMd5(picture.getUserEmailHost())
-				+ picture.getPictureTimestamp() + picture.getPictureNo()
-				+ new PictureExtensionValidator().getExtension(multipartFile));
+	
+	public void updatePicture(PictureVO picture) {
 		sqlSession.update("pictureMapper.updatePicture", picture);
-		pictureUploader.writeFile(multipartFile, ROOT_PATH + UPLOAD_PATH, picture.getPicturePath());
 	}
 
-	public void deletePicture(PictureVO picture, final String ROOT_PATH) {
+	public void deletePicture(PictureVO picture) {
 		sqlSession.delete("pictureMapper.deletePicture", picture);
-		pictureUploader.deleteFile(ROOT_PATH + UPLOAD_PATH, picture.getPicturePath());
 	}
 
 	public List<PictureVO> getAllPostPicture(UserVO user) {

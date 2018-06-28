@@ -75,7 +75,8 @@ public class PostController {
 	@RequestMapping(value = "/writeCommit", method = RequestMethod.POST)
 	public String writeCommit(@ModelAttribute PostVO post, BindingResult result, @RequestPart(required=true)List<MultipartFile> fileUpload,
 			HttpSession session, HttpServletRequest request, RedirectAttributes redirectAttributes) {
-		final String ROOT_PATH = request.getSession().getServletContext().getRealPath("/");
+		/*final String ROOT_PATH = request.getSession().getServletContext().getRealPath("/");*/
+		final String ROOT_PATH = "/home1/irteam/resources/picture";
 		post.setUserEmailHost(session.getAttribute("hostID").toString());
 		post.setUserEmailGuest(session.getAttribute("userID").toString());
 		post.setUserNameGuest(session.getAttribute("userName").toString());
@@ -92,11 +93,12 @@ public class PostController {
 	}
 	
 	@RequestMapping(value = "/deletePost", method = RequestMethod.POST)
-	public String deletePost(@ModelAttribute PostVO postVO, BindingResult result,
+	public String deletePost(@ModelAttribute PostVO post, BindingResult result,
 			HttpSession session, HttpServletRequest request) {
-		final String ROOT_PATH = request.getSession().getServletContext().getRealPath("/");
-		postVO.setUserEmailHost(session.getAttribute("hostID").toString());
-		postService.deletePost(postVO, ROOT_PATH);
+		/*final String ROOT_PATH = request.getSession().getServletContext().getRealPath("/");*/
+		final String ROOT_PATH = "/home1/irteam/resources/picture";
+		post.setUserEmailHost(session.getAttribute("hostID").toString());
+		postService.deletePost(post, ROOT_PATH);
 		return "redirect:/board";
 	}
 	
@@ -128,7 +130,8 @@ public class PostController {
 	public String updateCommit(@ModelAttribute PostVO post, BindingResult result, @RequestPart(required=true)List<MultipartFile> fileUpload,
 			 HttpSession session, HttpServletRequest request, @RequestParam("deleted") String deleted,
 			 RedirectAttributes redirectAttributes) {
-		final String ROOT_PATH = request.getSession().getServletContext().getRealPath("/");
+		/*final String ROOT_PATH = request.getSession().getServletContext().getRealPath("/");*/
+		final String ROOT_PATH = "/home1/irteam/resources/picture";
 		post.setUserEmailHost(session.getAttribute("hostID").toString());
 		post.setUserEmailGuest(session.getAttribute("userID").toString());
 		post.setUserNameGuest(session.getAttribute("userName").toString());

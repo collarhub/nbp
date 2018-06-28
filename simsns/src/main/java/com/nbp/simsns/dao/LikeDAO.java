@@ -1,6 +1,5 @@
 package com.nbp.simsns.dao;
 
-import java.sql.Timestamp;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -15,14 +14,11 @@ public class LikeDAO {
 	@Autowired
 	private SqlSession sqlSession;
 
+	public String selectMaxLikeNo(LikeVO like) {
+		return sqlSession.selectOne("likeMapper.selectMaxLikeNo", like);
+	}
+	
 	public void insertLike(LikeVO like) {
-		like.setLikeTimestamp(Long.toString(new Timestamp(System.currentTimeMillis()).getTime()));
-		String maxLikeNo = sqlSession.selectOne("likeMapper.selectMaxLikeNo", like);
-		if(maxLikeNo == null) {
-			like.setLikeNo("1");
-		} else {
-			like.setLikeNo(Integer.toString(Integer.parseInt(maxLikeNo) + 1));
-		}
 		sqlSession.insert("likeMapper.insertLike", like);
 	}
 

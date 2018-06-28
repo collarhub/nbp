@@ -82,7 +82,8 @@ public class PictureServiceImpl implements PictureServiceInter {
 
 	@Override
 	public void deletePicture(PictureVO picture, String ROOT_PATH) {
-		pictureDAO.deletePicture(picture, ROOT_PATH);
+		pictureDAO.deletePicture(picture);
+		pictureUploader.deleteFile(ROOT_PATH + UPLOAD_PATH, picture.getPicturePath());
 	}
 
 	@Override

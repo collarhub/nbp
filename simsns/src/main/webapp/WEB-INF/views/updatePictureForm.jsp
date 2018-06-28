@@ -191,33 +191,6 @@
 				</div>
 			</form>
 		</div>
-		
-		<%-- <form action="updatePictureCommit" method="post" enctype="multipart/form-data" id="formUpdatePicture">
-			<table>
-				<tr>
-					<th>제목</th>
-					<th><input type="text" id="pictureTitle" name="pictureTitle" value=""></th>
-					<th><form:errors path="pictureVO.pictureTitle"></form:errors></th>
-				</tr>
-				<tr>
-					<th><input type="file" id="fileUpload" name="fileUpload"></th>
-					<th style="border:1px solid"><img id="uploadFile" width="80" height="80" src=""><input type="button" value="삭제" onclick="deleteImage()"></th>
-					<th><form:errors path="pictureVO.picturePath"></form:errors>
-					<input type="hidden" value="false" name="deleted" id="deleted"></th>
-				</tr>
-				<tr>
-					<th></th>
-					<th align="right">
-						<input type="button" value="취소" onclick="updateCancel(formUpdatePicture)">
-						<input type="submit" value="완료">
-					</th>
-					<th></th>
-				</tr>
-			</table>
-			<input type="hidden" value="${pictureVO.userEmailHost}" name="userEmailHost" id="userEmailHost">
-			<input type="hidden" value="${pictureVO.pictureNo}" name="pictureNo">
-			<input type="hidden" value="${pictureVO.pictureTimestamp}" name="pictureTimestamp">
-		</form> --%>
 
 		<!-- Scroll to Top Button-->
 		<a class="scroll-to-top rounded" href="#page-top">

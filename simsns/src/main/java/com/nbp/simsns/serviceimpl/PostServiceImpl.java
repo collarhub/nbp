@@ -1,14 +1,15 @@
 package com.nbp.simsns.serviceimpl;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.nbp.simsns.dao.CommentDAO;
 import com.nbp.simsns.dao.PictureDAO;
 import com.nbp.simsns.dao.PostDAO;
 import com.nbp.simsns.etc.Md5Generator;
@@ -17,6 +18,7 @@ import com.nbp.simsns.etc.PictureUploader;
 import com.nbp.simsns.etc.PostUpdatePathValidator;
 import com.nbp.simsns.etc.WriteCommitValidator;
 import com.nbp.simsns.serviceinterface.PostServiceInter;
+import com.nbp.simsns.vo.CommentVO;
 import com.nbp.simsns.vo.PictureVO;
 import com.nbp.simsns.vo.PostVO;
 import com.nbp.simsns.vo.UserVO;
@@ -25,12 +27,15 @@ import com.nbp.simsns.vo.UserVO;
 public class PostServiceImpl implements PostServiceInter{
 	
 	static final String UPLOAD_PATH = "resources/picture/";
+	static final String COMMENT_ROOT = "0";
 	@Autowired
 	private PictureUploader pictureUploader;
 	@Autowired
 	private PostDAO postDAO;
 	@Autowired
 	private PictureDAO pictureDAO;
+	@Autowired
+	private CommentDAO commentDAO;
 	@Autowired
 	private WriteCommitValidator writeCommitValidator;
 	@Autowired
@@ -80,8 +85,33 @@ public class PostServiceImpl implements PostServiceInter{
 
 	@Override
 	public void deletePost(PostVO post, final String ROOT_PATH) {
-		postDAO.deletePost(post, ROOT_PATH);
-		
+		CommentVO commentTemp = new CommentVO();
+		commentTemp.setUserEmailHost(post.getUserEmailHost());
+		commentTemp.setPostNo(post.getPostNo());
+		commentTemp.setPostTimestamp(post.getPostTimestamp());
+		commentTemp.setCommentNo(COMMENT_ROOT);
+		commentTemp.setCommentTimestamp(COMMENT_ROOT);
+		List<CommentVO> deleteList = new ArrayList<CommentVO>();
+		List<CommentVO> childList;
+		childList = commentDAO.selectChild(commentTemp);
+		deleteList.addAll(childList);
+		for(int index = 0; index < deleteList.size(); index++) {
+			childList = commentDAO.selectChild(deleteList.get(index));
+			deleteList.addAll(childList);
+		}
+		for(CommentVO comment : deleteList) {
+			commentDAO.deleteComment(comment);
+		}
+		PictureVO picture = new PictureVO();
+		picture.setUserEmailHost(post.getUserEmailHost());
+		picture.setPostNo(post.getPostNo());
+		picture.setPostTimestamp(post.getPostTimestamp());
+		PictureVO pictureOutput = pictureDAO.getPicture(picture);
+		if(pictureOutput != null) {
+			pictureDAO.deletePicture(pictureOutput);
+			new PictureUploader().deleteFile(ROOT_PATH + UPLOAD_PATH, pictureOutput.getPicturePath());
+		}
+		postDAO.deletePost(post);
 	}
 
 	@Override
@@ -121,10 +151,16 @@ public class PostServiceImpl implements PostServiceInter{
 	    	} else {
 	    		if(!multipartFile.isEmpty()) {
 	    			pictureOutput.setPictureTitle(picture.getPictureTitle());
-	    			pictureDAO.updatePicture(pictureOutput, multipartFile, ROOT_PATH);
+	    			pictureUploader.deleteFile(ROOT_PATH + UPLOAD_PATH, pictureOutput.getPicturePath());
+	    			pictureOutput.setPicturePath(new Md5Generator().getMd5(pictureOutput.getUserEmailHost())
+	    					+ pictureOutput.getPictureTimestamp() + pictureOutput.getPictureNo()
+	    					+ new PictureExtensionValidator().getExtension(multipartFile));
+	    			pictureUploader.writeFile(multipartFile, ROOT_PATH + UPLOAD_PATH, pictureOutput.getPicturePath());
+	    			pictureDAO.updatePicture(pictureOutput);
 	    		} else {
 	    			if(deleted.equals("true")) {
-	    				pictureDAO.deletePicture(pictureOutput, ROOT_PATH);
+	    				pictureDAO.deletePicture(pictureOutput);
+	    				pictureUploader.deleteFile(ROOT_PATH + UPLOAD_PATH, pictureOutput.getPicturePath());
 	    			}
 	    		}
 	    	}
@@ -136,6 +172,4 @@ public class PostServiceImpl implements PostServiceInter{
 	public void updatePathValidate(PostVO post, String user, Errors errors) {
 		postUpdatePathValidator.validate(post, user, errors);
 	}
-	
-	
 }

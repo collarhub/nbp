@@ -35,88 +35,88 @@
 			picturePictureForm.action = "updatePicture";
 			picturePictureForm.submit();
 		}
-function addPicture() {
-	$('#pictureTable').append('<table style="display:inline" class="mr-5">'
-			+ '<tr><th>' + pictureList[pictureIndex].pictureTitle + '</th></tr>'
-			+ '<tr>'
-			+ '<th>'
-			+ '<img id="postPicture' + pictureIndex + '" width="150" height="150"'
-			+ 'src="resources/picture/' + pictureList[pictureIndex].picturePath + '">'
-			+ (
-					("${sessionScope.userID}" == pictureList[pictureIndex].userEmailGuest) ?
-						'<form action="deletePicture" method="post" style="display:inline" id="picturePictureForm' + pictureIndex + '">'
-						+ '<button class="close post-close" type="button" value="삭제" onclick="deletePicture(picturePictureForm' + pictureIndex + ')">'
-						+ '<i class="fa fa-fw fa-close"></i>'
-						+ '</button>'
-						+ '<input type="hidden" value="' + pictureList[pictureIndex].pictureNo + '" name="pictureNo">'
-						+ '<input type="hidden" value="' + pictureList[pictureIndex].pictureTimestamp + '" name="pictureTimestamp">'
-						+ '</form>'
-						+ '<a class="mr-1 close post-close" href="updatePicture?pictureTimestamp='
-						+ pictureList[pictureIndex].pictureTimestamp + '&pictureNo=' + pictureList[pictureIndex].pictureNo + '">'
-						+ '<i class="fa fa-fw fa-pencil"></i>'
-						+ '</a>'
-						: ''
-			)
-			+ '</th>'
-			+ '</tr>'
-			+ '<tr>'
-			+ '<th>'
-			+ '<div class="small text-muted">'
-			+ new Date(Number(pictureList[pictureIndex].pictureTimestamp)).toLocaleTimeString("ko-kr", {
-			    weekday: "long", year: "numeric", month: "short",
-			    day: "numeric", hour: "2-digit", minute: "2-digit"
-			})
-			+ '</div>'
-			+ '<form action="boardMove" method="post" name="friend' + pictureIndex + '">'
-			+ '<input type="hidden" value="' + pictureList[pictureIndex].userEmailGuest + '" name="userEmail">'
-			+ '<input type="hidden" value="' + pictureList[pictureIndex].userNameGuest + '" name="userName">'
-			+ '<input type="hidden" value="' + '">'
-			+ '</form>'
-			+ '<h6 class="card-title mb-1 small"><a class="font-color-simsns-dark" href="javascript:;" onclick="document.friend' + pictureIndex + '.submit()">'
-			+ '<i class="fa fa-fw fa-user-circle"></i>' + pictureList[pictureIndex].userNameGuest + '</a></h6>'
-			+ '</th>'
-			+ '</tr>'
-			+ '</table>');
-	if(pictureIndex % 2 == 1) {
-		$('#pictureTable').append('<br>');
-	}
-}
-$(document).ready(function() {
-	if(pictureList.length == 0) {
-		location.href = 'picture';
-	}
-	pictureList.some(function(picture, i){
-		addPicture();
-		if($("body").height() > $(window).height() && (pictureList.length - 1 == pictureIndex || pictureIndex % 2 == 1)) {
-			return (pictureIndex == pictureIndex);
-		}
-		pictureIndex++;
-	});
-	pictureIndex++;
-	
-	$(window).resize(function(){
-		while($("body").height() <= $(window).height() || (pictureIndex % 2 == 1)){
-			if(pictureIndex < pictureList.length) {
-				picture = pictureList[pictureIndex];
-				addPicture();
-				pictureIndex++;
-			} else {
-				break;
+		function addPicture() {
+			$('#pictureTable').append('<table style="display:inline" class="mr-5">'
+					+ '<tr><th>' + pictureList[pictureIndex].pictureTitle + '</th></tr>'
+					+ '<tr>'
+					+ '<th>'
+					+ '<img id="postPicture' + pictureIndex + '" width="150" height="150"'
+					+ 'src="resources/picture/' + pictureList[pictureIndex].picturePath + '">'
+					+ (
+							("${sessionScope.userID}" == pictureList[pictureIndex].userEmailGuest) ?
+								'<form action="deletePicture" method="post" style="display:inline" id="picturePictureForm' + pictureIndex + '">'
+								+ '<button class="close post-close" type="button" value="삭제" onclick="deletePicture(picturePictureForm' + pictureIndex + ')">'
+								+ '<i class="fa fa-fw fa-close"></i>'
+								+ '</button>'
+								+ '<input type="hidden" value="' + pictureList[pictureIndex].pictureNo + '" name="pictureNo">'
+								+ '<input type="hidden" value="' + pictureList[pictureIndex].pictureTimestamp + '" name="pictureTimestamp">'
+								+ '</form>'
+								+ '<a class="mr-1 close post-close" href="updatePicture?pictureTimestamp='
+								+ pictureList[pictureIndex].pictureTimestamp + '&pictureNo=' + pictureList[pictureIndex].pictureNo + '">'
+								+ '<i class="fa fa-fw fa-pencil"></i>'
+								+ '</a>'
+								: ''
+					)
+					+ '</th>'
+					+ '</tr>'
+					+ '<tr>'
+					+ '<th>'
+					+ '<div class="small text-muted">'
+					+ new Date(Number(pictureList[pictureIndex].pictureTimestamp)).toLocaleTimeString("ko-kr", {
+					    weekday: "long", year: "numeric", month: "short",
+					    day: "numeric", hour: "2-digit", minute: "2-digit"
+					})
+					+ '</div>'
+					+ '<form action="boardMove" method="post" name="friend' + pictureIndex + '">'
+					+ '<input type="hidden" value="' + pictureList[pictureIndex].userEmailGuest + '" name="userEmail">'
+					+ '<input type="hidden" value="' + pictureList[pictureIndex].userNameGuest + '" name="userName">'
+					+ '<input type="hidden" value="' + '">'
+					+ '</form>'
+					+ '<h6 class="card-title mb-1 small"><a class="font-color-simsns-dark" href="javascript:;" onclick="document.friend' + pictureIndex + '.submit()">'
+					+ '<i class="fa fa-fw fa-user-circle"></i>' + pictureList[pictureIndex].userNameGuest + '</a></h6>'
+					+ '</th>'
+					+ '</tr>'
+					+ '</table>');
+			if(pictureIndex % 2 == 1) {
+				$('#pictureTable').append('<br>');
 			}
 		}
-	});
-	
-	$(window).scroll(function() {
-		if ($(window).scrollTop() + 1 >= $(document).height() - $(window).height() || (pictureIndex % 2 == 1)) {
-			if(pictureIndex < pictureList.length) {
-				picture = pictureList[pictureIndex];
-				addPicture();
-				pictureIndex++;
+		$(document).ready(function() {
+			if(pictureList.length == 0) {
+				location.href = 'picture';
 			}
-		}
-	});
-});
-</script>
+			pictureList.some(function(picture, i){
+				addPicture();
+				if($("body").height() > $(window).height() && (pictureList.length - 1 == pictureIndex || pictureIndex % 2 == 1)) {
+					return (pictureIndex == pictureIndex);
+				}
+				pictureIndex++;
+			});
+			pictureIndex++;
+			
+			$(window).resize(function(){
+				while($("body").height() <= $(window).height() || (pictureIndex % 2 == 1)){
+					if(pictureIndex < pictureList.length) {
+						picture = pictureList[pictureIndex];
+						addPicture();
+						pictureIndex++;
+					} else {
+						break;
+					}
+				}
+			});
+			
+			$(window).scroll(function() {
+				if ($(window).scrollTop() + 1 >= $(document).height() - $(window).height() || (pictureIndex % 2 == 1)) {
+					if(pictureIndex < pictureList.length) {
+						picture = pictureList[pictureIndex];
+						addPicture();
+						pictureIndex++;
+					}
+				}
+			});
+		});
+	</script>
 </head>
 <body class="fixed-nav sticky-footer bg-gray" id="page-top">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-simsns fixed-top out" id="mainNav">

@@ -1,7 +1,5 @@
 package com.nbp.simsns.dao;
 
-import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -15,15 +13,12 @@ import com.nbp.simsns.vo.UserVO;
 public class CommentDAO {
 	@Autowired
 	private SqlSession sqlSession;
+	
+	public String selectMaxCommentNo(CommentVO comment) {
+		return sqlSession.selectOne("commentMapper.selectMaxCommentNo", comment);
+	}
 
 	public void insertComment(CommentVO comment) {
-		comment.setCommentTimestamp(Long.toString(new Timestamp(System.currentTimeMillis()).getTime()));
-		String maxCommentNo = sqlSession.selectOne("commentMapper.selectMaxCommentNo", comment);
-		if(maxCommentNo == null) {
-			comment.setCommentNo("1");
-		} else {
-			comment.setCommentNo(Integer.toString(Integer.parseInt(maxCommentNo) + 1));
-		}
 		sqlSession.insert("commentMapper.insertComment", comment);
 	}
 	
@@ -31,17 +26,12 @@ public class CommentDAO {
 		return sqlSession.selectList("commentMapper.selectAllComment", user);
 	}
 	
-	public void deleteComment(CommentVO commentRoot) {
-		List<CommentVO> deleteList = new ArrayList<CommentVO>();
-		List<CommentVO> childList;
-		deleteList.add(commentRoot);
-		for(int index = 0; index < deleteList.size(); index++) {
-			childList = sqlSession.selectList("commentMapper.selectChild", deleteList.get(index));
-			deleteList.addAll(childList);
-		}
-		for(CommentVO comment : deleteList) {
-			sqlSession.delete("commentMapper.deleteComment", comment);
-		}
+	public List<CommentVO> selectChild(CommentVO comment) {
+		return sqlSession.selectList("commentMapper.selectChild", comment);
+	}
+	
+	public void deleteComment(CommentVO comment) {
+		sqlSession.delete("commentMapper.deleteComment", comment);
 	}
 	
 	public void updateComment(CommentVO comment) {

@@ -1,5 +1,7 @@
 package com.nbp.simsns.serviceimpl;
 
+import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +25,13 @@ public class CommentServiceImpl implements CommentServiceInter {
 	public void writeComment(CommentVO comment, Errors errors) {
 		commentWriteValidator.validate(comment, errors);
 		if(!errors.hasErrors()) {
+			comment.setCommentTimestamp(Long.toString(new Timestamp(System.currentTimeMillis()).getTime()));
+			String maxCommentNo = commentDAO.selectMaxCommentNo(comment);
+			if(maxCommentNo == null) {
+				comment.setCommentNo("1");
+			} else {
+				comment.setCommentNo(Integer.toString(Integer.parseInt(maxCommentNo) + 1));
+			}
 			commentDAO.insertComment(comment);
 		}
 	}
@@ -33,8 +42,17 @@ public class CommentServiceImpl implements CommentServiceInter {
 	}
 
 	@Override
-	public void deleteComment(CommentVO comment) {
-		commentDAO.deleteComment(comment);
+	public void deleteComment(CommentVO commentRoot) {
+		List<CommentVO> deleteList = new ArrayList<CommentVO>();
+		List<CommentVO> childList;
+		deleteList.add(commentRoot);
+		for(int index = 0; index < deleteList.size(); index++) {
+			childList = commentDAO.selectChild(deleteList.get(index));
+			deleteList.addAll(childList);
+		}
+		for(CommentVO comment : deleteList) {
+			commentDAO.deleteComment(comment);
+		}
 	}
 
 	@Override

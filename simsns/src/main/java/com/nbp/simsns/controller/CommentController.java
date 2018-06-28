@@ -25,12 +25,6 @@ import com.nbp.simsns.vo.UserVO;
 public class CommentController {
 	@Autowired
 	private CommentServiceImpl commentService;
-	@Autowired
-	private PostServiceImpl postService;
-	@Autowired
-	private LikeServiceImpl likeService;
-	@Autowired
-	private PictureServiceImpl pictureService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
 

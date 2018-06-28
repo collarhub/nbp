@@ -1,5 +1,6 @@
 package com.nbp.simsns.serviceimpl;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,13 @@ public class LikeServiceImpl implements LikeServiceInter{
 	public void addLike(LikeVO like, Errors errors) {
 		addLikeValidator.validate(like, errors);
 		if(!errors.hasErrors()) {
+			like.setLikeTimestamp(Long.toString(new Timestamp(System.currentTimeMillis()).getTime()));
+			String maxLikeNo = likeDAO.selectMaxLikeNo(like);
+			if(maxLikeNo == null) {
+				like.setLikeNo("1");
+			} else {
+				like.setLikeNo(Integer.toString(Integer.parseInt(maxLikeNo) + 1));
+			}
 			likeDAO.insertLike(like);
 		}
 	}

@@ -20,81 +20,81 @@
 	<!-- Custom styles for this template-->
 	<link href="resources/css/sb-admin.min.css" rel="stylesheet">
 	<link href="resources/simsns/css/simsns.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
-<script type="text/javascript">
-var pictureList = ${pictureList};
-var pictureIndex = 0;
-function addPicture() {
-	$('#pictureTable').append('<table style="display:inline;" class="mr-5">'
-			+ '<tr><th>' + pictureList[pictureIndex].pictureTitle + '</th></tr>'
-			+ '<tr>'
-			+ '<th>'
-			+ '<form action="goToPost" method="post" style="display:inline" id="postPictureForm' + pictureIndex + '">'
-			+ '<img id="postPicture' + pictureIndex + '" width="150" height="150"'
-			+ 'src="resources/picture/' + pictureList[pictureIndex].picturePath + '" style="cursor:pointer"'
-			+ 'onclick="goToPost(postPictureForm' + pictureIndex + ')">'
-			+ '<input type="hidden" value="${id}" name="userEmailHost">'
-			+ '<input type="hidden" value="' + pictureList[pictureIndex].postTimestamp + '" name="postTimestamp">'
-			+ '<input type="hidden" value="' + pictureList[pictureIndex].postNo + '" name="postNo">'
-			+ '</form>'
-			+ '</th>'
-			+ '</tr>'
-			+ '<tr>'
-			+ '<th>'
-			+ '<div class="small text-muted">'
-			+ new Date(Number(pictureList[pictureIndex].postTimestamp)).toLocaleTimeString("ko-kr", {
-			    weekday: "long", year: "numeric", month: "short",
-			    day: "numeric", hour: "2-digit", minute: "2-digit"
-			})
-			+ '</div>'
-			+ '<form action="boardMove" method="post" name="friend' + pictureIndex + '">'
-			+ '<input type="hidden" value="' + pictureList[pictureIndex].userEmailGuest + '" name="userEmail">'
-			+ '<input type="hidden" value="' + pictureList[pictureIndex].userNameGuest + '" name="userName">'
-			+ '<input type="hidden" value="' + '">'
-			+ '</form>'
-			+ '<h6 class="card-title mb-1 small"><a class="font-color-simsns-dark" href="javascript:;" onclick="document.friend' + pictureIndex + '.submit()">'
-			+ '<i class="fa fa-fw fa-user-circle"></i>' + pictureList[pictureIndex].userNameGuest + '</a></h6>'
-			+ '</th>'
-			+ '</tr>'
-			+ '</table>');
-	if(pictureIndex % 2 == 1) {
-		$('#pictureTable').append('<br>');
-	}
-}
-$(document).ready(function() {
-	pictureList.some(function(picture, i){
-		addPicture();
-		if($("body").height() > $(window).height() && (pictureList.length - 1 == pictureIndex || pictureIndex % 2 == 1)) {
-			return (pictureIndex == pictureIndex);
-		}
-		pictureIndex++;
-	});
-	pictureIndex++;
-	
-	$(window).resize(function(){
-		while($("body").height() <= $(window).height() || (pictureIndex % 2 == 1)){
-			if(pictureIndex < pictureList.length) {
-				addPicture();
-				pictureIndex++;
-			} else {
-				break;
+		<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+		<script type="text/javascript">
+		var pictureList = ${pictureList};
+		var pictureIndex = 0;
+		function addPicture() {
+			$('#pictureTable').append('<table style="display:inline;" class="mr-5">'
+					+ '<tr><th>' + pictureList[pictureIndex].pictureTitle + '</th></tr>'
+					+ '<tr>'
+					+ '<th>'
+					+ '<form action="goToPost" method="post" style="display:inline" id="postPictureForm' + pictureIndex + '">'
+					+ '<img id="postPicture' + pictureIndex + '" width="150" height="150"'
+					+ 'src="resources/picture/' + pictureList[pictureIndex].picturePath + '" style="cursor:pointer"'
+					+ 'onclick="goToPost(postPictureForm' + pictureIndex + ')">'
+					+ '<input type="hidden" value="${id}" name="userEmailHost">'
+					+ '<input type="hidden" value="' + pictureList[pictureIndex].postTimestamp + '" name="postTimestamp">'
+					+ '<input type="hidden" value="' + pictureList[pictureIndex].postNo + '" name="postNo">'
+					+ '</form>'
+					+ '</th>'
+					+ '</tr>'
+					+ '<tr>'
+					+ '<th>'
+					+ '<div class="small text-muted">'
+					+ new Date(Number(pictureList[pictureIndex].postTimestamp)).toLocaleTimeString("ko-kr", {
+					    weekday: "long", year: "numeric", month: "short",
+					    day: "numeric", hour: "2-digit", minute: "2-digit"
+					})
+					+ '</div>'
+					+ '<form action="boardMove" method="post" name="friend' + pictureIndex + '">'
+					+ '<input type="hidden" value="' + pictureList[pictureIndex].userEmailGuest + '" name="userEmail">'
+					+ '<input type="hidden" value="' + pictureList[pictureIndex].userNameGuest + '" name="userName">'
+					+ '<input type="hidden" value="' + '">'
+					+ '</form>'
+					+ '<h6 class="card-title mb-1 small"><a class="font-color-simsns-dark" href="javascript:;" onclick="document.friend' + pictureIndex + '.submit()">'
+					+ '<i class="fa fa-fw fa-user-circle"></i>' + pictureList[pictureIndex].userNameGuest + '</a></h6>'
+					+ '</th>'
+					+ '</tr>'
+					+ '</table>');
+			if(pictureIndex % 2 == 1) {
+				$('#pictureTable').append('<br>');
 			}
 		}
-	});
-	
-	$(window).scroll(function() {
-		if ($(window).scrollTop() + 1 >= $(document).height() - $(window).height() || (pictureIndex % 2 == 1)) {
-			if(pictureIndex < pictureList.length) {
+		$(document).ready(function() {
+			pictureList.some(function(picture, i){
 				addPicture();
+				if($("body").height() > $(window).height() && (pictureList.length - 1 == pictureIndex || pictureIndex % 2 == 1)) {
+					return (pictureIndex == pictureIndex);
+				}
 				pictureIndex++;
-			}
+			});
+			pictureIndex++;
+			
+			$(window).resize(function(){
+				while($("body").height() <= $(window).height() || (pictureIndex % 2 == 1)){
+					if(pictureIndex < pictureList.length) {
+						addPicture();
+						pictureIndex++;
+					} else {
+						break;
+					}
+				}
+			});
+			
+			$(window).scroll(function() {
+				if ($(window).scrollTop() + 1 >= $(document).height() - $(window).height() || (pictureIndex % 2 == 1)) {
+					if(pictureIndex < pictureList.length) {
+						addPicture();
+						pictureIndex++;
+					}
+				}
+			});
+		});
+		function goToPost(form) {
+			form.submit();
 		}
-	});
-});
-function goToPost(form) {
-	form.submit();
-}
-</script>
+	</script>
 </head>
 <body class="fixed-nav sticky-footer bg-gray" id="page-top">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-simsns fixed-top out" id="mainNav">

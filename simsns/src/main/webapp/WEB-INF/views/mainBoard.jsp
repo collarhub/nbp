@@ -258,7 +258,6 @@
 					+ comment.commentTimestampParent + comment.commentNoParent)
 					.append('<div id="' + comment.postTimestamp + comment.postNo + comment.commentTimestamp + comment.commentNo + '">'
 							+ '<div id="commentContainer' + commentIndex + '">'
-							
 							+ '<span class="mr-4 comment-subtree small">└</span><span class="small">' + new Date(Number(comment.commentTimestamp)).toLocaleTimeString("ko-kr", {
 								    weekday: "long", year: "numeric", month: "short",
 								    day: "numeric", hour: "2-digit", minute: "2-digit"
