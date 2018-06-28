@@ -1,6 +1,7 @@
 # Simple SNS
 ## 1. 소개
 개인 블로그 형식의 간단한 SNS 서비스를 제공하는 웹페이지입니다.
+
 자신의 일상을 글과 사진으로 기록하고 친구들과 소통을 할 수 있습니다.
 
 개발 내용 : [feature list](https://oss.navercorp.com/2018-nbp-internship-team1/junhee/wiki/Feature-List)
