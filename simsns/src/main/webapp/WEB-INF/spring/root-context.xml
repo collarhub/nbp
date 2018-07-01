@@ -16,7 +16,7 @@
 	<bean id="dataSource"
 		class="org.apache.ibatis.datasource.pooled.PooledDataSource">
 		<property name="driver" value="com.mysql.jdbc.Driver"></property>
-		<property name="url" value="jdbc:mysql://10.106.151.73:13306/simsns?characterEncoding=UTF-8"></property>
+		<property name="url" value="jdbc:mysql://10.106.151.73:13306/simsns?autoReconnect=true&amp;characterEncoding=UTF-8"></property>
 		<!-- <property name="url" value="jdbc:mysql://127.0.0.1:13306/simsns?characterEncoding=UTF-8"></property> -->
 		<property name="username" value="root"></property>
 		<property name="password" value="!@#123"></property>
