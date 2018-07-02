@@ -94,6 +94,12 @@
 						<span class="nav-link-text">사진</span>
 					</a>
 				</li>
+				<li class="nav-item nav-item-simsns" data-toggle="tooltip" data-placement="right" title="friend">
+					<a class="nav-link" href="friend">
+						<i class="fa fa-fw fa-user"></i>
+						<span class="nav-link-text">친구</span>
+					</a>
+				</li>
 			</ul>
 			<ul class="navbar-nav ml-auto">
 				<li class="nav-item">
