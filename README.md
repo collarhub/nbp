@@ -11,6 +11,7 @@
 진행 사항 : [todo list](https://oss.navercorp.com/2018-nbp-internship-team1/junhee/projects/1)
 
 URL : [http://10.106.151.73/simsns](http://10.106.151.73/simsns)
+test ID / PW : nbp@naver.com / 1q2w3e4r!
 ## 2. 디자인 상세
  - [스토리보드](https://ovenapp.io/view/vwWG0kw5u2funtTvXucq2K5VA5gdFfcR/LCfdj)
  - [DB 설계](https://oss.navercorp.com/2018-nbp-internship-team1/junhee/blob/master/db.PNG)
