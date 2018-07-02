@@ -42,13 +42,25 @@ contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 				<form action="loginValidate" method="post">
 					<div class="form-group">
 						<label for="userEmail">이메일 주소</label>
-						<input class="form-control" id="userEmail" name="userEmail" aria-describedby="emailHelp" type="text" placeholder="Enter email"
-							value="${userVO.userEmail}">
+						<c:if test="${userVO.userEmail != null}">
+							<input class="form-control" id="userEmail" name="userEmail" aria-describedby="emailHelp" type="text" placeholder="Enter email"
+								value="${userVO.userEmail}">
+						</c:if>
+						<c:if test="${userVO.userEmail == null}">
+							<input class="form-control" id="userEmail" name="userEmail" aria-describedby="emailHelp" type="text" placeholder="Enter email"
+								value="nbp@naver.com">
+						</c:if>
 						<form:errors path="userVO.userEmail" class="text-danger"></form:errors>
 					</div>
 					<div class="form-group">
 						<label for="userPassword">비밀번호</label>
-						<input class="form-control" id="userPassword" name="userPassword" type="password" placeholder="Password">
+						<c:if test="${userVO.userPassword != null}">
+							<input class="form-control" id="userPassword" name="userPassword" type="password" placeholder="Password">
+						</c:if>
+						<c:if test="${userVO.userPassword == null}">
+							<input class="form-control" id="userPassword" name="userPassword" type="password" placeholder="Password"
+								value="1q2w3e4r!">
+						</c:if>
 						<form:errors path="userVO.userPassword" class="text-danger"></form:errors>
 					</div>
 					<input type="submit" class="btn btn-primary btn-block bg-simsns" value="로그인">
