@@ -31,4 +31,8 @@ public class UserDAO {
     	String output = sqlSession.selectOne("userMapper.getHash", passwordString);
     	return output;
     }
+    
+    public List<UserVO> selectAllUser() {
+    	return sqlSession.selectList("userMapper.selectAllUser");
+    }
 }

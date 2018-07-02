@@ -10,4 +10,5 @@ public interface UserServiceInter {
 	public void signupValidate(Object object, Errors errors);
 	public void loginValidate(Object object, Errors errors);
 	public List<UserVO> selectUser(String userEmail);
+	public List<UserVO> getAllUser();
 }

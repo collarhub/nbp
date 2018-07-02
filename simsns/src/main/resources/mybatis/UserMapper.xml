@@ -22,4 +22,9 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     	SELECT PASSWORD(#{value})
     </select>
     
+    <select id="selectAllUser" resultType="com.nbp.simsns.vo.UserVO">
+    	SELECT *
+    	FROM user
+    </select>
+    
 </mapper>

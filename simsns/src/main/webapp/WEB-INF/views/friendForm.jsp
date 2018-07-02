@@ -10,7 +10,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<title>SIMSNS 사진 게시판</title>
+	<title>SIMSNS 친구 목록</title>
 	<!-- Bootstrap core CSS-->
 	<link href="resources/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 	<!-- Custom fonts for this template-->
@@ -22,17 +22,11 @@
 	<link href="resources/simsns/css/simsns.css" rel="stylesheet">
 	<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
 	<script type="text/javascript">
-		function goToPost(form) {
-			form.submit();
-		}
-		function pictureSubmit(form) {
-			form.submit();
-		}
 		$(document).ready(function() {
 			$.ajax({
 				cache : false,
 		        type : "GET",
-		        url : "postPicturePreview",
+		        url : "getFriend",
 		        dataType : "json",
 		        contentType: "application/json",
 		        error : function(jqXHR,request, error) {
@@ -42,86 +36,16 @@
 					console.log(JSON.stringify(error));
 		        },
 		        success : function(data) {
-		        	for(i = 0; i < 3; i++) {
-			        	$('#postPictureTable').append('<form action="goToPost" method="post" style="display:inline" id="postPictureForm' + i + '">'
-													+ '<img id="postPicture' + i + '" width="150" height="150" src="" style="cursor:pointer" '
-													+ 'class="picture" onclick="">'
-													+ '</form>');
-			        	if(data[i] != undefined && data[i].postTimestamp != undefined && data[i].postNo != undefined) {
-							/* $('#postPicture' + i).attr('src', 'resources/picture/' + data[i].picturePath); */
-							$('#postPicture' + i).attr('src', '/resources/picture/' + data[i].picturePath);
-							$('#postPictureForm' + i).append('<input type="hidden" value="' + data[i].postTimestamp + '" name="postTimestamp">'
-															+ '<input type="hidden" value="' + data[i].postNo + '" name="postNo">');
-							$('#postPicture' + i).attr('onclick', 'goToPost(postPictureForm' + i + ')');
-						} else {
-							$('#postPicture' + i).attr('src', 'resources/img/noImage.gif');
-						}
-			        	if(i % 2 == 1) {
-							$('#postPictureTable').append('<br>');
-						}
-		        	}
-		        	$('#postPictureTable').append('<img id="postPicture3" width="150" height="150" style="cursor:pointer"'
-							+ 'src="resources/img/pictureMore.png" style="opacity:0.4;" class="picture" onclick="">');
-					if(data[0] != undefined && data[0].postTimestamp != undefined && data[0].postNo != undefined) {
-						$('#postPicture3').attr('onclick', 'location.href="postPicture"');
-					}
+		        	alert(df);
 		        }
 		    });
-			
-			$.ajax({
-				cache : false,
-		        type : "GET",
-		        url : "picturePicturePreview",
-		        dataType : "json",
-		        contentType: "application/json",
-		        error : function(jqXHR,request, error) {
-		            alert('통신실패!!');
-		            console.log(jqXHR);
-					console.log(request);
-					console.log(JSON.stringify(error));
-		        },
-		        success : function(data) {
-		        	for(i = 0; i < 3; i++) {
-						$('#picturePictureTable').append('<form action="writePicture" method="post" style="display:inline" id="picturePictureForm' + i + '">'
-														+ '<img id="picturePicture' + i + '" width="150" height="150" src="" style="cursor:pointer"'
-														+ ' class="picture" onclick="">'
-														+ '</form>');
-						if(data[i] != undefined) {
-							/* $('#picturePicture' + i).attr('src', 'resources/picture/' + data[i].picturePath); */
-							$('#picturePicture' + i).attr('src', '/resources/picture/' + data[i].picturePath);
-						} else {
-							$('#picturePicture' + i).attr('src', 'resources/img/addImage.png');
-							$('#picturePictureForm' + i).append('<input type="hidden" value="${id}" name="userEmailHost">');
-							$('#picturePictureForm' + i).append('<input type="hidden" value="picture" name="writePictureCancel">');
-							$('#picturePicture' + i).attr('onclick', 'location.href="writePicture?back=picture"');
-						}
-						if(i % 2 == 1) {
-							$('#picturePictureTable').append('<br>');
-						}
-					}
-					$('#picturePictureTable').append('<img id="picturePicture3" width="150" height="150" style="cursor:pointer"'
-							+ 'src="resources/img/pictureMore.png" style="opacity:0.4;" class="picture" onclick="">');
-					if(data[0] != undefined) {
-						$('#picturePicture3').attr('onclick', 'location.href="picturePicture"');
-					}
-		        }
-		    });
-			
-			$('.picture').css('opacity', '0.4!important');
-			$('.picture').hover(function(){
-				$(this).css('opacity', '1.0!important');
-			},
-		  	function(){
-		    	$(this).css('opacity', '0.4!important');
-		  	});
-		
 		});
 	</script>
 </head>
 <body class="fixed-nav sticky-footer bg-gray" id="page-top">
 	<nav class="navbar navbar-expand-lg navbar-dark bg-simsns fixed-top out" id="mainNav">
 		<a class="navbar-brand" href="/simsns/">SIMSNS</a>
-		<div class="board-title-text">${sessionScope.hostName} 의 사진 게시판</div>
+		<div class="board-title-text">${sessionScope.hostName} 의 친구 목록</div>
 		<button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
 			<span class="navbar-toggler-icon"></span>
 		</button>
@@ -165,23 +89,11 @@
 	<div class="content-wrapper content-wrapper-simsns">
 		<div class="post-wrapper-simsns">
 			<div class="mb-0 mt-4">
-				<i class="fa fa-fw fa-picture-o"></i> 사진 게시판
+				<i class="fa fa-fw fa-user"></i> 친구 목록
 			</div>
 			<hr class="mt-2">
-			<table>
-				<tr>
-					<th id=postPictureTable>
-					</th>
-					<th style="min-width:100px"></th>
-					<th id="picturePictureTable">
-					</th>
-				</tr>
-				<tr>
-					<th>게시물 사진</th>
-					<th></th>
-					<th>사진첩</th>
-				</tr>
-			</table>
+			<div id="friend">
+			</div>
 		</div>
 		<!-- Scroll to Top Button-->
 		<a class="scroll-to-top rounded" href="#page-top">

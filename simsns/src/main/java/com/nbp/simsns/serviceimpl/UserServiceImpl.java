@@ -42,4 +42,9 @@ public class UserServiceImpl implements UserServiceInter {
 		user.setUserEmail(userEmail);
 		return userDAO.selectUser(user);
 	}
+	
+	@Override
+	public List<UserVO> getAllUser() {
+		return userDAO.selectAllUser();
+	}
 }
