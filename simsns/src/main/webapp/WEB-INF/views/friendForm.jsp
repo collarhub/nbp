@@ -36,7 +36,16 @@
 					console.log(JSON.stringify(error));
 		        },
 		        success : function(data) {
-		        	alert('df');
+		        	data.forEach(function(user, index) {
+		        		$('#friend').append(
+					        	'<form action="boardMove" method="post" name="friend' + index + '">'
+								+ '<input type="hidden" value="' + user.userEmail + '" name="userEmail">'
+								+ '<input type="hidden" value="' + user.userName + '" name="userName">'
+								+ '</form>'
+								+ '<h6 class="card-title mb-1 small"><a class="font-color-simsns-dark" href="javascript:;" onclick="document.friend' + index + '.submit()">'
+								+ '<i class="fa fa-fw fa-user-circle"></i>' + user.userName + '</a></h6>'
+							);
+		        	});
 		        }
 		    });
 		});
