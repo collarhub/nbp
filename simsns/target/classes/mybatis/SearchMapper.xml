@@ -24,7 +24,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id ="selectPostWriterOne" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "com.nbp.simsns.vo.PostVO">
         SELECT userEmailHost, postNo, postTitle, postContent, postTimestamp, userEmailGuest
         FROM post
-        WHERE userEmailHost = #{userEmailHost} AND userEmailGuest LIKE CONCAT('%', #{searchKeyword}, '%')
+        WHERE userEmailHost = #{userEmailHost} AND userNameGuest LIKE CONCAT('%', #{searchKeyword}, '%')
         ORDER BY CAST(postTimestamp AS UNSIGNED) DESC, CAST(postNo AS UNSIGNED) DESC
         LIMIT #{searchIndex}, 1
     </select>
@@ -54,7 +54,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id ="countTotalWriter" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "java.lang.Integer">
         SELECT count(*)
         FROM post
-        WHERE userEmailHost = #{userEmailHost} AND userEmailGuest LIKE CONCAT('%', #{searchKeyword}, '%')
+        WHERE userEmailHost = #{userEmailHost} AND userNameGuest LIKE CONCAT('%', #{searchKeyword}, '%')
     </select>
     
     <select id ="countTotalTitleContent" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "java.lang.Integer">
@@ -79,7 +79,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT userEmailHost, postNo, postTimestamp, commentNo, commentTimestamp, commentNoParent,
     			commentTimestampParent, userEmailGuest, commentContent, commentDepth
         FROM comment
-        WHERE userEmailHost = #{userEmailHost} AND userEmailGuest LIKE CONCAT('%', #{searchKeyword}, '%')
+        WHERE userEmailHost = #{userEmailHost} AND userNameGuest LIKE CONCAT('%', #{searchKeyword}, '%')
         ORDER BY CAST(postTimestamp AS UNSIGNED) DESC, CAST(postNo AS UNSIGNED) DESC, CAST(commentDepth AS UNSIGNED) ASC, CAST(commentTimestampParent AS UNSIGNED) ASC,
     			CAST(commentNoParent AS UNSIGNED) ASC, CAST(commentTimestamp AS UNSIGNED) ASC, CAST(commentNo AS UNSIGNED) ASC
         LIMIT #{searchIndex}, 1
@@ -94,7 +94,7 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
     <select id ="countCommentTotalWriter" parameterType="com.nbp.simsns.vo.SearchVO2" resultType= "java.lang.Integer">
         SELECT count(*)
         FROM comment
-        WHERE userEmailHost = #{userEmailHost} AND userEmailGuest LIKE CONCAT('%', #{searchKeyword}, '%')
+        WHERE userEmailHost = #{userEmailHost} AND userNameGuest LIKE CONCAT('%', #{searchKeyword}, '%')
     </select>
 
 </mapper>
